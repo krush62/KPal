@@ -12,4 +12,4 @@ KPal is a Visual Studio/C#/WPF project. Open, build and run the solution in Visu
 ## Releases
 You can download a release for Windows from the releases section. This application needs .NET runtime to work.
 ## Screenshots
-![SCREENSHOT](/url "/screenshots/screenshot.jpg?raw=true")
+![SCREENSHOT](/url "screenshots/screenshot.jpg?raw=true")
