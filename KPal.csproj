@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <StartupObject>KPal.App</StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy colors.csv $(OutDir)colors.csv&#xD;&#xA;xcopy &quot;fonts&quot; &quot;$(OutDir)fonts&quot; /e /y /i /r&#xD;&#xA;xcopy &quot;buttons&quot; &quot;$(OutDir)buttons&quot; /e /y /i /r" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="fonts\" />
+    <Folder Include="buttons\" />
+    <Resource Include="fonts\Pixel-UniCode.ttf" />
+    <Resource Include="buttons\close_hover.png" />
+    <Resource Include="buttons\close_normal.png" />
+    <Resource Include="buttons\close_pressed.png" />
+    <Resource Include="buttons\maximize_normal.png" />
+	<Resource Include="buttons\maximize_hover.png" />
+	<Resource Include="buttons\maximize_pressed.png" />
+	<Resource Include="buttons\minimize_normal.png" />
+	<Resource Include="buttons\minimize_hover.png" />
+	<Resource Include="buttons\minimize_pressed.png" />
+	<Resource Include="buttons\link.png" />
+	<Resource Include="buttons\load_normal.png" />
+	<Resource Include="buttons\load_hover.png" />
+	<Resource Include="buttons\load_pressed.png" />
+	<Resource Include="buttons\save_normal.png" />
+	<Resource Include="buttons\save_hover.png" />
+	<Resource Include="buttons\save_pressed.png" />
+	<Resource Include="buttons\export_normal.png" />
+	<Resource Include="buttons\export_hover.png" />
+	<Resource Include="buttons\export_pressed.png" />
+	<Resource Include="buttons\new_normal.png" />
+	<Resource Include="buttons\new_hover.png" />
+	<Resource Include="buttons\new_pressed.png" />
+	<Resource Include="buttons\sat_both_normal.png" />
+	<Resource Include="buttons\sat_both_hover.png" />
+	<Resource Include="buttons\sat_both_pressed.png" />
+	<Resource Include="buttons\sat_high_normal.png" />
+	<Resource Include="buttons\sat_high_hover.png" />
+	<Resource Include="buttons\sat_high_pressed.png" />	  
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="colors.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
+</Project>
