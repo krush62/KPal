@@ -13,7 +13,7 @@ using static KPal.SaveData;
 //Perform a check if all necessary files (colors.csv etc.) exist
 //Max ramps allowed?
 //review every access modifier (public -> internal, etc.)
-
+//Ramp counter is reset when file was loaded!
 
 namespace KPal
 {
