@@ -15,7 +15,8 @@ namespace KPal
         {
             NONE = 0,
             LEFT_VISUALIZER = 1,
-            RIGHT_VISUALIZER = 2
+            RIGHT_VISUALIZER = 2,
+            RAMP_COUNTER = 3
         }
 
         public enum OPTION_TYPE_PALETTE : byte

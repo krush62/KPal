@@ -10,16 +10,13 @@ using static KPal.SaveData;
 
 //TODO GENERAL
 //display color distance for each color in palette (starting from center left and right)?
-//Perform a check if all necessary files (colors.csv etc.) exist
 //Max ramps allowed?
-//review every access modifier (public -> internal, etc.)
-//Ramp counter is reset when file was loaded!
 
 namespace KPal
 {
     public partial class MainWindow : Window
     {
-        private uint rampCounter;
+        private byte RampCounter;
         private readonly List<PaletteEditor> PaletteEditorList;
         private readonly List<ColorLink> ColorLinkList;
         private readonly DispatcherTimer PreviewUpdateTimer;
@@ -33,21 +30,27 @@ namespace KPal
         public MainWindow()
         {
             InitializeComponent();
-
             if (!File.Exists(ColorNames.COLOR_FILE_NAME))
             {
                 _ = MessageBox.Show("Color name list file (" + ColorNames.COLOR_FILE_NAME + ") was not found.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            SetSaveFileName(null);
-            SetDataSaved(true);
             PaletteEditorList = new List<PaletteEditor>();
             ColorLinkList = new List<ColorLink>();
-            rampCounter = 0;
             PreviewUpdateTimer = new DispatcherTimer();
             PreviewUpdateTimer.Tick += PreviewUpdateTimer_Tick;
             PreviewUpdateTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+            InitNew();
+        }
+
+        private void InitNew()
+        {
+            RampCounter = 0;
+            ClearEntries();
+            SetSaveFileName(null);
             SetNewVisualizer(true, Visualizers.Item1, Visualizer.VisualizerType.ShadingCube);
             SetNewVisualizer(false, Visualizers.Item2, Visualizer.VisualizerType.PaletteMerge);
+            UpdatePreviews();
+            SetDataSaved(true);
         }
 
         private void Visualizer_VisualizerSelectionChanged(object? sender, EventArgs e)
@@ -84,6 +87,14 @@ namespace KPal
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            AddNewPaletteEditor();
+            UpdatePreviews();
+            SetDataSaved(false);
+        }
+
+        private void AddNewPaletteEditor(SaveData.SavePalette? paletteData = null)
+        {
+            
             RowDefinition r = new()
             {
                 Height = new(1, GridUnitType.Auto)
@@ -91,15 +102,41 @@ namespace KPal
             EntryGrid.RowDefinitions.Insert(EntryGrid.Children.Count - 1, r);
             Grid.SetRow(EntryGrid.Children[^1], EntryGrid.Children.Count);
             PaletteEditor p = new();
-            p.SetTitle("Ramp " + (++rampCounter).ToString());
 
-            SetPaletteEditorEvents(p);
+            if (paletteData != null)
+            {   
+                p.SetTitle(paletteData.Value.Name);
+                if (paletteData.Value.Options.ContainsKey(OPTION_TYPE_PALETTE.SAT_CURVE_MODE))
+                {
+                    p.SatCurveMode = (PaletteEditor.SaturationCurveMode)paletteData.Value.Options.GetValueOrDefault(OPTION_TYPE_PALETTE.SAT_CURVE_MODE);
+                }
+
+                if (paletteData.Value.Options.ContainsKey(OPTION_TYPE_PALETTE.IS_MINIMIZED))
+                {
+                    p.IsMinimized = paletteData.Value.Options.GetValueOrDefault(OPTION_TYPE_PALETTE.IS_MINIMIZED) == 0;
+                }                
+                p.ColorCountSlider.Value = paletteData.Value.ColorCount;
+                p.BaseHueSlider.Value = paletteData.Value.BaseHue;
+                p.BaseSaturationSlider.Value = paletteData.Value.BaseSaturation;
+                p.HueShiftSlider.Value = paletteData.Value.HueShift;
+                p.HueShiftExponentSlider.Value = paletteData.Value.HueShiftExponent;
+                p.SaturationShiftSlider.Value = paletteData.Value.SaturationShift;
+                p.SaturationShiftExponentSlider.Value = paletteData.Value.SaturationShiftExponent;
+                p.ValueRangeSlider.LowerValue = paletteData.Value.ValueMin;
+                p.ValueRangeSlider.HigherValue = paletteData.Value.ValueMax;
+            }
+
             Grid.SetRow(p, EntryGrid.Children.Count - 1);
             Grid.SetColumn(p, 0);
             EntryGrid.Children.Insert(EntryGrid.Children.Count - 1, p);
             PaletteEditorList.Add(p);
-            UpdatePreviews();
-            SetDataSaved(false);
+            SetPaletteEditorEvents(p);
+
+            if (paletteData == null)
+            {
+                p.SetTitle("Ramp " + (++RampCounter).ToString());
+            }
+
         }
 
 
@@ -353,46 +390,17 @@ namespace KPal
             {
                 SetNewVisualizer(false, Visualizers.Item2, (Visualizer.VisualizerType)sData.Options.GetValueOrDefault(OPTION_TYPE_GENERAL.RIGHT_VISUALIZER));
             }
+            if (sData.Options.ContainsKey(OPTION_TYPE_GENERAL.RAMP_COUNTER))
+            {
+                RampCounter = sData.Options.GetValueOrDefault(OPTION_TYPE_GENERAL.RAMP_COUNTER);
+            }
 
 
 
             for (int i = 0; i < sData.Palettes.Count; i++)
             {
-                SavePalette pal = sData.Palettes[i];
-                RowDefinition r = new()
-                {
-                    Height = new(1, GridUnitType.Auto)
-                };
-                EntryGrid.RowDefinitions.Insert(EntryGrid.Children.Count - 1, r);
-                Grid.SetRow(EntryGrid.Children[^1], EntryGrid.Children.Count);
-                PaletteEditor p = new();
-                p.SetTitle(pal.Name);
-                if (pal.Options.ContainsKey(OPTION_TYPE_PALETTE.SAT_CURVE_MODE))
-                {
-                    p.SatCurveMode = (PaletteEditor.SaturationCurveMode)pal.Options.GetValueOrDefault(OPTION_TYPE_PALETTE.SAT_CURVE_MODE);
-                }
-
-                if (pal.Options.ContainsKey(OPTION_TYPE_PALETTE.IS_MINIMIZED))
-                {
-                    p.IsMinimized = pal.Options.GetValueOrDefault(OPTION_TYPE_PALETTE.IS_MINIMIZED) == 0;
-                }
-
-                Grid.SetRow(p, EntryGrid.Children.Count - 1);
-                Grid.SetColumn(p, 0);
-                EntryGrid.Children.Insert(EntryGrid.Children.Count - 1, p);
-                PaletteEditorList.Add(p);
-                p.ColorCountSlider.Value = pal.ColorCount;
-                p.BaseHueSlider.Value = pal.BaseHue;
-                p.BaseSaturationSlider.Value = pal.BaseSaturation;
-                p.HueShiftSlider.Value = pal.HueShift;
-                p.HueShiftExponentSlider.Value = pal.HueShiftExponent;
-                p.SaturationShiftSlider.Value = pal.SaturationShift;
-                p.SaturationShiftExponentSlider.Value = pal.SaturationShiftExponent;
-                p.ValueRangeSlider.LowerValue = pal.ValueMin;
-                p.ValueRangeSlider.HigherValue = pal.ValueMax;
-                SetPaletteEditorEvents(p);
+                AddNewPaletteEditor(sData.Palettes[i]);
             }
-
 
             for (int i = 0; i < sData.ColorLinks.Count; i++)
             {
@@ -429,10 +437,7 @@ namespace KPal
             }
             if (doNew)
             {
-                ClearEntries();
-                SetSaveFileName(null);
-                UpdatePreviews();
-                SetDataSaved(true);
+                InitNew();
             }
         }
 
@@ -486,7 +491,8 @@ namespace KPal
             Dictionary<OPTION_TYPE_GENERAL, byte> options = new()
             {
                 { OPTION_TYPE_GENERAL.LEFT_VISUALIZER, Convert.ToByte(Visualizers.Item1.Type) },
-                { OPTION_TYPE_GENERAL.RIGHT_VISUALIZER, Convert.ToByte(Visualizers.Item2.Type) }
+                { OPTION_TYPE_GENERAL.RIGHT_VISUALIZER, Convert.ToByte(Visualizers.Item2.Type) },
+                { OPTION_TYPE_GENERAL.RAMP_COUNTER, RampCounter }
             };
             return options;
         }
