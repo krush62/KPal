@@ -22,6 +22,7 @@ namespace KPal
 
         private const string KPAL_FILE_FILTER = "KPal file (*.kpal)|*.kpal";
         private const string KPAL_TITLE = "KPal";
+        private const uint MAX_RAMPS = 255;
 
         public MainWindow()
         {
@@ -83,9 +84,17 @@ namespace KPal
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddNewPaletteEditor();
-            UpdatePreviews();
-            SetDataSaved(false);
+            if (PaletteEditorList.Count < MAX_RAMPS && RampCounter <  MAX_RAMPS)
+            {
+                AddNewPaletteEditor();
+                UpdatePreviews();
+                SetDataSaved(false);
+            }
+            else
+            {
+                _ = MessageBox.Show("Cannot add more color ramps!", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            
         }
 
         private void AddNewPaletteEditor(SaveData.SavePalette? paletteData = null)
@@ -479,7 +488,7 @@ namespace KPal
             if (saveFileDialog.ShowDialog() == true)
             {
                 filterList[saveFileDialog.FilterIndex - 1].Efunction(saveFileDialog.FileName, new SaveData.SaveConversionData(PaletteEditorList, ColorLinkList, CreateSaveOptionList()), out bool success);
-                if (success)
+                if (!success)
                 {
                     _ = MessageBox.Show("Exporting file failed", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
