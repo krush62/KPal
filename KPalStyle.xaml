@@ -33,6 +33,7 @@
     <BitmapImage x:Key="ButtonSatBothNormal" UriSource="pack://application:,,,/buttons/sat_both_normal.png" RenderOptions.BitmapScalingMode="Linear"/>
     <BitmapImage x:Key="ButtonSatBothHover" UriSource="pack://application:,,,/buttons/sat_both_hover.png" RenderOptions.BitmapScalingMode="Linear"/>
     <BitmapImage x:Key="ButtonSatBothPressed" UriSource="pack://application:,,,/buttons/sat_both_pressed.png" RenderOptions.BitmapScalingMode="Linear"/>
+    <BitmapImage x:Key="EditGraphic" UriSource="pack://application:,,,/buttons/edit.png" RenderOptions.BitmapScalingMode="Linear"/>
 
     <sys:Double x:Key="PaletteEditor_DefaultValue_HeightMaximized">250</sys:Double>
     <sys:Double x:Key="PaletteEditor_DefaultValue_HeightMinimized">100</sys:Double>
@@ -74,6 +75,18 @@
     <sys:Double x:Key="ShadingPreview_PixelScaleFactor">1.2</sys:Double>
     <sys:Double x:Key="ShadingPreview_CubeOffsetFactorX">20</sys:Double>
     <sys:Double x:Key="ShadingPreview_CubeOffsetFactorY">20</sys:Double>
+
+    <sys:Double x:Key="PaletteColor_HueShiftMin">-25</sys:Double>
+    <sys:Double x:Key="PaletteColor_HueShiftMax">25</sys:Double>
+    <sys:Double x:Key="PaletteColor_DefaultValue_HueShift">0</sys:Double>
+
+    <sys:Double x:Key="PaletteColor_SatShiftMin">-15</sys:Double>
+    <sys:Double x:Key="PaletteColor_SatShiftMax">15</sys:Double>
+    <sys:Double x:Key="PaletteColor_DefaultValue_SatShift">0</sys:Double>
+
+    <sys:Double x:Key="PaletteColor_ValShiftMin">-15</sys:Double>
+    <sys:Double x:Key="PaletteColor_ValShiftMax">15</sys:Double>
+    <sys:Double x:Key="PaletteColor_DefaultValue_ValShift">0</sys:Double>
 
 
     <Style TargetType="Label">

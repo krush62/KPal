@@ -52,7 +52,21 @@ namespace KPal
             public float SaturationShiftExponent;
             public byte ValueMin;
             public byte ValueMax;
+            public List<SaveHSVShift> HSVShifts;
             public Dictionary<OPTION_TYPE_PALETTE, byte> Options;
+        }
+
+        public struct SaveHSVShift
+        {
+            public SaveHSVShift(sbyte hueShift, sbyte satShift, sbyte valShift)
+            {
+                HueShift = hueShift;
+                SaturationShift = satShift;
+                ValueShift = valShift;
+            }
+            public sbyte HueShift;
+            public sbyte SaturationShift;
+            public sbyte ValueShift;
         }
 
         public struct SaveColorLink
@@ -97,10 +111,17 @@ namespace KPal
                     SaturationShiftExponent = Convert.ToSingle(pEditor.SaturationShiftExponentSlider.Value),
                     ValueMin = Convert.ToByte(pEditor.ValueRangeSlider.LowerValue),
                     ValueMax = Convert.ToByte(pEditor.ValueRangeSlider.HigherValue),
-                    Options = new Dictionary<OPTION_TYPE_PALETTE, byte>()
+                    Options = new Dictionary<OPTION_TYPE_PALETTE, byte>(),
+                    HSVShifts = new List<SaveHSVShift>()
                 };
                 palette.Options.Add(OPTION_TYPE_PALETTE.SAT_CURVE_MODE, Convert.ToByte(pEditor.SatCurveMode));
                 palette.Options.Add(OPTION_TYPE_PALETTE.IS_MINIMIZED, Convert.ToByte(pEditor.IsMinimized ? 0 : 1));
+                foreach (PaletteColor paletteColor in pEditor.PaletteColorList)
+                {
+                    SaveHSVShift shift = new(paletteColor.HueShift, paletteColor.SatShift, paletteColor.ValShift);
+                    palette.HSVShifts.Add(shift);
+                }
+
                 Palettes.Add(palette);
             }
 
@@ -109,9 +130,9 @@ namespace KPal
                 SaveColorLink cLink = new()
                 {
                     SourcePaletteIndex = Convert.ToByte(sData.PaletteEditors.IndexOf(link.Source.Editor)),
-                    SourceColorIndex = Convert.ToByte(link.Source.Editor.GetIndexForColor(link.Source.Color)),
+                    SourceColorIndex = Convert.ToByte(link.Source.Editor.PaletteColorList.IndexOf(link.Source.Color)),
                     TargetPaletteIndex = Convert.ToByte(sData.PaletteEditors.IndexOf(link.Target.Editor)),
-                    TargetColorIndex = Convert.ToByte(link.Target.Editor.GetIndexForColor(link.Target.Color))
+                    TargetColorIndex = Convert.ToByte(link.Target.Editor.PaletteColorList.IndexOf(link.Target.Color))
                 };
                 ColorLinks.Add(cLink);
             }
@@ -151,6 +172,12 @@ namespace KPal
                     writer.Write(palette.SaturationShiftExponent);
                     writer.Write(palette.ValueMin);
                     writer.Write(palette.ValueMax);
+                    foreach (SaveHSVShift shift in palette.HSVShifts)
+                    {
+                        writer.Write(shift.HueShift);
+                        writer.Write(shift.SaturationShift);
+                        writer.Write(shift.ValueShift);
+                    }
                     writer.Write(Convert.ToByte(palette.Options.Count));
                     foreach (KeyValuePair<OPTION_TYPE_PALETTE, byte> option in palette.Options)
                     {
@@ -214,10 +241,20 @@ namespace KPal
                             SaturationShiftExponent = reader.ReadSingle(),
                             ValueMin = reader.ReadByte(),
                             ValueMax = reader.ReadByte(),
-                            Options = new Dictionary<OPTION_TYPE_PALETTE, byte>()
+                            Options = new Dictionary<OPTION_TYPE_PALETTE, byte>(),
+                            HSVShifts = new List<SaveHSVShift>()
                         };
+                        for (int j = 0; j < savePalette.ColorCount; j++)
+                        {
+                            SaveHSVShift saveHSVShift = new()
+                            {
+                                HueShift = reader.ReadSByte(),
+                                SaturationShift = reader.ReadSByte(),
+                                ValueShift = reader.ReadSByte()
+                            };
+                            savePalette.HSVShifts.Add(saveHSVShift);
+                        }
                         byte pOptionsLength = reader.ReadByte();
-
                         for (int j = 0; j < pOptionsLength; j++)
                         {
                             OPTION_TYPE_PALETTE type = (OPTION_TYPE_PALETTE)reader.ReadByte();

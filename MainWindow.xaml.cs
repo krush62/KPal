@@ -8,10 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using static KPal.SaveData;
 
-//TODO GENERAL
-//display color distance for each color in palette (starting from center left and right)?
-//Max ramps allowed?
-
 namespace KPal
 {
     public partial class MainWindow : Window
@@ -24,8 +20,8 @@ namespace KPal
         private bool IsDataSaved;
         private (Visualizer, Visualizer) Visualizers;
 
-        private const string KPAL_FILE_FILTER = "kPal file (*.kpal)|*.kpal";
-        private const string KPAL_TITLE = "kPal";
+        private const string KPAL_FILE_FILTER = "KPal file (*.kpal)|*.kpal";
+        private const string KPAL_TITLE = "KPal";
 
         public MainWindow()
         {
@@ -124,6 +120,12 @@ namespace KPal
                 p.SaturationShiftExponentSlider.Value = paletteData.Value.SaturationShiftExponent;
                 p.ValueRangeSlider.LowerValue = paletteData.Value.ValueMin;
                 p.ValueRangeSlider.HigherValue = paletteData.Value.ValueMax;
+
+                for (int i = 0; i < paletteData.Value.HSVShifts.Count; i++)
+                {
+                    SaveHSVShift shift = paletteData.Value.HSVShifts[i];
+                    p.PaletteColorList[i].SetShift(shift.HueShift, shift.SaturationShift, shift.ValueShift);
+                }
             }
 
             Grid.SetRow(p, EntryGrid.Children.Count - 1);
@@ -189,7 +191,7 @@ namespace KPal
                 {
                     if (link.Source.Editor == sourceEditor)
                     {
-                        HSVColor hsvColor = link.Source.Color.ColorHSV;
+                        HSVColor hsvColor = link.Source.Color.HSVColor;
                         link.Target.Editor.UpdateDependentColor(link.Target.Color, hsvColor);
                     }
                 }
@@ -295,6 +297,7 @@ namespace KPal
                 {
                     Filter = KPAL_FILE_FILTER
                 };
+
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     SetSaveFileName(saveFileDialog.FileName);
@@ -304,8 +307,6 @@ namespace KPal
                     return;
                 }
             }
-
-
 
             SaveData.SaveConversionData scData = new(PaletteEditorList, ColorLinkList, CreateSaveOptionList());
             SaveData sData = new(scData);
@@ -405,9 +406,9 @@ namespace KPal
             for (int i = 0; i < sData.ColorLinks.Count; i++)
             {
                 PaletteEditor sourceEditor = PaletteEditorList[sData.ColorLinks[i].SourcePaletteIndex];
-                PaletteColor sourceColor = sourceEditor.GetColorForIndex(sData.ColorLinks[i].SourceColorIndex);
+                PaletteColor sourceColor = sourceEditor.PaletteColorList[sData.ColorLinks[i].SourceColorIndex];
                 PaletteEditor targetEditor = PaletteEditorList[sData.ColorLinks[i].TargetPaletteIndex];
-                PaletteColor targetColor = targetEditor.GetColorForIndex(sData.ColorLinks[i].TargetColorIndex);
+                PaletteColor targetColor = targetEditor.PaletteColorList[sData.ColorLinks[i].TargetColorIndex];
                 ColorLink cLink = new(sourceEditor, sourceColor, targetEditor, targetColor);
                 PaletteColor.LinkCreatedEventArgs args = new(cLink);
                 targetEditor.PaletteColor_LinkCreated(null, args);
@@ -425,7 +426,6 @@ namespace KPal
             p.ColorHoverOut += PaletteColor_ColorHoverOut;
             p.ColorsUpdated += PaletteEditor_ColorsUpdated;
         }
-
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {

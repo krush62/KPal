@@ -72,12 +72,12 @@ namespace KPal
             List<HSVColor> colorList = new();
             foreach (PaletteEditor editor in saveData.PaletteEditors)
             {
-                for (int i = 0; i < editor.ColorList.Count; i++)
+                for (int i = 0; i < editor.PaletteColorList.Count; i++)
                 {
-                    PaletteColor currentColor = editor.GetColorForIndex(i);
+                    PaletteColor currentColor = editor.PaletteColorList[i];
                     if (!IsDepenedentColor(editor, currentColor, saveData.ColorLinks))
                     {
-                        colorList.Add(currentColor.ColorHSV);
+                        colorList.Add(currentColor.HSVColor);
                     }
                 }
             }
@@ -145,7 +145,7 @@ namespace KPal
                 using StreamWriter sw = new(fileName);
                 sw.WriteLine("GIMP Palette");
                 string dateString = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-                sw.WriteLine("Name: KPAL_" + dateString);
+                sw.WriteLine("Name: KPal_" + dateString);
                 sw.WriteLine("Columns: 16");
                 sw.WriteLine("#");
                 foreach (HSVColor color in colorList)
@@ -172,7 +172,7 @@ namespace KPal
 
                 string dateString = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
 
-                sw.WriteLine("; KPAL_" + dateString);
+                sw.WriteLine("; KPal_" + dateString);
                 int index = 0;
                 foreach (HSVColor color in colorList)
                 {

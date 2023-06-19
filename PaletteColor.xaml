@@ -18,10 +18,50 @@
         <Label FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center" Name="ColorNameLabel" Padding="0">
             <TextBlock TextTrimming="WordEllipsis" Name="ColorNameLabelText" Padding="5">Unknown</TextBlock>
         </Label>
-        <Rectangle Fill="DeepPink" Grid.Column="0" Grid.Row="1" Name="ColorRectangle" MouseMove="ColorRectangle_MouseMove" AllowDrop="True" Drop="ColorRectangle_Drop" DragOver="ColorRectangle_DragOver" MouseEnter="ColorRectangle_MouseEnter" MouseLeave="ColorRectangle_MouseLeave"/>
+        <Grid Grid.Column="0" Grid.Row="1" MouseEnter="ColorRectangle_MouseEnter" MouseLeave="ColorRectangle_MouseLeave">
+            <Rectangle Fill="DeepPink" Name="ColorRectangle" MouseMove="ColorRectangle_MouseMove" AllowDrop="True" Drop="ColorRectangle_Drop" DragOver="ColorRectangle_DragOver" Grid.Row="0" Grid.Column="0"/>
+            <Rectangle Fill="White" Name="OverlayRectangle" Grid.Row="0" Grid.Column="0" Opacity="0.15" Visibility="Collapsed"/>
+            <Grid Name="ControlGrid" Opacity="0.7" Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" FontSize="16" Margin="0,-4,0,0">Hue</Label>
+                <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" FontSize="16" Margin="0,-4,0,0">Sat</Label>
+                <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" FontSize="16" Margin="0,-4,0,0">Val</Label>
+                <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                    <Grid.LayoutTransform>
+                        <RotateTransform Angle="-90"/>
+                    </Grid.LayoutTransform>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Slider Grid.Row="0" Grid.Column="0" Name="HueShiftSlider" Value="{DynamicResource PaletteColor_DefaultValue_HueShift}" Maximum="{DynamicResource PaletteColor_HueShiftMax}"  Minimum="{DynamicResource PaletteColor_HueShiftMin}" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="HueShiftSlider_ValueChanged"/>
+                    <Slider Grid.Row="1" Grid.Column="0" Name="SatShiftSlider" Value="{DynamicResource PaletteColor_DefaultValue_SatShift}" Maximum="{DynamicResource PaletteColor_SatShiftMax}"  Minimum="{DynamicResource PaletteColor_SatShiftMin}" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="SatShiftSlider_ValueChanged"/>
+                    <Slider Grid.Row="2" Grid.Column="0" Name="ValShiftSlider" Value="{DynamicResource PaletteColor_DefaultValue_ValShift}" Maximum="{DynamicResource PaletteColor_ValShiftMax}"  Minimum="{DynamicResource PaletteColor_ValShiftMin}" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="ValShiftSlider_ValueChanged"/>
+                </Grid>
+                <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" FontSize="16" Margin="0,-4,0,0" Content="{Binding ElementName=HueShiftSlider, Path=Value}" MouseDoubleClick="Label_Hue_MouseDoubleClick"/>
+                <Label Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" FontSize="16" Margin="0,-4,0,0" Content="{Binding ElementName=SatShiftSlider, Path=Value}" MouseDoubleClick="Label_Sat_MouseDoubleClick"/>
+                <Label Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" FontSize="16" Margin="0,-4,0,0" Content="{Binding ElementName=ValShiftSlider, Path=Value}" MouseDoubleClick="Label_Val_MouseDoubleClick"/>
+            </Grid>
+        </Grid>
+        
         <Border Grid.Column="0" Grid.Row="1" BorderBrush="White" BorderThickness="2" Name="HighlightBorder" Visibility="Hidden"></Border>
-        <Button Style="{DynamicResource ButtonStyleClose}" Grid.Column="0" Grid.Row="1" Height="15" Width="15" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2" Name="DeleteLinkButton" Click="DeleteLinkButton_Click" Visibility="Hidden"/>
-        <Image Grid.Column="0" Grid.Row="1" Source="{StaticResource LinkGraphic}" Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2" Name="LinkSymbol" Visibility="Hidden"/>
+        <Button Style="{DynamicResource ButtonStyleClose}" Grid.Column="0" Grid.Row="1" Height="15" Width="15" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2" Name="DeleteLinkButton" Click="DeleteLinkButton_Click" Visibility="Hidden" Opacity="0.7" MouseEnter="ColorRectangle_MouseEnter"/>
+        <Image Grid.Column="0" Grid.Row="1" Source="{StaticResource LinkGraphic}" Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2" Name="LinkSymbol" Visibility="Hidden" Opacity="0.7" MouseEnter="ColorRectangle_MouseEnter"/>
+        <Image Grid.Column="0" Grid.Row="1" Source="{StaticResource EditGraphic}" Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="2" Name="EditSymbol" Visibility="Hidden" Opacity="0.7" MouseDown="EditSymbol_MouseDown" MouseEnter="ColorRectangle_MouseEnter"/>
         <Grid Grid.Row="2" Grid.Column="0" Name="LowerDataGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

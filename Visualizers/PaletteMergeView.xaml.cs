@@ -86,8 +86,8 @@ namespace KPal
                                     ancestorFound = colorLinkList.Where(p => p.Source.Editor == rootSource).FirstOrDefault();
                                     if (ancestorFound != null)
                                     {
-                                        int sourceColorIndex = ancestorFound.Source.Editor.GetIndexForColor(ancestorFound.Source.Color);
-                                        int targetColorIndex = ancestorFound.Target.Editor.GetIndexForColor(ancestorFound.Target.Color);
+                                        int sourceColorIndex = ancestorFound.Source.Editor.PaletteColorList.IndexOf(ancestorFound.Source.Color);
+                                        int targetColorIndex = ancestorFound.Target.Editor.PaletteColorList.IndexOf(ancestorFound.Target.Color);
                                         displayList.Add(new PalettePaletteLink(new PaletteLink(sourceColorIndex, targetColorIndex), rootSource));
                                         rootSource = ancestorFound.Target.Editor;
                                     }
@@ -145,7 +145,7 @@ namespace KPal
                     }
                 }
 
-                int max = palettes.Max(x => x.ColorList.Count);
+                int max = palettes.Max(x => x.PaletteColorList.Count);
                 int totalMaxOffsetPlus = max + totalMinOffsetMinus - totalMaxOffsetMinus;
                 ColorGrid.RowDefinitions.Clear();
                 ColorGrid.ColumnDefinitions.Clear();
@@ -188,11 +188,11 @@ namespace KPal
             int drawingOffset = 0;
             for (int i = 0; i < displayList.Count; ++i)
             {
-                for (int j = 0; j < displayList[i].Editor.ColorList.Count; j++)
+                for (int j = 0; j < displayList[i].Editor.PaletteColorList.Count; j++)
                 {
                     Rectangle r = new()
                     {
-                        Fill = new SolidColorBrush(displayList[i].Editor.ColorList[j].GetRGBColor())
+                        Fill = new SolidColorBrush(displayList[i].Editor.PaletteColorList[j].HSVColor.GetRGBColor())
                     };
                     Grid.SetRow(r, j - offsetMinus + drawingOffset);
                     Grid.SetColumn(r, i * 2);

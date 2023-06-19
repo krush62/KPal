@@ -13,7 +13,7 @@ namespace KPal
         public SatValView()
         {
             InitializeComponent();
-            Type = VisualizerType.HueVal;
+            Type = VisualizerType.SatVal;
             Selector.SelectedItem = Type;
             _ = MainGrid.Children.Add(Selector);
         }
@@ -27,9 +27,9 @@ namespace KPal
             int colCounter = 0;
             for (int i = 0; i < editors.Count; i++)
             {
-                for (int j = 0; j < editors[i].ColorList.Count; j++)
+                for (int j = 0; j < editors[i].PaletteColorList.Count; j++)
                 {
-                    HSVColor color = editors[i].ColorList[j];
+                    HSVColor color = editors[i].PaletteColorList[j].HSVColor;
                     double satNorm = Convert.ToDouble(color.Saturation) / Convert.ToDouble(HSVColor.MAX_VALUE_VAL_SAT);
                     double valNorm = Convert.ToDouble(color.Brightness) / Convert.ToDouble(HSVColor.MAX_VALUE_VAL_SAT);
                     ColumnDefinition cd = new()

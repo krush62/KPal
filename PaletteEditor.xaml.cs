@@ -18,7 +18,7 @@ namespace KPal
             HIGHER_AND_LOWER_VALUES = 1
         }
 
-        public List<HSVColor> ColorList { get; private set; }
+        public readonly List<PaletteColor> PaletteColorList;
         public string Title { get; private set; }
         public readonly double minSize, maxSize;
         public event EventHandler? CloseButtonPressed;
@@ -61,12 +61,12 @@ namespace KPal
 
         public PaletteEditor()
         {
+            PaletteColorList = new();
             InitializeComponent();
             SatCurveMode = SaturationCurveMode.HIGHER_AND_LOWER_VALUES;
             Title = "";
             IsControlled = false;
             IsControlling = false;
-            ColorList = new List<HSVColor>();
             isMinimized = true;
             Double? max = TryFindResource("PaletteEditor_DefaultValue_HeightMaximized") as Double?;
             Double? min = TryFindResource("PaletteEditor_DefaultValue_HeightMinimized") as Double?;
@@ -100,22 +100,20 @@ namespace KPal
             SetSliderVisibility();
 
             //Clear all symbols and set link symbols
-            foreach (UIElement uIElement in ColorCenterGrid.Children)
+            foreach (PaletteColor paletteColor in PaletteColorList)
             {
-                if (uIElement is PaletteColor pc)
+                paletteColor.LinkSymbol.Visibility = Visibility.Hidden;
+                paletteColor.SetControlled(false);
+                foreach (ColorLink link in linkList)
                 {
-                    pc.LinkSymbol.Visibility = Visibility.Hidden;
-                    pc.DeleteLinkButton.Visibility = Visibility.Hidden;
-                    foreach (ColorLink link in linkList)
+                    if (link.Target.Color == paletteColor)
                     {
-                        if (link.Target.Color == pc)
-                        {
-                            pc.DeleteLinkButton.Visibility = Visibility.Visible;
-                        }
-                        else if (link.Source.Color == pc)
-                        {
-                            pc.LinkSymbol.Visibility = Visibility.Visible;
-                        }
+                        IsControlled = true;
+                        paletteColor.SetControlled(true);
+                    }
+                    else if (link.Source.Color == paletteColor)
+                    {
+                        paletteColor.LinkSymbol.Visibility = Visibility.Visible;
                     }
                 }
             }
@@ -178,46 +176,50 @@ namespace KPal
 
         private void CreateColorList()
         {
-            if (ColorList != null)
+            
+            int colCount = Convert.ToInt32(ColorCountSlider.Value);
+            PaletteColorList.Clear();
+            ColorCenterGrid.Children.Clear();
+            ColorCenterGrid.ColumnDefinitions.Clear();
+            for (int i = 0; i < colCount; i++)
             {
-                int colCount = Convert.ToInt32(ColorCountSlider.Value);
-                ColorCenterGrid.Children.Clear();
-                ColorCenterGrid.ColumnDefinitions.Clear();
-                ColorList.Clear();
-                for (int i = 0; i < colCount; i++)
+                ColumnDefinition columnDefinition = new()
                 {
-                    ColumnDefinition columnDefinition = new()
-                    {
-                        Width = new GridLength(1, GridUnitType.Star)
-                    };
-                    ColorCenterGrid.ColumnDefinitions.Add(columnDefinition);
-                    PaletteColor pc = new(this);
-                    pc.LinkCreated += PaletteColor_LinkCreated;
-                    pc.LinkDeleted += PaletteColor_LinkDeleted;
-                    pc.ColorHoverIn += PaletteColor_ColorHoverIn;
-                    pc.ColorHoverOut += PaletteColor_ColorHoverOut;
-                    Grid.SetRow(pc, 0);
-                    Grid.SetColumn(pc, Convert.ToInt32(i * 2));
-                    _ = ColorCenterGrid.Children.Add(pc);
-                    ColorList.Add(new HSVColor());
-                    Rectangle separator = new()
-                    {
-                        Fill = new SolidColorBrush(Colors.Black)
-                    };
-                    ColumnDefinition cdSeparator = new()
-                    {
-                        Width = new GridLength(2, GridUnitType.Pixel)
-                    };
-                    ColorCenterGrid.ColumnDefinitions.Add(cdSeparator);
-                    Grid.SetRow(separator, 0);
-                    Grid.SetColumn(separator, Convert.ToInt32(i * 2 + 1));
-                    _ = ColorCenterGrid.Children.Add(separator);
-                }
-                CalculateColors();
-                UpdateColors();
+                    Width = new GridLength(1, GridUnitType.Star)
+                };
+                ColorCenterGrid.ColumnDefinitions.Add(columnDefinition);
+                PaletteColor pc = new(this);
+                pc.LinkCreated += PaletteColor_LinkCreated;
+                pc.LinkDeleted += PaletteColor_LinkDeleted;
+                pc.ColorHoverIn += PaletteColor_ColorHoverIn;
+                pc.ColorHoverOut += PaletteColor_ColorHoverOut;
+                pc.AdjustmentChanged += PaletteColor_AdjustmentChanged;
+                Grid.SetRow(pc, 0);
+                Grid.SetColumn(pc, Convert.ToInt32(i * 2));
+                _ = ColorCenterGrid.Children.Add(pc);
+                PaletteColorList.Add(pc);
+                Rectangle separator = new()
+                {
+                    Fill = new SolidColorBrush(Colors.Black)
+                };
+                ColumnDefinition cdSeparator = new()
+                {
+                    Width = new GridLength(2, GridUnitType.Pixel)
+                };
+                ColorCenterGrid.ColumnDefinitions.Add(cdSeparator);
+                Grid.SetRow(separator, 0);
+                Grid.SetColumn(separator, Convert.ToInt32(i * 2 + 1));
+                _ = ColorCenterGrid.Children.Add(separator);
             }
+            CalculateColors();
+            UpdateColors();
+            
         }
 
+        private void PaletteColor_AdjustmentChanged(object? sender, EventArgs e)
+        {
+            UpdateColors();
+        }
 
         private void PaletteColor_ColorHoverIn(object? sender, EventArgs e)
         {
@@ -254,43 +256,35 @@ namespace KPal
             if (e is PaletteColor.LinkCreatedEventArgs lcEventArgs)
             {
                 LinkCreated?.Invoke(this, lcEventArgs);
-
-                IEnumerable<PaletteColor> paletteColors = ColorCenterGrid.Children.OfType<PaletteColor>();
-                if (ColorList != null && ColorList.Count > 0 && paletteColors.Count() == ColorList.Count)
+                for (int i = 0; i < PaletteColorList.Count; i++)
                 {
-                    for (int i = 0; i < ColorList.Count; ++i)
+                    if (PaletteColorList.ElementAt(i) == lcEventArgs.ColorLink.Target.Color)
                     {
-                        if (paletteColors.ElementAt(i) == lcEventArgs.ColorLink.Target.Color)
-                        {
-                            ValueRangeSlider.LowerValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMin") as double?);
-                            ValueRangeSlider.HigherValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMax") as double?);
-                            DependentColorIndex = i;
-                            ControllerColor = lcEventArgs.ColorLink.Source.Color.ColorHSV;
-                            CalculateColors();
-                            UpdateColors();
-                            break;
-                        }
+                        ValueRangeSlider.LowerValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMin") as double?);
+                        ValueRangeSlider.HigherValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMax") as double?);
+                        DependentColorIndex = i;
+                        ControllerColor = lcEventArgs.ColorLink.Source.Color.HSVColor;
+                        CalculateColors();
+                        UpdateColors();
+                        break;
                     }
                 }
+           
             }
         }
 
-        public void UpdateDependentColor(PaletteColor paletteColor, HSVColor color)
+        public void UpdateDependentColor(PaletteColor searchColor, HSVColor color)
         {
-            if (paletteColor != null)
+            if (searchColor != null)
             {
-                IEnumerable<PaletteColor> paletteColors = ColorCenterGrid.Children.OfType<PaletteColor>();
-                if (ColorList != null && ColorList.Count > 0 && paletteColors.Count() == ColorList.Count)
+                foreach (PaletteColor paletteColor in PaletteColorList)
                 {
-                    for (int i = 0; i < ColorList.Count; ++i)
+                    if (paletteColor == searchColor)
                     {
-                        if (paletteColors.ElementAt(i) == paletteColor)
-                        {
-                            ControllerColor = color;
-                            CalculateColors();
-                            UpdateColors();
-                            break;
-                        }
+                        ControllerColor = color;
+                        CalculateColors();
+                        UpdateColors();
+                        break;
                     }
                 }
             }
@@ -316,45 +310,55 @@ namespace KPal
 
         private void CalculateColors(bool controlledByLowerRangeValue = true)
         {
-            if (ColorList != null &&
-                ValueRangeSlider != null &&
+            if (ValueRangeSlider != null &&
                 BaseHueSlider != null && BaseSaturationSlider != null &&
                 HueShiftSlider != null && SaturationShiftSlider != null &&
                 HueShiftExponentSlider != null && SaturationShiftExponentSlider != null)
             {
                 if (!IsControlled)
                 {
-                    int centerIndex = ColorList.Count / 2;
-                    int valueStepSize = Convert.ToInt32((ValueRangeSlider.HigherValue - ValueRangeSlider.LowerValue) / (ColorList.Count - 1));
+                    int centerIndex = PaletteColorList.Count / 2;
+                    int valueStepSize = Convert.ToInt32((ValueRangeSlider.HigherValue - ValueRangeSlider.LowerValue) / (PaletteColorList.Count - 1));
 
                     //setting central (center) color
-                    ColorList[centerIndex].Hue = Convert.ToInt32(BaseHueSlider.Value);
-                    ColorList[centerIndex].Saturation = Convert.ToInt32(BaseSaturationSlider.Value);
-                    ColorList[centerIndex].Brightness = Convert.ToInt32((ValueRangeSlider.LowerValue + ((ValueRangeSlider.HigherValue - ValueRangeSlider.LowerValue) / 2)));
+                    HSVColor centerColor = new()
+                    {
+                        Hue = Convert.ToInt32(BaseHueSlider.Value),
+                        Saturation = Convert.ToInt32(BaseSaturationSlider.Value),
+                        Brightness = Convert.ToInt32((ValueRangeSlider.LowerValue + ((ValueRangeSlider.HigherValue - ValueRangeSlider.LowerValue) / 2)))
+                    };
+                    PaletteColorList[centerIndex].SetColor(centerColor);
 
                     //setting brighter colors
-                    for (int i = (ColorList.Count / 2 + 1); i < ColorList.Count; i++)
+                    for (int i = (PaletteColorList.Count / 2 + 1); i < PaletteColorList.Count; i++)
                     {
                         double distanceToCenter = Math.Abs(i - centerIndex);
-                        ColorList[i].Hue = ColorList[centerIndex].Hue + Convert.ToInt32(HueShiftExponentSlider.Value * HueShiftSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value));
-                        ColorList[i].Saturation = ColorList[centerIndex].Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value));
-                        ColorList[i].Brightness = ColorList[centerIndex].Brightness + Convert.ToInt32(valueStepSize * distanceToCenter);
+                        HSVColor col = new()
+                        {
+                            Hue = centerColor.Hue + Convert.ToInt32(HueShiftExponentSlider.Value * HueShiftSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value)),
+                            Saturation = centerColor.Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value)),
+                            Brightness = centerColor.Brightness + Convert.ToInt32(valueStepSize * distanceToCenter)
+                        };
+                        PaletteColorList[i].SetColor(col);
                     }
 
                     //setting darker colors
-                    for (int i = (ColorList.Count / 2 - 1); i >= 0; i--)
+                    for (int i = (PaletteColorList.Count / 2 - 1); i >= 0; i--)
                     {
                         double distanceToCenter = Math.Abs(i - centerIndex);
-                        ColorList[i].Hue = ColorList[centerIndex].Hue - Convert.ToInt32(HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value));
+                        HSVColor col = new();
+                        
                         if (SatCurveMode == SaturationCurveMode.HIGHER_AND_LOWER_VALUES)
                         {
-                            ColorList[i].Saturation = ColorList[centerIndex].Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value));
+                            col.Saturation = centerColor.Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value));
                         }
                         else
                         {
-                            ColorList[i].Saturation = ColorList[centerIndex].Saturation;
+                            col.Saturation = centerColor.Saturation;
                         }
-                        ColorList[i].Brightness = ColorList[centerIndex].Brightness - Convert.ToInt32(valueStepSize * distanceToCenter);
+                        col.Hue = centerColor.Hue - Convert.ToInt32(HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value));
+                        col.Brightness = centerColor.Brightness - Convert.ToInt32(valueStepSize * distanceToCenter);
+                        PaletteColorList[i].SetColor(col);
                     }
                 }
                 else if (ControllerColor != null && DependentColorIndex != -1)
@@ -370,7 +374,7 @@ namespace KPal
                     {
                         for (int i = MINIMUM_VALUE; i <= ControllerColor.Brightness; i++)
                         {
-                            double tempMax = (Convert.ToDouble(i) * (Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(ColorList.Count) + 1.0) + (Convert.ToDouble(ColorList.Count) - 1.0) * Convert.ToDouble(ControllerColor.Brightness)) /
+                            double tempMax = (Convert.ToDouble(i) * (Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(PaletteColorList.Count) + 1.0) + (Convert.ToDouble(PaletteColorList.Count) - 1.0) * Convert.ToDouble(ControllerColor.Brightness)) /
                                 Convert.ToDouble(DependentColorIndex);
                             if (tempMax <= MAXIMUM_VALUE && tempMax >= MINIMUM_VALUE && tempMax > max_max)
                             {
@@ -384,12 +388,12 @@ namespace KPal
                     }
 
                     //Calculate Limits for Minimum Value
-                    if (DependentColorIndex + 1 != ColorList.Count)
+                    if (DependentColorIndex + 1 != PaletteColorList.Count)
                     {
                         for (int i = ControllerColor.Brightness; i <= MAXIMUM_VALUE; i++)
                         {
-                            double tempMin = (Convert.ToDouble(i) * Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(ColorList.Count) * Convert.ToDouble(ControllerColor.Brightness) + Convert.ToDouble(ControllerColor.Brightness)) /
-                            (Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(ColorList.Count) + 1.0);
+                            double tempMin = (Convert.ToDouble(i) * Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(PaletteColorList.Count) * Convert.ToDouble(ControllerColor.Brightness) + Convert.ToDouble(ControllerColor.Brightness)) /
+                            (Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(PaletteColorList.Count) + 1.0);
 
                             if (tempMin <= MAXIMUM_VALUE && tempMin >= MINIMUM_VALUE && tempMin < min_min)
                             {
@@ -413,107 +417,106 @@ namespace KPal
                         }
                         if (DependentColorIndex > 0)
                         {
-                            ValueRangeSlider.HigherValue = Convert.ToInt32((ValueRangeSlider.LowerValue * (Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(ColorList.Count) + 1.0) + (Convert.ToDouble(ColorList.Count) - 1.0) * Convert.ToDouble(ControllerColor.Brightness)) /
+                            ValueRangeSlider.HigherValue = Convert.ToInt32((ValueRangeSlider.LowerValue * (Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(PaletteColorList.Count) + 1.0) + (Convert.ToDouble(PaletteColorList.Count) - 1.0) * Convert.ToDouble(ControllerColor.Brightness)) /
                                     Convert.ToDouble(DependentColorIndex));
                         }
                     }
                     else
                     {
-                        if (ValueRangeSlider.HigherValue > max_max || DependentColorIndex == ColorList.Count - 1)
+                        if (ValueRangeSlider.HigherValue > max_max || DependentColorIndex == PaletteColorList.Count - 1)
                         {
                             ValueRangeSlider.HigherValue = max_max;
                         }
-                        if (DependentColorIndex + 1 != ColorList.Count)
+                        if (DependentColorIndex + 1 != PaletteColorList.Count)
                         {
-                            ValueRangeSlider.LowerValue = Convert.ToInt32((Convert.ToDouble(ValueRangeSlider.HigherValue) * Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(ColorList.Count) * Convert.ToDouble(ControllerColor.Brightness) + Convert.ToDouble(ControllerColor.Brightness)) /
-                            (Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(ColorList.Count) + 1.0));
+                            ValueRangeSlider.LowerValue = Convert.ToInt32((Convert.ToDouble(ValueRangeSlider.HigherValue) * Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(PaletteColorList.Count) * Convert.ToDouble(ControllerColor.Brightness) + Convert.ToDouble(ControllerColor.Brightness)) /
+                            (Convert.ToDouble(DependentColorIndex) - Convert.ToDouble(PaletteColorList.Count) + 1.0));
                         }
                     }
 
-                    int centerIndex = ColorList.Count / 2;
-                    int valueStepSize = Convert.ToInt32((ValueRangeSlider.HigherValue - ValueRangeSlider.LowerValue) / (ColorList.Count - 1));
+                    int centerIndex = PaletteColorList.Count / 2;
+                    int valueStepSize = Convert.ToInt32((ValueRangeSlider.HigherValue - ValueRangeSlider.LowerValue) / (PaletteColorList.Count - 1));
 
                     //setting dependent color
-                    ColorList[DependentColorIndex].Hue = ControllerColor.Hue;
-                    ColorList[DependentColorIndex].Saturation = ControllerColor.Saturation;
-                    ColorList[DependentColorIndex].Brightness = ControllerColor.Brightness;
+                    HSVColor depColor = new()
+                    {
+                        Hue = ControllerColor.Hue,
+                        Saturation = ControllerColor.Saturation,
+                        Brightness = ControllerColor.Brightness
+                    };
+                    PaletteColorList[DependentColorIndex].SetColor(depColor);
 
                     //setting center color 
                     double distanceToCenter = Math.Abs(DependentColorIndex - centerIndex);
                     double hueShift = HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value);
                     double satShift = SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value);
+                    HSVColor centerColor = new();
                     if (centerIndex < DependentColorIndex)
                     {
-                        ColorList[centerIndex].Hue = ControllerColor.Hue - Convert.ToInt32(hueShift);
-                        ColorList[centerIndex].Brightness = ControllerColor.Brightness - Convert.ToInt32(distanceToCenter * valueStepSize);
-                        ColorList[centerIndex].Saturation = ControllerColor.Saturation - Convert.ToInt32(satShift);
+                        centerColor.Hue = ControllerColor.Hue - Convert.ToInt32(hueShift);
+                        centerColor.Brightness = ControllerColor.Brightness - Convert.ToInt32(distanceToCenter * valueStepSize);
+                        centerColor.Saturation = ControllerColor.Saturation - Convert.ToInt32(satShift);
                     }
                     else
                     {
-                        ColorList[centerIndex].Hue = Convert.ToInt32(ControllerColor.Hue + hueShift);
-                        ColorList[centerIndex].Brightness = ControllerColor.Brightness + Convert.ToInt32(distanceToCenter * valueStepSize);
+                        centerColor.Hue = Convert.ToInt32(ControllerColor.Hue + hueShift);
+                        centerColor.Brightness = ControllerColor.Brightness + Convert.ToInt32(distanceToCenter * valueStepSize);
                         if (SatCurveMode == SaturationCurveMode.HIGHER_AND_LOWER_VALUES)
                         {
-                            ColorList[centerIndex].Saturation = ControllerColor.Saturation - Convert.ToInt32(satShift);
+                            centerColor.Saturation = ControllerColor.Saturation - Convert.ToInt32(satShift);
                         }
                         else
                         {
-                            ColorList[centerIndex].Saturation = ControllerColor.Saturation;
+                            centerColor.Saturation = ControllerColor.Saturation;
                         }
                     }
-
+                    PaletteColorList[centerIndex].SetColor(centerColor);
 
                     //setting colors
-                    for (int i = 0; i < ColorList.Count; i++)
+                    for (int i = 0; i < PaletteColorList.Count; i++)
                     {
                         if (i != centerIndex && i != DependentColorIndex)
                         {
                             distanceToCenter = Math.Abs(i - centerIndex);
                             hueShift = HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value);
                             satShift = SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value);
+                            HSVColor col = new();
                             if (i < centerIndex)
-                            {
-                                ColorList[i].Hue = ColorList[centerIndex].Hue - Convert.ToInt32(hueShift);
+                            {                                
+                                col.Hue = centerColor.Hue - Convert.ToInt32(hueShift);
                                 if (SatCurveMode == SaturationCurveMode.HIGHER_AND_LOWER_VALUES)
                                 {
-                                    ColorList[i].Saturation = ColorList[centerIndex].Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value));
+                                    col.Saturation = centerColor.Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value));
                                 }
                                 else
                                 {
-                                    ColorList[i].Saturation = ColorList[centerIndex].Saturation;
+                                    col.Saturation = centerColor.Saturation;
                                 }
-                                ColorList[i].Brightness = ColorList[centerIndex].Brightness - Convert.ToInt32(valueStepSize * distanceToCenter);
+                                col.Brightness = centerColor.Brightness - Convert.ToInt32(valueStepSize * distanceToCenter);
                             }
                             else
                             {
-                                ColorList[i].Hue = ColorList[centerIndex].Hue + Convert.ToInt32(hueShift);
-                                ColorList[i].Saturation = ColorList[centerIndex].Saturation + Convert.ToInt32(satShift);
-                                ColorList[i].Brightness = ColorList[centerIndex].Brightness + Convert.ToInt32(valueStepSize * distanceToCenter);
+                                col.Hue = centerColor.Hue + Convert.ToInt32(hueShift);
+                                col.Saturation = centerColor.Saturation + Convert.ToInt32(satShift);
+                                col.Brightness = centerColor.Brightness + Convert.ToInt32(valueStepSize * distanceToCenter);
                             }
+                            PaletteColorList[i].SetColor(col);
                         }
                     }
 
                     //setting inactive sliders
-                    BaseHueSlider.Value = ColorList[centerIndex].Hue;
-                    BaseSaturationSlider.Value = ColorList[centerIndex].Saturation;
+                    BaseHueSlider.Value = centerColor.Hue;
+                    BaseSaturationSlider.Value = centerColor.Saturation;
                 }
             }
         }
         private void UpdateColors()
-        {
-            IEnumerable<PaletteColor> paletteColors = ColorCenterGrid.Children.OfType<PaletteColor>();
-            if (ColorList != null && ColorList.Count > 0 && paletteColors.Count() == ColorList.Count)
+        {            
+            if (IsControlling)
             {
-                for (int i = 0; i < ColorList.Count; ++i)
-                {
-                    paletteColors.ElementAt(i).SetColor(ColorList[i]);
-                }
-                if (IsControlling)
-                {
-                    ControllerColorChanged?.Invoke(this, EventArgs.Empty);
-                }
-                ColorsUpdated?.Invoke(this, EventArgs.Empty);
+                ControllerColorChanged?.Invoke(this, EventArgs.Empty);
             }
+            ColorsUpdated?.Invoke(this, EventArgs.Empty);
         }
 
         private void ValueRangeSlider_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -560,25 +563,11 @@ namespace KPal
 
             isMinimized = !IsMinimized;
 
-            for (int i = 0; i < ColorCenterGrid.Children.Count; ++i)
+            foreach (PaletteColor paletteColor in PaletteColorList)
             {
-                if (ColorCenterGrid.Children[i] is PaletteColor pc)
-                {
-                    pc.SetMinimized(IsMinimized);
-                }
+                paletteColor.SetMinimized(IsMinimized);
             }
-        }
 
-        public PaletteColor GetColorForIndex(int index)
-        {
-            List<PaletteColor> paletteColors = ColorCenterGrid.Children.OfType<PaletteColor>().ToList();
-            return paletteColors[index];
-        }
-
-        public bool ContainsColor(PaletteColor color)
-        {
-            List<PaletteColor> paletteColors = ColorCenterGrid.Children.OfType<PaletteColor>().ToList();
-            return paletteColors.Contains(color);
         }
 
         private void SatStyleButton_Click(object sender, RoutedEventArgs e)
@@ -586,24 +575,6 @@ namespace KPal
             SatCurveMode = SatStyleButton.IsChecked.GetValueOrDefault() ? PaletteEditor.SaturationCurveMode.ONLY_HIGHER_VALUES : PaletteEditor.SaturationCurveMode.HIGHER_AND_LOWER_VALUES;
             CalculateColors();
             UpdateColors();
-        }
-
-        public int GetIndexForColor(PaletteColor color)
-        {
-            int index = -1;
-            IEnumerable<PaletteColor> paletteColors = ColorCenterGrid.Children.OfType<PaletteColor>();
-            if (ColorList != null && ColorList.Count > 0 && paletteColors.Count() == ColorList.Count)
-            {
-                for (int i = 0; i < ColorList.Count; ++i)
-                {
-                    if (paletteColors.ElementAt(i) == color)
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-            return index;
-        }
+        }        
     }
 }

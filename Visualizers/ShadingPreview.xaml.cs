@@ -43,18 +43,18 @@ namespace KPal
 
             for (int i = 0; i < palettes.Count; i++)
             {
-                int colorCount = palettes[i].ColorList.Count;
+                int colorCount = palettes[i].PaletteColorList.Count;
                 List<List<Color>> drawingColors = new();
 
                 if (colorCount == 3)
                 {
                     List<Color> fiveColors = new()
                     {
-                        palettes[i].ColorList[0].GetRGBColor(),
-                        palettes[i].ColorList[0].GetRGBColor(),
-                        palettes[i].ColorList[1].GetRGBColor(),
-                        palettes[i].ColorList[2].GetRGBColor(),
-                        palettes[i].ColorList[2].GetRGBColor()
+                        palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                        palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                        palettes[i].PaletteColorList[1].HSVColor.GetRGBColor(),
+                        palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                        palettes[i].PaletteColorList[2].HSVColor.GetRGBColor()
                     };
                     drawingColors.Add(fiveColors);
                     drawingColors.Add(fiveColors);
@@ -64,11 +64,11 @@ namespace KPal
                 {
                     List<Color> fiveColors = new()
                     {
-                        palettes[i].ColorList[0].GetRGBColor(),
-                        palettes[i].ColorList[1].GetRGBColor(),
-                        palettes[i].ColorList[2].GetRGBColor(),
-                        palettes[i].ColorList[3].GetRGBColor(),
-                        palettes[i].ColorList[4].GetRGBColor()
+                        palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                        palettes[i].PaletteColorList[1].HSVColor.GetRGBColor(),
+                        palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                        palettes[i].PaletteColorList[3].HSVColor.GetRGBColor(),
+                        palettes[i].PaletteColorList[4].HSVColor.GetRGBColor()
                     };
                     drawingColors.Add(fiveColors);
 
@@ -76,21 +76,21 @@ namespace KPal
                     {
                         List<Color> fiveColors2 = new()
                         {
-                            palettes[i].ColorList[0].GetRGBColor(),
-                            palettes[i].ColorList[0].GetRGBColor(),
-                            palettes[i].ColorList[1].GetRGBColor(),
-                            palettes[i].ColorList[2].GetRGBColor(),
-                            palettes[i].ColorList[2].GetRGBColor()
+                            palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[1].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[2].HSVColor.GetRGBColor()
                         };
                         drawingColors.Insert(0, fiveColors2);
 
                         List<Color> fiveColors3 = new()
                         {
-                            palettes[i].ColorList[2].GetRGBColor(),
-                            palettes[i].ColorList[2].GetRGBColor(),
-                            palettes[i].ColorList[3].GetRGBColor(),
-                            palettes[i].ColorList[4].GetRGBColor(),
-                            palettes[i].ColorList[4].GetRGBColor()
+                            palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[3].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[4].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[4].HSVColor.GetRGBColor()
                         };
                         drawingColors.Add(fiveColors3);
                     }
@@ -99,21 +99,21 @@ namespace KPal
                         int centerColorIndex = colorCount / 2;
                         List<Color> fiveColors2 = new()
                         {
-                            palettes[i].ColorList[centerColorIndex - 2].GetRGBColor(),
-                            palettes[i].ColorList[centerColorIndex - 1].GetRGBColor(),
-                            palettes[i].ColorList[centerColorIndex].GetRGBColor(),
-                            palettes[i].ColorList[centerColorIndex + 1].GetRGBColor(),
-                            palettes[i].ColorList[centerColorIndex + 2].GetRGBColor()
+                            palettes[i].PaletteColorList[centerColorIndex - 2].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[centerColorIndex - 1].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[centerColorIndex].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[centerColorIndex + 1].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[centerColorIndex + 2].HSVColor.GetRGBColor()
                         };
                         drawingColors.Add(fiveColors2);
 
                         List<Color> fiveColors3 = new()
                         {
-                            palettes[i].ColorList[colorCount - 5].GetRGBColor(),
-                            palettes[i].ColorList[colorCount - 4].GetRGBColor(),
-                            palettes[i].ColorList[colorCount - 3].GetRGBColor(),
-                            palettes[i].ColorList[colorCount - 2].GetRGBColor(),
-                            palettes[i].ColorList[colorCount - 1].GetRGBColor()
+                            palettes[i].PaletteColorList[colorCount - 5].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[colorCount - 4].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[colorCount - 3].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[colorCount - 2].HSVColor.GetRGBColor(),
+                            palettes[i].PaletteColorList[colorCount - 1].HSVColor.GetRGBColor()
                         };
                         drawingColors.Add(fiveColors3);
                     }

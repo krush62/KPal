@@ -79,13 +79,15 @@ namespace KPal
             List<HSVColor> hSVColors = new();
             foreach (PaletteEditor editor in editors)
             {
-                foreach (HSVColor color in editor.ColorList)
+                foreach (PaletteColor paletteColor in editor.PaletteColorList)
                 {
+                    HSVColor color = paletteColor.HSVColor;
                     if (!hSVColors.Where(c => c.Hue == color.Hue && c.Saturation == color.Saturation && c.Brightness == color.Brightness).Any())
                     {
                         hSVColors.Add(color);
                     }
                 }
+                
             }
             return hSVColors;
         }

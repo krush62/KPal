@@ -7,6 +7,17 @@
     <UseWPF>true</UseWPF>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <StartupObject>KPal.App</StartupObject>
+    <Description>KPal - Advance Pixel Art Palette Generator</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/krush62/KPal.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/krush62/KPal</PackageProjectUrl>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <ApplicationIcon>buttons\icon.ico</ApplicationIcon>
+    <Title>KPal</Title>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -19,13 +30,16 @@
   </Target>
 
   <ItemGroup>
+    <Content Include="buttons\icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="fonts\" />
-    <Folder Include="buttons\" />
     <Resource Include="fonts\Pixel-UniCode.ttf" />
     <Resource Include="buttons\close_hover.png" />
     <Resource Include="buttons\close_normal.png" />
@@ -54,12 +68,49 @@
 	<Resource Include="buttons\sat_both_pressed.png" />
 	<Resource Include="buttons\sat_high_normal.png" />
 	<Resource Include="buttons\sat_high_hover.png" />
-	<Resource Include="buttons\sat_high_pressed.png" />	  
+	<Resource Include="buttons\sat_high_pressed.png" />
+	<Resource Include="buttons\edit.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="buttons\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="colors.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
   
