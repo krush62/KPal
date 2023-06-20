@@ -74,24 +74,6 @@ namespace KPal
             return g;
         }
 
-        private static List<HSVColor> GetUniqueColorsFromPalettes(List<PaletteEditor> editors)
-        {
-            List<HSVColor> hSVColors = new();
-            foreach (PaletteEditor editor in editors)
-            {
-                foreach (PaletteColor paletteColor in editor.PaletteColorList)
-                {
-                    HSVColor color = paletteColor.HSVColor;
-                    if (!hSVColors.Where(c => c.Hue == color.Hue && c.Saturation == color.Saturation && c.Brightness == color.Brightness).Any())
-                    {
-                        hSVColors.Add(color);
-                    }
-                }
-                
-            }
-            return hSVColors;
-        }
-
         private void DrawHueValDiagram(List<PaletteEditor> editors, Canvas canvas)
         {
             canvas.Children.Clear();

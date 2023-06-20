@@ -84,7 +84,7 @@ namespace KPal
             //float delta;
             //(colorName, delta) = ColorNames.Instance.GetColorName(c);
             //ColorNameLabelText.Text = colorName + " [" + delta.ToString("N1") + "]";
-            (ColorName, _) = ColorNames.Instance.GetColorName(c);
+            ColorName = ColorNames.Instance.GetColorName(c);
             ColorNameLabelText.Text = ColorName;
         }
 

@@ -21,8 +21,13 @@ namespace KPal
         public byte B;
     }
 
+    
+
     public struct LabColor
     {
+        public const float AB_MAX_VALUE = 128.0f;
+        public const float L_MAX_VALUE = 100.0f;
+
         public float L, A, B;
 
         public LabColor(float l, float a, float b)
@@ -58,7 +63,7 @@ namespace KPal
         }
 
 
-        public (string, float) GetColorName(System.Windows.Media.Color color)
+        public string GetColorName(System.Windows.Media.Color color)
         {
             string bestName = "Unknown";
             float bestDelta = 100f;
@@ -80,11 +85,11 @@ namespace KPal
                     }
                 }
             }
-            return (bestName, bestDelta);
+            return bestName;
         }
 
 
-        private static LabColor RGB2LAB(byte red, byte green, byte blue)
+        public static LabColor RGB2LAB(byte red, byte green, byte blue)
         {
             float r = Convert.ToSingle(red) / 255.0f, g = Convert.ToSingle(green) / 255.0f, b = Convert.ToSingle(blue) / 255.0f, x, y, z;
             r = (r > 0.04045f) ? Convert.ToSingle(Math.Pow((r + 0.055f) / 1.055f, 2.4f)) : r / 12.92f;
@@ -99,7 +104,7 @@ namespace KPal
             return new LabColor((116f * y) - 16f, 500f * (x - y), 200f * (y - z));
         }
 
-        private static float GetDeltaE(byte redA, byte greenA, byte blueA, byte redB, byte greenB, byte blueB)
+        public static float GetDeltaE(byte redA, byte greenA, byte blueA, byte redB, byte greenB, byte blueB)
         {
             LabColor labA = RGB2LAB(redA, greenA, blueA);
             LabColor labB = RGB2LAB(redB, greenB, blueB);
@@ -110,7 +115,7 @@ namespace KPal
             float c2 = Convert.ToSingle(Math.Sqrt(labB.A * labB.A + labB.B * labB.B));
             float deltaC = c1 - c2;
             float deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
-            deltaH = deltaH < 0 ? 0 : (float)Math.Sqrt(deltaH);
+            deltaH = deltaH < 0 ? 0 : Convert.ToSingle(Math.Sqrt(deltaH));
             float sc = 1.0f + 0.045f * c1;
             float sh = 1.0f + 0.015f * c1;
             float deltaLKlsl = deltaL / (1.0f);

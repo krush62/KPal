@@ -152,7 +152,7 @@ namespace KPal
                 {
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
                     string colorName;
-                    (colorName, _) = ColorNames.Instance.GetColorName(rgbColor);
+                    colorName = ColorNames.Instance.GetColorName(rgbColor);
                     sw.WriteLine(rgbColor.R.ToString() + " " + rgbColor.G.ToString() + " " + rgbColor.B.ToString() + " " + colorName);
                 }
             }
@@ -178,7 +178,7 @@ namespace KPal
                 {
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
                     string colorName;
-                    (colorName, _) = ColorNames.Instance.GetColorName(rgbColor);
+                    colorName = ColorNames.Instance.GetColorName(rgbColor);
                     sw.WriteLine(rgbColor.R.ToString("X2") + rgbColor.G.ToString("X2") + rgbColor.B.ToString("X2") + " ; " + (index++).ToString() + " - " + colorName);
                 }
             }

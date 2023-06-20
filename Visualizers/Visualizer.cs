@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace KPal
@@ -11,7 +12,8 @@ namespace KPal
             ShadingCube = 0,
             PaletteMerge = 1,
             HueVal = 2,
-            SatVal = 3
+            SatVal = 3,
+            LabView
         }
 
         public VisualizerType Type { get; protected set; }
@@ -32,6 +34,24 @@ namespace KPal
             Selector.Visibility = System.Windows.Visibility.Hidden;
         }
 
+        protected static List<HSVColor> GetUniqueColorsFromPalettes(List<PaletteEditor> editors)
+        {
+            List<HSVColor> hSVColors = new();
+            foreach (PaletteEditor editor in editors)
+            {
+                foreach (PaletteColor paletteColor in editor.PaletteColorList)
+                {
+                    HSVColor color = paletteColor.HSVColor;
+                    if (!hSVColors.Where(c => c.Hue == color.Hue && c.Saturation == color.Saturation && c.Brightness == color.Brightness).Any())
+                    {
+                        hSVColors.Add(color);
+                    }
+                }
+
+            }
+            return hSVColors;
+        }
+
         private void Selector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             VisualizerSelectionChanged?.Invoke(this, e);
@@ -46,6 +66,7 @@ namespace KPal
                 Visualizer.VisualizerType.PaletteMerge => new PaletteMergeView(),
                 Visualizer.VisualizerType.HueVal => new HueValView(),
                 Visualizer.VisualizerType.SatVal => new SatValView(),
+                Visualizer.VisualizerType.LabView => new LabView(),
                 _ => new ShadingPreview(),
             };
             return vis;

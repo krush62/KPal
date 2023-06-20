@@ -58,17 +58,10 @@
             </Border>
             <!-- COLORS CENTER -->
             <Grid Grid.Row="0" Grid.Column="1" Background="#999999" Name="ColorCenterGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-            </Grid>
+            </Grid>            
 
             <!-- CONTROLS RIGHT -->
             <Border BorderBrush="Black" BorderThickness="4,0,0,0" Grid.Row="0" Grid.Column="2" Background="#cccccc" Name="BorderRight">

@@ -61,7 +61,7 @@ namespace KPal
 
         public PaletteEditor()
         {
-            PaletteColorList = new();
+            PaletteColorList = new();            
             InitializeComponent();
             SatCurveMode = SaturationCurveMode.HIGHER_AND_LOWER_VALUES;
             Title = "";
@@ -211,6 +211,7 @@ namespace KPal
                 Grid.SetColumn(separator, Convert.ToInt32(i * 2 + 1));
                 _ = ColorCenterGrid.Children.Add(separator);
             }
+           
             CalculateColors();
             UpdateColors();
             
@@ -567,7 +568,6 @@ namespace KPal
             {
                 paletteColor.SetMinimized(IsMinimized);
             }
-
         }
 
         private void SatStyleButton_Click(object sender, RoutedEventArgs e)
@@ -575,6 +575,6 @@ namespace KPal
             SatCurveMode = SatStyleButton.IsChecked.GetValueOrDefault() ? PaletteEditor.SaturationCurveMode.ONLY_HIGHER_VALUES : PaletteEditor.SaturationCurveMode.HIGHER_AND_LOWER_VALUES;
             CalculateColors();
             UpdateColors();
-        }        
+        }
     }
 }

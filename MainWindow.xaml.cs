@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -10,6 +11,9 @@ using static KPal.SaveData;
 
 namespace KPal
 {
+    //TODO
+    //auto scaling for canvas based visualizers    
+    
     public partial class MainWindow : Window
     {
         private byte RampCounter;
@@ -37,6 +41,18 @@ namespace KPal
             PreviewUpdateTimer.Tick += PreviewUpdateTimer_Tick;
             PreviewUpdateTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
             InitNew();
+            Closing += MainWindow_Closing;
+        }
+
+        private void MainWindow_Closing(object? sender, CancelEventArgs e)
+        {
+            bool doClose = true;
+            if (!IsDataSaved)
+            {
+                MessageBoxResult mResult = MessageBox.Show("Discard unsaved changes?", "Do you really want to quit?", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                doClose = (mResult == MessageBoxResult.OK);
+            }
+            e.Cancel = !doClose;
         }
 
         private void InitNew()
