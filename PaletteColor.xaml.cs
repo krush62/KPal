@@ -61,10 +61,9 @@ namespace KPal
 
         public void SetShift(sbyte hShift, sbyte sShift, sbyte vShift)
         {
-            HueShift = hShift;
-            SatShift = sShift;
-            ValShift = vShift;
-            AdjustmentSliderChanged();
+            HueShiftSlider.Value = hShift;
+            SatShiftSlider.Value = sShift;
+            ValShiftSlider.Value = vShift;
         }
 
         private void AddShift()
@@ -80,10 +79,6 @@ namespace KPal
             ColorRectangle.Fill = new SolidColorBrush(c);
             HexValueLabel.Content = "HEX: #" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
             HSVValueLabel.Content = HSVColor.Hue.ToString() + "° | " + HSVColor.Saturation.ToString() + "% | " + HSVColor.Brightness.ToString() + "%";
-            //Code for displaying the delta offset to the named color:
-            //float delta;
-            //(colorName, delta) = ColorNames.Instance.GetColorName(c);
-            //ColorNameLabelText.Text = colorName + " [" + delta.ToString("N1") + "]";
             ColorName = ColorNames.Instance.GetColorName(c);
             ColorNameLabelText.Text = ColorName;
         }

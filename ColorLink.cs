@@ -15,17 +15,20 @@
 
         public ColorLinkPartner Source { get; private set; }
         public ColorLinkPartner Target { get; private set; }
+        public bool KeepBrightnessData { get; private set; }
 
-        public ColorLink(ColorLinkPartner source, ColorLinkPartner target)
+        public ColorLink(ColorLinkPartner source, ColorLinkPartner target, bool keepBrightnessData = false)
         {
+            KeepBrightnessData = keepBrightnessData;
             Source = source;
             Target = target;
         }
 
-        public ColorLink(PaletteEditor sourceEditor, PaletteColor sourceColor, PaletteEditor targetEditor, PaletteColor targetColor)
+        public ColorLink(PaletteEditor sourceEditor, PaletteColor sourceColor, PaletteEditor targetEditor, PaletteColor targetColor, bool keepBrightnessData = false)
         {
             Source = new ColorLinkPartner(sourceEditor, sourceColor);
             Target = new ColorLinkPartner(targetEditor, targetColor);
+            KeepBrightnessData = keepBrightnessData;
         }
 
         public void SetFollower(ColorLinkPartner target)

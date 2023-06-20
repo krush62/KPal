@@ -434,10 +434,11 @@ namespace KPal
                 PaletteColor sourceColor = sourceEditor.PaletteColorList[sData.ColorLinks[i].SourceColorIndex];
                 PaletteEditor targetEditor = PaletteEditorList[sData.ColorLinks[i].TargetPaletteIndex];
                 PaletteColor targetColor = targetEditor.PaletteColorList[sData.ColorLinks[i].TargetColorIndex];
-                ColorLink cLink = new(sourceEditor, sourceColor, targetEditor, targetColor);
+                ColorLink cLink = new(sourceEditor, sourceColor, targetEditor, targetColor, true);
                 PaletteColor.LinkCreatedEventArgs args = new(cLink);
                 targetEditor.PaletteColor_LinkCreated(null, args);
             }
+
             UpdatePreviews();
         }
 

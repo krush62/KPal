@@ -261,8 +261,11 @@ namespace KPal
                 {
                     if (PaletteColorList.ElementAt(i) == lcEventArgs.ColorLink.Target.Color)
                     {
-                        ValueRangeSlider.LowerValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMin") as double?);
-                        ValueRangeSlider.HigherValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMax") as double?);
+                        if (!lcEventArgs.ColorLink.KeepBrightnessData)
+                        {
+                            ValueRangeSlider.LowerValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMin") as double?);
+                            ValueRangeSlider.HigherValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMax") as double?);
+                        }
                         DependentColorIndex = i;
                         ControllerColor = lcEventArgs.ColorLink.Source.Color.HSVColor;
                         CalculateColors();
