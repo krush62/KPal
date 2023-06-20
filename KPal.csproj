@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/krush62/KPal.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/krush62/KPal</PackageProjectUrl>
     <AssemblyVersion>1.2.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <FileVersion>1.2.0.0</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>icon.png</PackageIcon>
     <ApplicationIcon>buttons\icon.ico</ApplicationIcon>
