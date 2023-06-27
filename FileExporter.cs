@@ -79,7 +79,7 @@ namespace KPal
                 new ExportFilter(ExportType.PAINT_NET, "paint.net txt", "txt", WriteTxtFile),
                 new ExportFilter(ExportType.ADOBE, "adobe ase", "ase", WriteColorSwatchFile),
                 new ExportFilter(ExportType.JASC, "jasc pal", "pal", WritePalFile),
-                new ExportFilter(ExportType.JASC, "corel xml", "xml", WriteCorelFile)
+                new ExportFilter(ExportType.COREL, "corel xml", "xml", WriteCorelFile)
             };
             return formats;
         }
