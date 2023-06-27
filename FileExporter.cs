@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace KPal
     {
         //TODO add more export formats
         /*
-        * PAL File JASC *.pal
+        * Corel xml: https://community.coreldraw.com/sdk/w/articles/177/creating-color-palettes
         * HEX *.hex
         * OpenOffice *.soc
         * 
@@ -44,7 +45,9 @@ namespace KPal
             ASEPRITE = 3,
             GIMP = 4,
             PAINT_NET = 5,
-            ADOBE = 6
+            ADOBE = 6,
+            JASC = 7,
+            COREL = 8
         }
 
 
@@ -67,14 +70,16 @@ namespace KPal
         public static List<ExportFilter> GetAvailableFormats()
         {
             List<ExportFilter> formats = new()
-            {                
+            {
                 new ExportFilter(ExportType.PNG_1, "png 1px", "png", WritePNGFile1),
                 new ExportFilter(ExportType.PNG_8, "png 8px", "png", WritePNGFile8),
                 new ExportFilter(ExportType.PNG_32, "png 32px", "png", WritePNGFile32),
                 new ExportFilter(ExportType.ASEPRITE, "aseprite", "aseprite", WriteAsepriteFile),
                 new ExportFilter(ExportType.GIMP, "gimp gpl", "gpl", WriteGplFile),
                 new ExportFilter(ExportType.PAINT_NET, "paint.net txt", "txt", WriteTxtFile),
-                new ExportFilter(ExportType.ADOBE, "adobe ase", "ase", WriteColorSwatchFile)
+                new ExportFilter(ExportType.ADOBE, "adobe ase", "ase", WriteColorSwatchFile),
+                new ExportFilter(ExportType.JASC, "jasc pal", "pal", WritePalFile),
+                new ExportFilter(ExportType.JASC, "corel xml", "xml", WriteCorelFile)
             };
             return formats;
         }
@@ -452,7 +457,7 @@ namespace KPal
                     writer.Write(Convert.ToInt16(0x0100)); //color start
                     writer.Write(BitConverter.GetBytes(Convert.ToInt32(22 + (colorName.Length * 2))).Reverse().ToArray()); //block size
                     writer.Write(BitConverter.GetBytes(Convert.ToUInt16(colorName.Length + 1)).Reverse().ToArray());//string length
-                    
+
                     foreach (char letter in colorName)
                     {
                         if (letter != '-')
@@ -472,6 +477,63 @@ namespace KPal
                 }
             }
             catch (Exception e)
+            {
+                success = false;
+            }
+        }
+
+        private static void WritePalFile(string fileName, SaveData.SaveConversionData saveData, out bool success)
+        {
+            success = true;
+            List<HSVColor> colorList = GetColors(saveData);
+            try
+            {
+                using StreamWriter sw = new(fileName);
+                
+
+                sw.WriteLine("JASC-PAL");
+                sw.WriteLine("0100");
+                sw.WriteLine(colorList.Count.ToString());
+                foreach (HSVColor color in colorList)
+                {
+                    System.Windows.Media.Color rgbColor = color.GetRGBColor();                   
+                    sw.WriteLine(rgbColor.R.ToString() + " " + rgbColor.G.ToString() + " " + rgbColor.B.ToString());
+                }
+            }
+            catch (Exception)
+            {
+                success = false;
+            }
+        }
+
+        private static void WriteCorelFile(string fileName, SaveData.SaveConversionData saveData, out bool success)
+        {
+            success = true;
+            List<HSVColor> colorList = GetColors(saveData);
+            try
+            {
+                using StreamWriter sw = new(fileName);
+
+                sw.WriteLine("<? version = \"1.0\" ?>");
+                string dateString = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+                sw.WriteLine("<palette name=\"\" guid=\"\">");
+                sw.WriteLine("\t<colors>");
+                sw.WriteLine("\t\t<page>");
+                foreach (HSVColor color in colorList)
+                {
+                    System.Windows.Media.Color rgbColor = color.GetRGBColor();
+                    sw.WriteLine("\t\t\t<color cs=\"RGB\" tints=\"" + rgbColor.ScR.ToString(CultureInfo.InvariantCulture) + "," + rgbColor.ScG.ToString(CultureInfo.InvariantCulture) + "," + rgbColor.ScB.ToString(CultureInfo.InvariantCulture) + "\" name=\"" + ColorNames.Instance.GetColorName(rgbColor) +  "\" />");
+                }
+                sw.WriteLine("\t\t</page>");
+                sw.WriteLine("\t</colors>");
+                sw.WriteLine("</palette>");                
+                foreach (HSVColor color in colorList)
+                {
+                    System.Windows.Media.Color rgbColor = color.GetRGBColor();
+                
+                }
+            }
+            catch (Exception)
             {
                 success = false;
             }
