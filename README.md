@@ -6,7 +6,7 @@ KPal is a tool to create color palettes usually for pixel art creation. The gene
 * Customizable curves for hue and saturation for each ramp
 * Linking multiple color ramps to reduce color count and increase palette integrity
 * Multiple palette visualization views for color harmony analysis
-* Export to multiple formats (png, aseprite, gimp, paint.net)
+* Export to multiple formats (png, aseprite, gimp, paint.net, adobe ase)
 * Fine adjustments for each color
 * Selectable saturation shift behavior for darker values
 ## Build
