@@ -332,6 +332,12 @@ namespace KPal
 
         private void SavingTriggered(bool dialogMandatory)
         {
+            if (PaletteEditorList.Count == 0)
+            {
+                _ = MessageBox.Show("Cannot save empy list.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            
             if (SaveFileName == null || dialogMandatory)
             {
                 SaveFileDialog saveFileDialog = new()
@@ -501,6 +507,12 @@ namespace KPal
 
         private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
+            if (PaletteEditorList.Count == 0)
+            {
+                _ = MessageBox.Show("Cannot export empy list.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            //TODO this does not need to be done every time
             List<FileExporter.ExportFilter> filterList = FileExporter.GetAvailableFormats();
             StringBuilder filterBuilder = new();
             for (int i = 0; i < filterList.Count; i++)
