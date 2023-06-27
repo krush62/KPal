@@ -22,6 +22,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
 
 namespace KPal
 {
@@ -30,7 +31,6 @@ namespace KPal
         //TODO add more export formats
         /*
         * PAL File JASC *.pal
-        * Photoshop *.ase
         * HEX *.hex
         * OpenOffice *.soc
         * 
@@ -43,7 +43,8 @@ namespace KPal
             PNG_32 = 2,
             ASEPRITE = 3,
             GIMP = 4,
-            PAINT_NET = 5
+            PAINT_NET = 5,
+            ADOBE = 6
         }
 
 
@@ -66,13 +67,14 @@ namespace KPal
         public static List<ExportFilter> GetAvailableFormats()
         {
             List<ExportFilter> formats = new()
-            {
+            {                
                 new ExportFilter(ExportType.PNG_1, "png 1px", "png", WritePNGFile1),
                 new ExportFilter(ExportType.PNG_8, "png 8px", "png", WritePNGFile8),
-                new ExportFilter(ExportType.PNG_8, "png 32px", "png", WritePNGFile32),
+                new ExportFilter(ExportType.PNG_32, "png 32px", "png", WritePNGFile32),
                 new ExportFilter(ExportType.ASEPRITE, "aseprite", "aseprite", WriteAsepriteFile),
                 new ExportFilter(ExportType.GIMP, "gimp gpl", "gpl", WriteGplFile),
-                new ExportFilter(ExportType.PAINT_NET, "paint.net txt", "txt", WriteTxtFile)
+                new ExportFilter(ExportType.PAINT_NET, "paint.net txt", "txt", WriteTxtFile),
+                new ExportFilter(ExportType.ADOBE, "adobe ase", "ase", WriteColorSwatchFile)
             };
             return formats;
         }
@@ -425,6 +427,51 @@ namespace KPal
                 writer.Write(celSize);
             }
             catch (Exception)
+            {
+                success = false;
+            }
+        }
+
+        private static void WriteColorSwatchFile(string fileName, SaveData.SaveConversionData saveData, out bool success)
+        {
+            success = true;
+            List<HSVColor> colorList = GetColors(saveData);
+            try
+            {
+                using FileStream stream = File.Open(fileName, FileMode.Create);
+                using BinaryWriter writer = new(stream, Encoding.UTF8, false);
+                //HEADER
+                writer.Write(0x46455341); //file signature
+                writer.Write(0x00000100); //version
+                writer.Write(BitConverter.GetBytes(Convert.ToInt32(colorList.Count)).Reverse().ToArray()); //block count
+
+                foreach (HSVColor hSVColor in colorList)
+                {
+                    System.Windows.Media.Color rgbColor = hSVColor.GetRGBColor();
+                    string colorName = ColorNames.Instance.GetColorName(rgbColor);
+                    writer.Write(Convert.ToInt16(0x0100)); //color start
+                    writer.Write(BitConverter.GetBytes(Convert.ToInt32(22 + (colorName.Length * 2))).Reverse().ToArray()); //block size
+                    writer.Write(BitConverter.GetBytes(Convert.ToUInt16(colorName.Length + 1)).Reverse().ToArray());//string length
+                    
+                    foreach (char letter in colorName)
+                    {
+                        if (letter != '-')
+                        {
+                            writer.Write(BitConverter.GetBytes(Convert.ToUInt16(letter)).Reverse().ToArray());
+                        }
+                    }
+                    writer.Write(BitConverter.GetBytes(Convert.ToUInt16(0)).Reverse().ToArray()); //string termination
+                    writer.Write(Convert.ToByte(0x52));//Color model
+                    writer.Write(Convert.ToByte(0x47));
+                    writer.Write(Convert.ToByte(0x42));
+                    writer.Write(Convert.ToByte(0x20));
+                    writer.Write(BitConverter.GetBytes(rgbColor.ScR).Reverse().ToArray());//Color values
+                    writer.Write(BitConverter.GetBytes(rgbColor.ScG).Reverse().ToArray());//Color values
+                    writer.Write(BitConverter.GetBytes(rgbColor.ScB).Reverse().ToArray());//Color values
+                    writer.Write(BitConverter.GetBytes(Convert.ToUInt16(0)).Reverse().ToArray());//Color type
+                }
+            }
+            catch (Exception e)
             {
                 success = false;
             }

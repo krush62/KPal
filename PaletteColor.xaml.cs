@@ -49,7 +49,7 @@ namespace KPal
 
         public HSVColor OriginalColor { get; private set; }
         public HSVColor HSVColor { get; private set; }
-        private string ColorName;
+        public string ColorName { get; private set; }
         private readonly PaletteEditor ParentPalette;
         public event EventHandler? LinkCreated;
         public event EventHandler? LinkDeleted;
