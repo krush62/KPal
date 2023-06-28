@@ -29,14 +29,6 @@ namespace KPal
 {
     internal class FileExporter
     {
-        //TODO add more export formats
-        /*
-        * Corel xml: https://community.coreldraw.com/sdk/w/articles/177/creating-color-palettes
-        * HEX *.hex
-        * OpenOffice *.soc
-        * 
-        */
-
         public enum ExportType
         {
             PNG_1 = 0,
@@ -47,7 +39,8 @@ namespace KPal
             PAINT_NET = 5,
             ADOBE = 6,
             JASC = 7,
-            COREL = 8
+            COREL = 8,
+            SOC = 9
         }
 
 
@@ -79,7 +72,8 @@ namespace KPal
                 new ExportFilter(ExportType.PAINT_NET, "paint.net txt", "txt", WriteTxtFile),
                 new ExportFilter(ExportType.ADOBE, "adobe ase", "ase", WriteColorSwatchFile),
                 new ExportFilter(ExportType.JASC, "jasc pal", "pal", WritePalFile),
-                new ExportFilter(ExportType.COREL, "corel xml", "xml", WriteCorelFile)
+                new ExportFilter(ExportType.COREL, "corel xml", "xml", WriteCorelFile),
+                new ExportFilter(ExportType.SOC, "openoffice soc", "soc", WriteSOCFile)
             };
             return formats;
         }
@@ -489,8 +483,6 @@ namespace KPal
             try
             {
                 using StreamWriter sw = new(fileName);
-                
-
                 sw.WriteLine("JASC-PAL");
                 sw.WriteLine("0100");
                 sw.WriteLine(colorList.Count.ToString());
@@ -513,7 +505,6 @@ namespace KPal
             try
             {
                 using StreamWriter sw = new(fileName);
-
                 sw.WriteLine("<? version = \"1.0\" ?>");
                 string dateString = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
                 sw.WriteLine("<palette name=\"\" guid=\"\">");
@@ -526,12 +517,31 @@ namespace KPal
                 }
                 sw.WriteLine("\t\t</page>");
                 sw.WriteLine("\t</colors>");
-                sw.WriteLine("</palette>");                
+                sw.WriteLine("</palette>");
+            }
+            catch (Exception)
+            {
+                success = false;
+            }
+        }
+
+        private static void WriteSOCFile(string fileName, SaveData.SaveConversionData saveData, out bool success)
+        {
+            success = true;
+            List<HSVColor> colorList = GetColors(saveData);
+            try
+            {
+                using StreamWriter sw = new(fileName);
+                sw.WriteLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                sw.WriteLine("<office:color-table xmlns:office=\"http://openoffice.org/2000/office\" xmlns:style=\"http://openoffice.org/2000/style\" xmlns:text=\"http://openoffice.org/2000/text\" xmlns:table=\"http://openoffice.org/2000/table\" xmlns:draw=\"http://openoffice.org/2000/drawing\" xmlns:fo=\"http://www.w3.org/1999/XSL/Format\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"http://openoffice.org/2000/meta\" xmlns:number=\"http://openoffice.org/2000/datastyle\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns:chart=\"http://openoffice.org/2000/chart\" xmlns:dr3d=\"http://openoffice.org/2000/dr3d\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"http://openoffice.org/2000/form\" xmlns:script=\"http://openoffice.org/2000/script\" xmlns:config=\"http://openoffice.org/2001/config\">");
                 foreach (HSVColor color in colorList)
                 {
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
-                
+                    string colorName = ColorNames.Instance.GetColorName(rgbColor);
+                    string colorHex = rgbColor.R.ToString("X2") + rgbColor.G.ToString("X2") + rgbColor.B.ToString("X2");
+                    sw.WriteLine("\t<draw:color draw:name=\"" + colorName +  "\" draw:color=\"#" + colorHex.ToLower() + "\"/>");
                 }
+                sw.WriteLine("</office:color-table>");
             }
             catch (Exception)
             {
