@@ -28,7 +28,7 @@ using static KPal.SaveData;
 namespace KPal
 {
     //TODO
-    //auto scaling for canvas based visualizers    
+    //auto scaling for canvas based visualizers
     
     public partial class MainWindow : Window
     {
