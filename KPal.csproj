@@ -22,7 +22,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
     <UseWPF>true</UseWPF>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <StartupObject>KPal.App</StartupObject>
-    <Description>KPal - Advance Pixel Art Palette Generator</Description>
+    <Description>KPal - Advanced Pixel Art Palette Generator</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/krush62/KPal.git</RepositoryUrl>
@@ -34,6 +34,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
     <PackageIcon>icon.png</PackageIcon>
     <ApplicationIcon>buttons\icon.ico</ApplicationIcon>
     <Title>KPal</Title>
+	  <Copyright>2023 Andreas Kruschinski</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
