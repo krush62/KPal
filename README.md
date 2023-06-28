@@ -19,11 +19,16 @@ KPal is a tool to create color palettes usually for pixel art creation. The gene
 * Selectable saturation shift behavior for darker values
 ## Build
 KPal is a Visual Studio/C#/WPF project. Open, build and run the solution in Visual Studio.
-## Releases
-You can download a release for Windows from the [releases section](https://github.com/krush62/KPal/releases). This application needs .NET runtime to work.
+## Installation / Releases
+You can download a release for Windows from the [releases section](https://github.com/krush62/KPal/releases).
+No installation is needed. KPal.exe is the application itself, colors.csv contains the list of color names (This file is not mandatory but highly recommended).
+This application needs .NET (Microsoft Windows Deskop Runtime) to work.
 ## Usage Tips
 * To link colors: drag a color from one palette to a color of another palette
 * Save as a different file: a "Save as" functionality is available when using the right mouse button for the save button
 * Reset slider values: double clicking the numeric value representation will reset the corresponding slider
+* To change the visualizer type on the button, hover the visualizer area and select a different visualizer from the drop-down list.
 ## Screenshots
 ![SCREENSHOT](screenshots/screenshot.jpg?raw=true)
+## License
+This project is licensed under GPLv3, for details see the [license file](LICENSE).
