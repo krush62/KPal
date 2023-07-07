@@ -23,7 +23,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using System.Windows.Media;
 
 namespace KPal
 {
@@ -470,7 +469,7 @@ namespace KPal
                     writer.Write(BitConverter.GetBytes(Convert.ToUInt16(0)).Reverse().ToArray());//Color type
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 success = false;
             }
@@ -488,7 +487,7 @@ namespace KPal
                 sw.WriteLine(colorList.Count.ToString());
                 foreach (HSVColor color in colorList)
                 {
-                    System.Windows.Media.Color rgbColor = color.GetRGBColor();                   
+                    System.Windows.Media.Color rgbColor = color.GetRGBColor();
                     sw.WriteLine(rgbColor.R.ToString() + " " + rgbColor.G.ToString() + " " + rgbColor.B.ToString());
                 }
             }
@@ -513,7 +512,7 @@ namespace KPal
                 foreach (HSVColor color in colorList)
                 {
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
-                    sw.WriteLine("\t\t\t<color cs=\"RGB\" tints=\"" + rgbColor.ScR.ToString(CultureInfo.InvariantCulture) + "," + rgbColor.ScG.ToString(CultureInfo.InvariantCulture) + "," + rgbColor.ScB.ToString(CultureInfo.InvariantCulture) + "\" name=\"" + ColorNames.Instance.GetColorName(rgbColor) +  "\" />");
+                    sw.WriteLine("\t\t\t<color cs=\"RGB\" tints=\"" + rgbColor.ScR.ToString(CultureInfo.InvariantCulture) + "," + rgbColor.ScG.ToString(CultureInfo.InvariantCulture) + "," + rgbColor.ScB.ToString(CultureInfo.InvariantCulture) + "\" name=\"" + ColorNames.Instance.GetColorName(rgbColor) + "\" />");
                 }
                 sw.WriteLine("\t\t</page>");
                 sw.WriteLine("\t</colors>");
@@ -539,7 +538,7 @@ namespace KPal
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
                     string colorName = ColorNames.Instance.GetColorName(rgbColor);
                     string colorHex = rgbColor.R.ToString("X2") + rgbColor.G.ToString("X2") + rgbColor.B.ToString("X2");
-                    sw.WriteLine("\t<draw:color draw:name=\"" + colorName +  "\" draw:color=\"#" + colorHex.ToLower() + "\"/>");
+                    sw.WriteLine("\t<draw:color draw:name=\"" + colorName + "\" draw:color=\"#" + colorHex.ToLower() + "\"/>");
                 }
                 sw.WriteLine("</office:color-table>");
             }

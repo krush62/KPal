@@ -37,7 +37,7 @@ namespace KPal
         public byte B;
     }
 
-    
+
 
     public struct LabColor
     {

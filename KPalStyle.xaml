@@ -87,11 +87,6 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
     <sys:Double x:Key="PaletteEditor_DefaultValue_ValueMin">15</sys:Double>
     <sys:Double x:Key="PaletteEditor_DefaultValue_ValueMax">95</sys:Double>
 
-    <sys:Double x:Key="ShadingPreview_PixelSize">2</sys:Double>
-    <sys:Double x:Key="ShadingPreview_PixelScaleFactor">1.2</sys:Double>
-    <sys:Double x:Key="ShadingPreview_CubeOffsetFactorX">20</sys:Double>
-    <sys:Double x:Key="ShadingPreview_CubeOffsetFactorY">20</sys:Double>
-
     <sys:Double x:Key="PaletteColor_HueShiftMin">-25</sys:Double>
     <sys:Double x:Key="PaletteColor_HueShiftMax">25</sys:Double>
     <sys:Double x:Key="PaletteColor_DefaultValue_HueShift">0</sys:Double>

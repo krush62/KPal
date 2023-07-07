@@ -77,7 +77,7 @@ namespace KPal
 
         public PaletteEditor()
         {
-            PaletteColorList = new();            
+            PaletteColorList = new();
             InitializeComponent();
             SatCurveMode = SaturationCurveMode.HIGHER_AND_LOWER_VALUES;
             Title = "";
@@ -192,7 +192,7 @@ namespace KPal
 
         private void CreateColorList()
         {
-            
+
             int colCount = Convert.ToInt32(ColorCountSlider.Value);
             PaletteColorList.Clear();
             ColorCenterGrid.Children.Clear();
@@ -227,10 +227,10 @@ namespace KPal
                 Grid.SetColumn(separator, Convert.ToInt32(i * 2 + 1));
                 _ = ColorCenterGrid.Children.Add(separator);
             }
-           
+
             CalculateColors();
             UpdateColors();
-            
+
         }
 
         private void PaletteColor_AdjustmentChanged(object? sender, EventArgs e)
@@ -289,7 +289,7 @@ namespace KPal
                         break;
                     }
                 }
-           
+
             }
         }
 
@@ -367,7 +367,7 @@ namespace KPal
                     {
                         double distanceToCenter = Math.Abs(i - centerIndex);
                         HSVColor col = new();
-                        
+
                         if (SatCurveMode == SaturationCurveMode.HIGHER_AND_LOWER_VALUES)
                         {
                             col.Saturation = centerColor.Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value));
@@ -502,7 +502,7 @@ namespace KPal
                             satShift = SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value);
                             HSVColor col = new();
                             if (i < centerIndex)
-                            {                                
+                            {
                                 col.Hue = centerColor.Hue - Convert.ToInt32(hueShift);
                                 if (SatCurveMode == SaturationCurveMode.HIGHER_AND_LOWER_VALUES)
                                 {
@@ -531,7 +531,7 @@ namespace KPal
             }
         }
         private void UpdateColors()
-        {            
+        {
             if (IsControlling)
             {
                 ControllerColorChanged?.Invoke(this, EventArgs.Empty);

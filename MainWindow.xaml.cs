@@ -22,6 +22,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using static KPal.SaveData;
 
@@ -29,7 +30,7 @@ namespace KPal
 {
     //TODO
     //auto scaling for canvas based visualizers
-    
+
     public partial class MainWindow : Window
     {
         private byte RampCounter;
@@ -41,6 +42,8 @@ namespace KPal
         private (Visualizer, Visualizer) Visualizers;
 
         private const string KPAL_FILE_FILTER = "KPal file (*.kpal)|*.kpal";
+        private readonly string EXPORT_FILTER;
+        private readonly List<FileExporter.ExportFilter> EXPORT_FILTER_LIST;
         private const string KPAL_TITLE = "KPal";
         private const uint MAX_RAMPS = 255;
 
@@ -56,6 +59,8 @@ namespace KPal
             PreviewUpdateTimer = new DispatcherTimer();
             PreviewUpdateTimer.Tick += PreviewUpdateTimer_Tick;
             PreviewUpdateTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+            EXPORT_FILTER_LIST = FileExporter.GetAvailableFormats();
+            EXPORT_FILTER = CreateExportFilter(EXPORT_FILTER_LIST);
             InitNew();
             Closing += MainWindow_Closing;
         }
@@ -116,7 +121,7 @@ namespace KPal
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            if (PaletteEditorList.Count < MAX_RAMPS && RampCounter <  MAX_RAMPS)
+            if (PaletteEditorList.Count < MAX_RAMPS && RampCounter < MAX_RAMPS)
             {
                 AddNewPaletteEditor();
                 UpdatePreviews();
@@ -126,12 +131,12 @@ namespace KPal
             {
                 _ = MessageBox.Show("Cannot add more color ramps!", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
-            
+
         }
 
         private void AddNewPaletteEditor(SaveData.SavePalette? paletteData = null)
         {
-            
+
             RowDefinition r = new()
             {
                 Height = new(1, GridUnitType.Auto)
@@ -141,7 +146,7 @@ namespace KPal
             PaletteEditor p = new();
 
             if (paletteData != null)
-            {   
+            {
                 p.SetTitle(paletteData.Value.Name);
                 if (paletteData.Value.Options.ContainsKey(OPTION_TYPE_PALETTE.SAT_CURVE_MODE))
                 {
@@ -151,7 +156,7 @@ namespace KPal
                 if (paletteData.Value.Options.ContainsKey(OPTION_TYPE_PALETTE.IS_MINIMIZED))
                 {
                     p.IsMinimized = paletteData.Value.Options.GetValueOrDefault(OPTION_TYPE_PALETTE.IS_MINIMIZED) == 0;
-                }                
+                }
                 p.ColorCountSlider.Value = paletteData.Value.ColorCount;
                 p.BaseHueSlider.Value = paletteData.Value.BaseHue;
                 p.BaseSaturationSlider.Value = paletteData.Value.BaseSaturation;
@@ -337,7 +342,7 @@ namespace KPal
                 _ = MessageBox.Show("Cannot save empy list.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            
+
             if (SaveFileName == null || dialogMandatory)
             {
                 SaveFileDialog saveFileDialog = new()
@@ -387,6 +392,8 @@ namespace KPal
                 };
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    Cursor oldCursor = Mouse.OverrideCursor;
+                    Mouse.OverrideCursor = Cursors.Wait;
                     SaveData sData = new(openFileDialog.FileName, out bool success);
                     if (!success)
                     {
@@ -398,6 +405,7 @@ namespace KPal
                         SetSaveFileName(openFileDialog.FileName);
                         SetDataSaved(true);
                     }
+                    Mouse.OverrideCursor = oldCursor;
                 }
             }
         }
@@ -505,15 +513,8 @@ namespace KPal
             ColorLinkList.Clear();
         }
 
-        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        private static string CreateExportFilter(List<FileExporter.ExportFilter> filterList)
         {
-            if (PaletteEditorList.Count == 0)
-            {
-                _ = MessageBox.Show("Cannot export empy list.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            //TODO this does not need to be done every time
-            List<FileExporter.ExportFilter> filterList = FileExporter.GetAvailableFormats();
             StringBuilder filterBuilder = new();
             for (int i = 0; i < filterList.Count; i++)
             {
@@ -525,14 +526,24 @@ namespace KPal
                 _ = filterBuilder.Append("|*.");
                 _ = filterBuilder.Append(filterList[i].Extension);
             }
+            return filterBuilder.ToString();
+        }
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (PaletteEditorList.Count == 0)
+            {
+                _ = MessageBox.Show("Cannot export empy list.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             SaveFileDialog saveFileDialog = new()
             {
-                Filter = filterBuilder.ToString()
+                Filter = EXPORT_FILTER
             };
             if (saveFileDialog.ShowDialog() == true)
             {
-                filterList[saveFileDialog.FilterIndex - 1].Efunction(saveFileDialog.FileName, new SaveData.SaveConversionData(PaletteEditorList, ColorLinkList, CreateSaveOptionList()), out bool success);
+                EXPORT_FILTER_LIST[saveFileDialog.FilterIndex - 1].Efunction(saveFileDialog.FileName, new SaveData.SaveConversionData(PaletteEditorList, ColorLinkList, CreateSaveOptionList()), out bool success);
                 if (!success)
                 {
                     _ = MessageBox.Show("Exporting file failed", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);

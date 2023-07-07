@@ -1,0 +1,42 @@
+﻿<!--    
+This file is part of the KPal distribution (https://github.com/krush62/KPal).
+Copyright (c) 2023 Andreas Kruschinski.
+
+This program is free software: you can redistribute it and/or modify  
+it under the terms of the GNU General Public License as published by  
+the Free Software Foundation, version 3.
+
+This program is distributed in the hope that it will be useful, but 
+WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+General Public License for more details.
+You should have received a copy of the GNU General Public License 
+long with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<local:Visualizer x:Class="KPal.VoronoiView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KPal"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="5" Name="MainGrid" MouseEnter="MainGrid_MouseEnter" MouseLeave="MainGrid_MouseLeave">
+        <Grid Grid.Row="0" Grid.Column="0" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>            
+            <Canvas Grid.Row="0" Grid.Column="0" Name="Canvas1" VerticalAlignment="Center" HorizontalAlignment="Center"></Canvas>
+            <Label Content="Hue-Sat" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="32" Name="Label1" Visibility="Hidden"></Label>
+            <Canvas Grid.Row="0" Grid.Column="1" Name="Canvas2" VerticalAlignment="Center" HorizontalAlignment="Center"></Canvas>
+            <Label Content="Hue-Val" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="32" Name="Label2" Visibility="Hidden"></Label>
+            <Canvas Grid.Row="0" Grid.Column="2" Name="Canvas3" VerticalAlignment="Center" HorizontalAlignment="Center"></Canvas>
+            <Label Content="Sat-Val" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="32" Name="Label3" Visibility="Hidden"></Label>
+        </Grid>
+    </Grid>
+</local:Visualizer>

@@ -29,12 +29,15 @@ namespace KPal
             PaletteMerge = 1,
             HueVal = 2,
             SatVal = 3,
-            LabView
+            LabView = 4,
+            Voronoi = 5
         }
 
         public VisualizerType Type { get; protected set; }
         public event EventHandler? VisualizerSelectionChanged;
         protected ComboBox Selector;
+        protected List<PaletteEditor>? Editors;
+        protected List<ColorLink>? Links;
 
         public Visualizer()
         {
@@ -48,7 +51,18 @@ namespace KPal
             Selector.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             Selector.SelectionChanged += Selector_SelectionChanged;
             Selector.Visibility = System.Windows.Visibility.Hidden;
+            SizeChanged += Visualizer_SizeChanged;
         }
+
+        private void Visualizer_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+        {
+            if (Editors != null && Links != null)
+            {
+                UpdateSize(ActualWidth, ActualHeight);
+            }
+        }
+
+        protected abstract void UpdateSize(double width, double height);
 
         protected static List<HSVColor> GetUniqueColorsFromPalettes(List<PaletteEditor> editors)
         {
@@ -73,7 +87,14 @@ namespace KPal
             VisualizerSelectionChanged?.Invoke(this, e);
         }
 
-        public abstract void Update(List<PaletteEditor> editors, List<ColorLink> links);
+        public void Update(List<PaletteEditor> editors, List<ColorLink> links)
+        {
+            Editors = editors;
+            Links = links;
+            Update();
+        }
+
+        public abstract void Update();
 
         public static Visualizer GetVisualizerForType(VisualizerType type)
         {
@@ -83,6 +104,7 @@ namespace KPal
                 Visualizer.VisualizerType.HueVal => new HueValView(),
                 Visualizer.VisualizerType.SatVal => new SatValView(),
                 Visualizer.VisualizerType.LabView => new LabView(),
+                Visualizer.VisualizerType.Voronoi => new VoronoiView(),
                 _ => new ShadingPreview(),
             };
             return vis;

@@ -24,6 +24,7 @@ namespace KPal
 {
     public partial class ShadingPreview : Visualizer
     {
+        private const int CUBE_COUNT = 3;
         private static readonly int[,] CUBE_POINTS_0 = { { 8, 0 }, { 6, 1 }, { 7, 1 }, { 9, 1 }, { 10, 1 }, { 4, 2 }, { 5, 2 }, { 11, 2 }, { 12, 2 }, { 2, 3 }, { 3, 3 }, { 13, 3 }, { 14, 3 }, { 1, 4 }, { 15, 4 }, { 0, 5 }, { 0, 6 }, { 0, 7 }, { 0, 8 }, { 0, 9 }, { 0, 10 }, { 0, 11 }, { 0, 12 }, { 0, 13 }, { 16, 5 }, { 16, 6 }, { 16, 7 }, { 16, 8 }, { 16, 9 }, { 16, 10 }, { 16, 11 }, { 16, 12 }, { 16, 13 }, { 1, 14 }, { 15, 14 }, { 2, 15 }, { 3, 15 }, { 13, 15 }, { 14, 15 }, { 4, 16 }, { 5, 16 }, { 11, 16 }, { 12, 16 }, { 6, 17 }, { 7, 17 }, { 9, 17 }, { 10, 17 }, { 8, 18 } };
         private static readonly int[,] CUBE_POINTS_1 = { { 1, 6 }, { 1, 7 }, { 2, 7 }, { 3, 7 }, { 1, 8 }, { 2, 8 }, { 3, 8 }, { 4, 8 }, { 5, 8 }, { 1, 9 }, { 2, 9 }, { 3, 9 }, { 4, 9 }, { 5, 9 }, { 6, 9 }, { 7, 9 }, { 1, 10 }, { 2, 10 }, { 3, 10 }, { 4, 10 }, { 5, 10 }, { 6, 10 }, { 7, 10 }, { 1, 11 }, { 2, 11 }, { 3, 11 }, { 4, 11 }, { 5, 11 }, { 6, 11 }, { 7, 11 }, { 1, 12 }, { 2, 12 }, { 3, 12 }, { 4, 12 }, { 5, 12 }, { 6, 12 }, { 7, 12 }, { 1, 13 }, { 2, 13 }, { 3, 13 }, { 4, 13 }, { 5, 13 }, { 6, 13 }, { 7, 13 }, { 2, 14 }, { 3, 14 }, { 4, 14 }, { 5, 14 }, { 6, 14 }, { 7, 14 }, { 4, 15 }, { 5, 15 }, { 6, 15 }, { 7, 15 }, { 6, 16 }, { 7, 16 } };
         private static readonly int[,] CUBE_POINTS_2 = { { 15, 6 }, { 13, 7 }, { 14, 7 }, { 15, 7 }, { 11, 8 }, { 12, 8 }, { 13, 8 }, { 14, 8 }, { 15, 8 }, { 9, 9 }, { 10, 9 }, { 11, 9 }, { 12, 9 }, { 13, 9 }, { 14, 9 }, { 15, 9 }, { 9, 10 }, { 10, 10 }, { 11, 10 }, { 12, 10 }, { 13, 10 }, { 14, 10 }, { 15, 10 }, { 9, 11 }, { 10, 11 }, { 11, 11 }, { 12, 11 }, { 13, 11 }, { 14, 11 }, { 15, 11 }, { 9, 12 }, { 10, 12 }, { 11, 12 }, { 12, 12 }, { 13, 12 }, { 14, 12 }, { 15, 12 }, { 9, 13 }, { 10, 13 }, { 11, 13 }, { 12, 13 }, { 13, 13 }, { 14, 13 }, { 15, 13 }, { 9, 14 }, { 10, 14 }, { 11, 14 }, { 12, 14 }, { 13, 14 }, { 14, 14 }, { 9, 15 }, { 10, 15 }, { 11, 15 }, { 12, 15 }, { 9, 16 }, { 10, 16 } };
@@ -31,10 +32,10 @@ namespace KPal
         private static readonly int[,] CUBE_POINTS_4 = { { 1, 5 }, { 15, 5 }, { 2, 6 }, { 3, 6 }, { 13, 6 }, { 14, 6 }, { 4, 7 }, { 5, 7 }, { 11, 7 }, { 12, 7 }, { 6, 8 }, { 7, 8 }, { 9, 8 }, { 10, 8 }, { 8, 9 }, { 8, 10 }, { 8, 11 }, { 8, 12 }, { 8, 13 }, { 8, 14 }, { 8, 15 }, { 8, 16 }, { 8, 17 } };
 
         private static readonly List<int[,]> POINT_LIST = new();
-        private readonly double PIXEL_SIZE;
-        private readonly double PIXEL_SCALE_FACTOR;
-        private readonly int OFFSET_V;
-        private readonly int OFFSET_H;
+        private const double PIXEL_SCALE_FACTOR = 1.2;
+        private double PixelSize;
+        private int OffsetVertical;
+        private int OffsetHorizontal;
 
         public ShadingPreview()
         {
@@ -44,99 +45,106 @@ namespace KPal
             POINT_LIST.Add(CUBE_POINTS_2);
             POINT_LIST.Add(CUBE_POINTS_3);
             POINT_LIST.Add(CUBE_POINTS_4);
-            PIXEL_SIZE = Convert.ToDouble(base.TryFindResource("ShadingPreview_PixelSize") as double?);
-            PIXEL_SCALE_FACTOR = Convert.ToDouble(base.TryFindResource("ShadingPreview_PixelScaleFactor") as double?);
-            OFFSET_V = Convert.ToInt32(base.TryFindResource("ShadingPreview_CubeOffsetFactorY") as double?) * Convert.ToInt32(PIXEL_SIZE);
-            OFFSET_H = Convert.ToInt32(base.TryFindResource("ShadingPreview_CubeOffsetFactorX") as double?) * Convert.ToInt32(PIXEL_SIZE);
+            CalculateScaling(120);
             Type = VisualizerType.ShadingCube;
             Selector.SelectedItem = Type;
             _ = MainGrid.Children.Add(Selector);
         }
 
-        public override void Update(List<PaletteEditor> palettes, List<ColorLink> links)
+        private void CalculateScaling(double size)
+        {
+            PixelSize = size / 60;
+            OffsetVertical = Convert.ToInt32(size / CUBE_COUNT);
+            OffsetHorizontal = Convert.ToInt32(size / CUBE_COUNT);
+        }
+
+
+        public override void Update()
         {
             MainCanvas.Children.Clear();
-
-            for (int i = 0; i < palettes.Count; i++)
+            if (Editors != null)
             {
-                int colorCount = palettes[i].PaletteColorList.Count;
-                List<List<Color>> drawingColors = new();
-
-                if (colorCount == 3)
+                for (int i = 0; i < Editors.Count; i++)
                 {
-                    List<Color> fiveColors = new()
-                    {
-                        palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
-                        palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
-                        palettes[i].PaletteColorList[1].HSVColor.GetRGBColor(),
-                        palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
-                        palettes[i].PaletteColorList[2].HSVColor.GetRGBColor()
-                    };
-                    drawingColors.Add(fiveColors);
-                    drawingColors.Add(fiveColors);
-                    drawingColors.Add(fiveColors);
-                }
-                else if (colorCount >= 5)
-                {
-                    List<Color> fiveColors = new()
-                    {
-                        palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
-                        palettes[i].PaletteColorList[1].HSVColor.GetRGBColor(),
-                        palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
-                        palettes[i].PaletteColorList[3].HSVColor.GetRGBColor(),
-                        palettes[i].PaletteColorList[4].HSVColor.GetRGBColor()
-                    };
-                    drawingColors.Add(fiveColors);
+                    int colorCount = Editors[i].PaletteColorList.Count;
+                    List<List<Color>> drawingColors = new();
 
-                    if (colorCount == 5)
+                    if (colorCount == 3)
                     {
-                        List<Color> fiveColors2 = new()
+                        List<Color> fiveColors = new()
                         {
-                            palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[0].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[1].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[2].HSVColor.GetRGBColor()
+                            Editors[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[1].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[2].HSVColor.GetRGBColor()
                         };
-                        drawingColors.Insert(0, fiveColors2);
-
-                        List<Color> fiveColors3 = new()
-                        {
-                            palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[2].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[3].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[4].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[4].HSVColor.GetRGBColor()
-                        };
-                        drawingColors.Add(fiveColors3);
+                        drawingColors.Add(fiveColors);
+                        drawingColors.Add(fiveColors);
+                        drawingColors.Add(fiveColors);
                     }
-                    else
+                    else if (colorCount >= 5)
                     {
-                        int centerColorIndex = colorCount / 2;
-                        List<Color> fiveColors2 = new()
+                        List<Color> fiveColors = new()
                         {
-                            palettes[i].PaletteColorList[centerColorIndex - 2].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[centerColorIndex - 1].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[centerColorIndex].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[centerColorIndex + 1].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[centerColorIndex + 2].HSVColor.GetRGBColor()
+                            Editors[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[1].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[3].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[4].HSVColor.GetRGBColor()
                         };
-                        drawingColors.Add(fiveColors2);
+                        drawingColors.Add(fiveColors);
 
-                        List<Color> fiveColors3 = new()
+                        if (colorCount == 5)
                         {
-                            palettes[i].PaletteColorList[colorCount - 5].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[colorCount - 4].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[colorCount - 3].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[colorCount - 2].HSVColor.GetRGBColor(),
-                            palettes[i].PaletteColorList[colorCount - 1].HSVColor.GetRGBColor()
-                        };
-                        drawingColors.Add(fiveColors3);
+                            List<Color> fiveColors2 = new()
+                            {
+                                Editors[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[1].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[2].HSVColor.GetRGBColor()
+                            };
+                            drawingColors.Insert(0, fiveColors2);
+
+                            List<Color> fiveColors3 = new()
+                            {
+                                Editors[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[3].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[4].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[4].HSVColor.GetRGBColor()
+                            };
+                            drawingColors.Add(fiveColors3);
+                        }
+                        else
+                        {
+                            int centerColorIndex = colorCount / 2;
+                            List<Color> fiveColors2 = new()
+                            {
+                                Editors[i].PaletteColorList[centerColorIndex - 2].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[centerColorIndex - 1].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[centerColorIndex].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[centerColorIndex + 1].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[centerColorIndex + 2].HSVColor.GetRGBColor()
+                            };
+                            drawingColors.Add(fiveColors2);
+
+                            List<Color> fiveColors3 = new()
+                            {
+                                Editors[i].PaletteColorList[colorCount - 5].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[colorCount - 4].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[colorCount - 3].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[colorCount - 2].HSVColor.GetRGBColor(),
+                                Editors[i].PaletteColorList[colorCount - 1].HSVColor.GetRGBColor()
+                            };
+                            drawingColors.Add(fiveColors3);
+                        }
                     }
-                }
-                for (int j = 0; j < drawingColors.Count; j++)
-                {
-                    DrawCube(OFFSET_H * i, OFFSET_V * j, drawingColors[j]);
+                    for (int j = 0; j < drawingColors.Count; j++)
+                    {
+                        DrawCube(OffsetHorizontal * i, OffsetVertical * j, drawingColors[j]);
+                    }
                 }
             }
         }
@@ -152,14 +160,27 @@ namespace KPal
                     Rectangle r = new()
                     {
                         Fill = new SolidColorBrush(fiveColors[i]),
-                        Width = PIXEL_SIZE * PIXEL_SCALE_FACTOR,
-                        Height = PIXEL_SIZE * PIXEL_SCALE_FACTOR
+                        Width = PixelSize * PIXEL_SCALE_FACTOR,
+                        Height = PixelSize * PIXEL_SCALE_FACTOR
                     };
-                    Canvas.SetLeft(r, PIXEL_SIZE * x + offsetX);
-                    Canvas.SetTop(r, PIXEL_SIZE * y + offsetY);
+                    Canvas.SetLeft(r, PixelSize * x + offsetX);
+                    Canvas.SetTop(r, PixelSize * y + offsetY);
                     _ = MainCanvas.Children.Add(r);
                 }
             }
+        }
+
+        protected override void UpdateSize(double width, double height)
+        {
+            double size = height;
+            if (Editors != null && Editors.Count > 0 && width / Editors.Count * 3 < height)
+            {
+                size = width / Editors.Count * CUBE_COUNT;
+            }
+
+
+            CalculateScaling(size);
+            Update();
         }
 
         private void MainGrid_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)

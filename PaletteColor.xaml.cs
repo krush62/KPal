@@ -161,7 +161,7 @@ namespace KPal
             {
                 ColorLink.ColorLinkPartner targetPartner = new(ParentPalette, this);
                 ColorLink cLink = new(sourcePartner, targetPartner);
-                LinkCreated?.Invoke(this, new LinkCreatedEventArgs(cLink));                
+                LinkCreated?.Invoke(this, new LinkCreatedEventArgs(cLink));
             }
             e.Handled = true;
         }
@@ -234,7 +234,7 @@ namespace KPal
             AdjustmentSliderChanged();
         }
 
-            private void ValShiftSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void ValShiftSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             ValShift = Convert.ToSByte(e.NewValue);
             AdjustmentSliderChanged();
@@ -258,7 +258,7 @@ namespace KPal
             }
             else
             {
-                EditSymbol.Visibility= Visibility.Hidden;
+                EditSymbol.Visibility = Visibility.Hidden;
             }
 
             AddShift();
@@ -269,7 +269,7 @@ namespace KPal
         private void EditSymbol_MouseDown(object sender, MouseButtonEventArgs e)
         {
             HueShiftSlider.Value = Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_HueShift") as double?);
-            SatShiftSlider.Value =  Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_SatShift") as double?);
+            SatShiftSlider.Value = Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_SatShift") as double?);
             ValShiftSlider.Value = Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_ValShift") as double?);
         }
 

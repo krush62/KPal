@@ -26,12 +26,24 @@ namespace KPal
 {
     public partial class HueValView : Visualizer
     {
-        private const double SCALING_FACTOR = 120;
-        private const double CENTER_X = 0.5 * SCALING_FACTOR;
-        private const double LEFT_X = 0.0 * SCALING_FACTOR;
-        private const double RIGHT_X = 1.0 * SCALING_FACTOR;
-        private const double TOP_Y = 0.0 * SCALING_FACTOR;
-        private const double BOTTOM_Y = 1.0 * SCALING_FACTOR;
+        private double ScalingFactor;
+        private double CenterX;
+        private double LeftX;
+        private double RightX;
+        private double TopY;
+        private double BottomY;
+        private double PointSizeHueValMax;
+        private double PointSizeHueValMin;
+        private double PointSizeCylinderMax;
+        private double PointSizeCylinderMin;
+        private double PointSizeCubeMax;
+        private double PointSizeCubeMin;
+        private double UpperCornerY;
+        private double UpperCenterCornerY;
+        private double LowerCenterCornerY;
+        private double LowerCornerY;
+        private double CanvasMargin;
+        private const double MARGIN_FACTOR = 20.0;
         private const double VIEW_RATIO = 0.4;
         private const double STROKE_THICKNESS = 2.0;
         private const double DASH_INTERVAL_OUTLINE = STROKE_THICKNESS * 2.0;
@@ -48,22 +60,51 @@ namespace KPal
             Type = VisualizerType.HueVal;
             Selector.SelectedItem = Type;
             _ = MainGrid.Children.Add(Selector);
-            Canvas1.Width = SCALING_FACTOR;
-            Canvas1.Height = SCALING_FACTOR;
-            Canvas2.Width = SCALING_FACTOR;
-            Canvas2.Height = SCALING_FACTOR;
-            Canvas3.Width = SCALING_FACTOR;
-            Canvas3.Height = SCALING_FACTOR;
+            UpdateSize(ActualWidth, ActualHeight);
         }
 
-        public override void Update(List<PaletteEditor> editors, List<ColorLink> links)
+        public override void Update()
         {
-            if (editors.Count > 0)
+            if (Editors != null && Editors.Count > 0)
             {
-                DrawCube(editors, Canvas2);
-                DrawCylinder(editors, Canvas1);
-                DrawHueValDiagram(editors, Canvas3);
+                DrawCylinder(Editors, Canvas1);
+                DrawCube(Editors, Canvas2);
+                DrawHueValDiagram(Editors, Canvas3);
             }
+        }
+
+        protected override void UpdateSize(double width, double height)
+        {
+            double size = height < width / 3 ? height : width / 3;
+            SetScaling(size - (size / MARGIN_FACTOR));
+            Update();
+        }
+
+        private void SetScaling(double size)
+        {
+            ScalingFactor = size;
+            Canvas1.Width = ScalingFactor;
+            Canvas1.Height = ScalingFactor;
+            Canvas2.Width = ScalingFactor;
+            Canvas2.Height = ScalingFactor;
+            Canvas3.Width = ScalingFactor;
+            Canvas3.Height = ScalingFactor;
+            CenterX = 0.5 * ScalingFactor;
+            LeftX = 0.0 * ScalingFactor;
+            RightX = 1.0 * ScalingFactor;
+            TopY = 0.0 * ScalingFactor;
+            BottomY = 1.0 * ScalingFactor;
+            PointSizeHueValMax = ScalingFactor / 10.0;
+            PointSizeHueValMin = PointSizeHueValMax * 0.2;
+            PointSizeCylinderMax = ScalingFactor / 30.0;
+            PointSizeCylinderMin = PointSizeCylinderMax * 0.5;
+            PointSizeCubeMax = ScalingFactor / 10.0;
+            PointSizeCubeMin = PointSizeCubeMax * 0.5;
+            CanvasMargin = ScalingFactor / MARGIN_FACTOR;
+            UpperCornerY = (VIEW_RATIO / 2.0) * ScalingFactor;
+            UpperCenterCornerY = 2 * UpperCornerY;
+            LowerCenterCornerY = ScalingFactor - UpperCenterCornerY;
+            LowerCornerY = ScalingFactor - UpperCornerY;
         }
 
         private static StreamGeometry CreateHalfCircle(double height, SweepDirection direction, double scalingFactor, double ellipseRatio)
@@ -94,10 +135,6 @@ namespace KPal
         {
             canvas.Children.Clear();
 
-            //TODO REMOVE ANY MAGIC NUMBER (harmonize with other drawings)
-            const double POINT_SIZE_MAX = SCALING_FACTOR / 10.0;
-            const double POINT_SIZE_MIN = POINT_SIZE_MAX * 0.2;
-            const double MARGIN = SCALING_FACTOR / 20.0; ;
 
             List<HSVColor> hSVColors = GetUniqueColorsFromPalettes(editors);
             hSVColors = hSVColors.OrderByDescending(c => c.Saturation).ToList();
@@ -108,11 +145,11 @@ namespace KPal
                 double valNorm = Convert.ToDouble(color.Brightness) / Convert.ToDouble(HSVColor.MAX_VALUE_VAL_SAT);
                 Ellipse e = new()
                 {
-                    Width = POINT_SIZE_MIN + (satNorm * POINT_SIZE_MAX),
-                    Height = POINT_SIZE_MIN + (satNorm * POINT_SIZE_MAX)
+                    Width = PointSizeHueValMin + (satNorm * PointSizeHueValMax),
+                    Height = PointSizeHueValMin + (satNorm * PointSizeHueValMax)
                 };
-                Canvas.SetLeft(e, MARGIN + hueNorm * (SCALING_FACTOR - 2.0 * MARGIN));
-                Canvas.SetTop(e, (SCALING_FACTOR - MARGIN) - valNorm * (SCALING_FACTOR - (2.0 * MARGIN)));
+                Canvas.SetLeft(e, CanvasMargin + hueNorm * (ScalingFactor - 2.0 * CanvasMargin));
+                Canvas.SetTop(e, (ScalingFactor - CanvasMargin) - valNorm * (ScalingFactor - (2.0 * CanvasMargin)));
                 e.Fill = new SolidColorBrush(color.GetRGBColor());
                 _ = canvas.Children.Add(e);
             }
@@ -121,10 +158,10 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                X1 = LEFT_X,
-                X2 = RIGHT_X,
-                Y1 = BOTTOM_Y,
-                Y2 = BOTTOM_Y,
+                X1 = LeftX,
+                X2 = RightX,
+                Y1 = BottomY,
+                Y2 = BottomY,
             };
             _ = canvas.Children.Add(lineHor);
 
@@ -132,10 +169,10 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                X1 = LEFT_X,
-                X2 = LEFT_X,
-                Y1 = TOP_Y,
-                Y2 = BOTTOM_Y,
+                X1 = LeftX,
+                X2 = LeftX,
+                Y1 = TopY,
+                Y2 = BottomY,
             };
             _ = canvas.Children.Add(lineVer);
 
@@ -146,17 +183,13 @@ namespace KPal
         {
             canvas.Children.Clear();
 
-            //TODO REMOVE ANY MAGIC NUMBER (harmonize with other drawings)
-            const double POINT_MAX_SIZE = SCALING_FACTOR / 30.0;
-            const double POINT_MIN_SIZE = POINT_MAX_SIZE * 0.5;
-
             //drawing top part of the lower ellipse which is behind the points
             Path lowerTopArc = new()
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
                 StrokeDashArray = DASH_ARRAY_OUTLILNE,
-                Data = CreateHalfCircle(SCALING_FACTOR - (SCALING_FACTOR * VIEW_RATIO) / 2, SweepDirection.Clockwise, SCALING_FACTOR, VIEW_RATIO)
+                Data = CreateHalfCircle(ScalingFactor - (ScalingFactor * VIEW_RATIO) / 2, SweepDirection.Clockwise, ScalingFactor, VIEW_RATIO)
             };
             _ = canvas.Children.Add(lowerTopArc);
 
@@ -171,11 +204,11 @@ namespace KPal
                 double valNorm = Convert.ToDouble(color.Brightness) / Convert.ToDouble(HSVColor.MAX_VALUE_VAL_SAT);
                 //calculating distance (see above)
                 double distance = Math.Cos(Deg2Rad(color.Hue)) * satNorm;
-                double size = (POINT_MIN_SIZE + (distance + 1.0)) * POINT_MAX_SIZE;
-                double pixelDistanceToBottom = (SCALING_FACTOR - (VIEW_RATIO * SCALING_FACTOR)) * valNorm;
-                double xPos = CENTER_X + Math.Sin(Deg2Rad(color.Hue)) * satNorm * SCALING_FACTOR / 2.0;
-                double yPos = (SCALING_FACTOR - (SCALING_FACTOR * VIEW_RATIO) / 2.0) +
-                    distance * (SCALING_FACTOR * (VIEW_RATIO / 2.0)) -
+                double size = (PointSizeCylinderMin + (distance + 1.0)) * PointSizeCylinderMax;
+                double pixelDistanceToBottom = (ScalingFactor - (VIEW_RATIO * ScalingFactor)) * valNorm;
+                double xPos = CenterX + Math.Sin(Deg2Rad(color.Hue)) * satNorm * ScalingFactor / 2.0;
+                double yPos = (ScalingFactor - (ScalingFactor * VIEW_RATIO) / 2.0) +
+                    distance * (ScalingFactor * (VIEW_RATIO / 2.0)) -
                     pixelDistanceToBottom;
 
                 Ellipse e = new()
@@ -208,7 +241,7 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                Data = CreateHalfCircle((SCALING_FACTOR * VIEW_RATIO) / 2.0, SweepDirection.Clockwise, SCALING_FACTOR, VIEW_RATIO)
+                Data = CreateHalfCircle((ScalingFactor * VIEW_RATIO) / 2.0, SweepDirection.Clockwise, ScalingFactor, VIEW_RATIO)
             };
             _ = canvas.Children.Add(upperTopArc);
 
@@ -216,7 +249,7 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                Data = CreateHalfCircle((SCALING_FACTOR * VIEW_RATIO) / 2.0, SweepDirection.Counterclockwise, SCALING_FACTOR, VIEW_RATIO)
+                Data = CreateHalfCircle((ScalingFactor * VIEW_RATIO) / 2.0, SweepDirection.Counterclockwise, ScalingFactor, VIEW_RATIO)
             };
             _ = canvas.Children.Add(upperBottomArc);
 
@@ -224,17 +257,17 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                Data = CreateHalfCircle(SCALING_FACTOR - (SCALING_FACTOR * VIEW_RATIO) / 2.0, SweepDirection.Counterclockwise, SCALING_FACTOR, VIEW_RATIO)
+                Data = CreateHalfCircle(ScalingFactor - (ScalingFactor * VIEW_RATIO) / 2.0, SweepDirection.Counterclockwise, ScalingFactor, VIEW_RATIO)
             };
             _ = canvas.Children.Add(lowerBottomArc);
 
             //drawing vertival lines
             Line l1 = new()
             {
-                X1 = LEFT_X,
-                X2 = LEFT_X,
-                Y1 = (SCALING_FACTOR * VIEW_RATIO) / 2,
-                Y2 = SCALING_FACTOR - (SCALING_FACTOR * VIEW_RATIO) / 2.0,
+                X1 = LeftX,
+                X2 = LeftX,
+                Y1 = (ScalingFactor * VIEW_RATIO) / 2,
+                Y2 = ScalingFactor - (ScalingFactor * VIEW_RATIO) / 2.0,
                 StrokeThickness = STROKE_THICKNESS,
                 Stroke = OUTLINE_BRUSH
             };
@@ -242,10 +275,10 @@ namespace KPal
 
             Line l2 = new()
             {
-                X1 = RIGHT_X,
-                X2 = RIGHT_X,
-                Y1 = (SCALING_FACTOR * VIEW_RATIO) / 2.0,
-                Y2 = SCALING_FACTOR - (SCALING_FACTOR * VIEW_RATIO) / 2.0,
+                X1 = RightX,
+                X2 = RightX,
+                Y1 = (ScalingFactor * VIEW_RATIO) / 2.0,
+                Y2 = ScalingFactor - (ScalingFactor * VIEW_RATIO) / 2.0,
                 StrokeThickness = STROKE_THICKNESS,
                 Stroke = OUTLINE_BRUSH
             };
@@ -255,23 +288,16 @@ namespace KPal
         private void DrawCube(List<PaletteEditor> editors, Canvas canvas)
         {
             canvas.Children.Clear();
-            const double UPPER_CORNER_Y = (VIEW_RATIO / 2.0) * SCALING_FACTOR;
-            const double UPPER_CENTER_CORNER_Y = 2 * UPPER_CORNER_Y;
-            const double LOWER_CENTER_CORNER_Y = SCALING_FACTOR - UPPER_CENTER_CORNER_Y;
-            const double LOWER_CORNER_Y = SCALING_FACTOR - UPPER_CORNER_Y;
-            //TODO REMOVE ANY MAGIC NUMBER (harmonize with other drawings)
-            const double POINT_MAX_SIZE = SCALING_FACTOR / 10.0;
-            const double POINT_MIN_SIZE = POINT_MAX_SIZE * 0.5;
 
             //drawing lines which are behind the color dots
             Line line1 = new()
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                X1 = CENTER_X,
-                X2 = CENTER_X,
-                Y1 = TOP_Y,
-                Y2 = UPPER_CENTER_CORNER_Y,
+                X1 = CenterX,
+                X2 = CenterX,
+                Y1 = TopY,
+                Y2 = UpperCenterCornerY,
                 StrokeDashArray = DASH_ARRAY_OUTLILNE
             };
             _ = canvas.Children.Add(line1);
@@ -280,10 +306,10 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                X1 = CENTER_X,
-                X2 = RIGHT_X,
-                Y1 = LOWER_CENTER_CORNER_Y,
-                Y2 = LOWER_CORNER_Y,
+                X1 = CenterX,
+                X2 = RightX,
+                Y1 = LowerCenterCornerY,
+                Y2 = LowerCornerY,
                 StrokeDashArray = DASH_ARRAY_OUTLILNE
             };
             _ = canvas.Children.Add(line2);
@@ -292,10 +318,10 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                X1 = CENTER_X,
-                X2 = LEFT_X,
-                Y1 = LOWER_CENTER_CORNER_Y,
-                Y2 = LOWER_CORNER_Y,
+                X1 = CenterX,
+                X2 = LeftX,
+                Y1 = LowerCenterCornerY,
+                Y2 = LowerCornerY,
                 StrokeDashArray = DASH_ARRAY_OUTLILNE
             };
             _ = canvas.Children.Add(line3);
@@ -311,9 +337,9 @@ namespace KPal
                 double valNorm = Convert.ToDouble(color.Brightness) / Convert.ToDouble(HSVColor.MAX_VALUE_VAL_SAT);
                 //calculating distance (see above)
                 double distance = (Convert.ToDouble(color.Hue) / Convert.ToDouble(HSVColor.MAX_VALUE_DEGREES) + Convert.ToDouble(color.Saturation) / Convert.ToDouble(HSVColor.MAX_VALUE_VAL_SAT)) / 2.0;
-                double size = POINT_MAX_SIZE - (distance * (POINT_MAX_SIZE - POINT_MIN_SIZE));
-                double xPos = CENTER_X + (hueNorm * CENTER_X) - (satNorm * CENTER_X);
-                double yPos = BOTTOM_Y - (hueNorm * (BOTTOM_Y - LOWER_CORNER_Y)) - (satNorm * (BOTTOM_Y - LOWER_CORNER_Y)) - (valNorm * (BOTTOM_Y - UPPER_CENTER_CORNER_Y));
+                double size = PointSizeCubeMax - (distance * (PointSizeCubeMax - PointSizeCubeMin));
+                double xPos = CenterX + (hueNorm * CenterX) - (satNorm * CenterX);
+                double yPos = BottomY - (hueNorm * (BottomY - LowerCornerY)) - (satNorm * (BottomY - LowerCornerY)) - (valNorm * (BottomY - UpperCenterCornerY));
                 Ellipse e = new()
                 {
                     Width = size,
@@ -331,7 +357,7 @@ namespace KPal
                     X1 = xPos,
                     X2 = xPos,
                     Y1 = yPos,
-                    Y2 = yPos + (valNorm * (BOTTOM_Y - UPPER_CENTER_CORNER_Y)),
+                    Y2 = yPos + (valNorm * (BottomY - UpperCenterCornerY)),
                     StrokeDashArray = DASH_ARRAY_VERTICAL
                 };
                 _ = canvas.Children.Add(line);
@@ -342,10 +368,10 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                X1 = LEFT_X,
-                X2 = CENTER_X,
-                Y1 = UPPER_CORNER_Y,
-                Y2 = UPPER_CENTER_CORNER_Y
+                X1 = LeftX,
+                X2 = CenterX,
+                Y1 = UpperCornerY,
+                Y2 = UpperCenterCornerY
             };
             _ = canvas.Children.Add(line4);
 
@@ -353,10 +379,10 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                X1 = CENTER_X,
-                X2 = RIGHT_X,
-                Y1 = UPPER_CENTER_CORNER_Y,
-                Y2 = UPPER_CORNER_Y
+                X1 = CenterX,
+                X2 = RightX,
+                Y1 = UpperCenterCornerY,
+                Y2 = UpperCornerY
             };
             _ = canvas.Children.Add(line5);
 
@@ -364,10 +390,10 @@ namespace KPal
             {
                 Stroke = OUTLINE_BRUSH,
                 StrokeThickness = STROKE_THICKNESS,
-                X1 = CENTER_X,
-                X2 = CENTER_X,
-                Y1 = UPPER_CENTER_CORNER_Y,
-                Y2 = BOTTOM_Y
+                X1 = CenterX,
+                X2 = CenterX,
+                Y1 = UpperCenterCornerY,
+                Y2 = BottomY
             };
             _ = canvas.Children.Add(line6);
 
@@ -377,12 +403,12 @@ namespace KPal
                 StrokeThickness = STROKE_THICKNESS,
                 Points = new()
             {
-                new Point(CENTER_X, TOP_Y),
-                new Point(RIGHT_X, UPPER_CORNER_Y),
-                new Point(RIGHT_X, LOWER_CORNER_Y),
-                new Point(CENTER_X, BOTTOM_Y),
-                new Point(LEFT_X, LOWER_CORNER_Y),
-                new Point(LEFT_X, UPPER_CORNER_Y)
+                new Point(CenterX, TopY),
+                new Point(RightX, UpperCornerY),
+                new Point(RightX, LowerCornerY),
+                new Point(CenterX, BottomY),
+                new Point(LeftX, LowerCornerY),
+                new Point(LeftX, UpperCornerY)
             }
             };
             _ = canvas.Children.Add(p);

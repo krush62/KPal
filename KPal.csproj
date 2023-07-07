@@ -27,9 +27,9 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/krush62/KPal.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/krush62/KPal</PackageProjectUrl>
-    <AssemblyVersion>1.4.0.0</AssemblyVersion>
-    <FileVersion>1.4.0.0</FileVersion>
-	<VersionPrefix>1.4.0.0</VersionPrefix>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+    <FileVersion>1.5.0.0</FileVersion>
+	<VersionPrefix>1.5.0.0</VersionPrefix>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>icon.png</PackageIcon>
     <ApplicationIcon>buttons\icon.ico</ApplicationIcon>

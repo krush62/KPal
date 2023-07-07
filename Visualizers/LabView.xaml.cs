@@ -15,9 +15,9 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
 using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -26,8 +26,8 @@ namespace KPal
 {
     public partial class LabView : Visualizer
     {
-        private readonly PointCollection LAB_POLYGON_POINTS;
-        private const double SCALING_FACTOR = 120;
+        private PointCollection? PolygonPoints;
+        private double ScalingFactor;
         public LabView()
         {
             InitializeComponent();
@@ -35,21 +35,27 @@ namespace KPal
             Selector.SelectedItem = Type;
             Grid.SetColumn(Selector, 1);
             _ = MainGrid.Children.Add(Selector);
+            UpdateSize(ActualWidth, ActualHeight);
+        }
 
-            LAB_POLYGON_POINTS = new();
+        private PointCollection CalculatePolygon()
+        {
+            PointCollection c = new();
             for (int i = 0; i < 360; i += 24)
             {
                 Color color = new HSVColor(i, HSVColor.MAX_VALUE_VAL_SAT, HSVColor.MAX_VALUE_VAL_SAT).GetRGBColor();
                 LabColor lColor = ColorNames.RGB2LAB(color.R, color.G, color.B);
-                Point p = new();
-                p.X = (lColor.A / LabColor.AB_MAX_VALUE) * (SCALING_FACTOR / 2.0);
-                p.Y = - (lColor.B / LabColor.AB_MAX_VALUE) * (SCALING_FACTOR / 2.0);
-                LAB_POLYGON_POINTS.Add(p);
+                Point p = new()
+                {
+                    X = (lColor.A / LabColor.AB_MAX_VALUE) * (ScalingFactor / 2.0),
+                    Y = -(lColor.B / LabColor.AB_MAX_VALUE) * (ScalingFactor / 2.0)
+                };
+                c.Add(p);
             }
-            
+            return c;
         }
 
-        public override void Update(List<PaletteEditor> editors, List<ColorLink> links)
+        public override void Update()
         {
             DrawingCanvas.Children.Clear();
             ColorGrid.Children.Clear();
@@ -59,33 +65,41 @@ namespace KPal
             DistanceGrid.ColumnDefinitions.Clear();
             DistanceGrid.RowDefinitions.Clear();
 
-            if (editors.Count > 0)
+            if (Editors != null && Editors.Count > 0)
             {
-                DrawCircle(editors);
-                DrawDistances(editors);
-            }            
+                DrawCircle(Editors);
+                DrawDistances(Editors);
+            }
+        }
+
+        protected override void UpdateSize(double width, double height)
+        {
+            double size = height < width / 4 ? height : width / 4;
+            ScalingFactor = size;
+            PolygonPoints = CalculatePolygon();
+            Update();
         }
 
         private void DrawCircle(List<PaletteEditor> editors)
         {
             double strokeWidth = 1.0;
-            SolidColorBrush strokeBrush = new SolidColorBrush(Colors.Black);
-            double xOffset = (DrawingCanvas.ActualWidth - SCALING_FACTOR) / 2.0;
-            double yOffset = (DrawingCanvas.ActualHeight - SCALING_FACTOR) / 2.0;
-            double centerX = xOffset + (SCALING_FACTOR / 2.0);
-            double centerY = yOffset + (SCALING_FACTOR / 2.0);
-            const double MAX_POINT_SIZE = 16;
-            const double MIN_POINT_SIZE = MAX_POINT_SIZE / 4;
+            SolidColorBrush strokeBrush = new(Colors.Black);
+            double xOffset = (DrawingCanvas.ActualWidth - ScalingFactor) / 2.0;
+            double yOffset = (DrawingCanvas.ActualHeight - ScalingFactor) / 2.0;
+            double centerX = xOffset + (ScalingFactor / 2.0);
+            double centerY = yOffset + (ScalingFactor / 2.0);
+            double MAX_POINT_SIZE = ScalingFactor / 8.0;
+            double MIN_POINT_SIZE = MAX_POINT_SIZE / 4;
 
             Polygon polygon = new()
             {
-                Points = LAB_POLYGON_POINTS,
+                Points = PolygonPoints,
                 Stroke = strokeBrush,
                 StrokeThickness = strokeWidth
             };
             Canvas.SetLeft(polygon, centerX);
             Canvas.SetTop(polygon, centerY);
-            DrawingCanvas.Children.Add(polygon);
+            _ = DrawingCanvas.Children.Add(polygon);
 
             Line vertLine = new()
             {
@@ -94,24 +108,24 @@ namespace KPal
                 X1 = centerX,
                 X2 = centerX,
                 Y1 = yOffset,
-                Y2 = yOffset + SCALING_FACTOR
+                Y2 = yOffset + ScalingFactor
             };
-            DrawingCanvas.Children.Add(vertLine);
+            _ = DrawingCanvas.Children.Add(vertLine);
 
             Line horLine = new()
             {
                 Stroke = strokeBrush,
                 StrokeThickness = strokeWidth,
                 X1 = xOffset,
-                X2 = xOffset + SCALING_FACTOR,
+                X2 = xOffset + ScalingFactor,
                 Y1 = centerY,
                 Y2 = centerY
             };
-            DrawingCanvas.Children.Add(horLine);
+            _ = DrawingCanvas.Children.Add(horLine);
 
             List<HSVColor> hsvColors = GetUniqueColorsFromPalettes(editors);
             hsvColors = hsvColors.OrderBy(x => x.Brightness).ToList();
-            
+
             foreach (HSVColor color in hsvColors)
             {
                 double currentSize = MIN_POINT_SIZE + (MAX_POINT_SIZE - MIN_POINT_SIZE) * (Convert.ToDouble(HSVColor.MAX_VALUE_VAL_SAT - color.Brightness) / Convert.ToDouble(HSVColor.MAX_VALUE_VAL_SAT));
@@ -123,16 +137,16 @@ namespace KPal
                     Width = currentSize,
                     Height = currentSize
                 };
-                Canvas.SetLeft(ellipse, (centerX - (currentSize / 2))  + ((labColor.A / LabColor.AB_MAX_VALUE) * (SCALING_FACTOR / 2.0)));
-                Canvas.SetTop(ellipse, (centerY - (currentSize / 2)) - ((labColor.B / LabColor.AB_MAX_VALUE) * (SCALING_FACTOR / 2.0)));
-                DrawingCanvas.Children.Add(ellipse);
+                Canvas.SetLeft(ellipse, (centerX - (currentSize / 2)) + ((labColor.A / LabColor.AB_MAX_VALUE) * (ScalingFactor / 2.0)));
+                Canvas.SetTop(ellipse, (centerY - (currentSize / 2)) - ((labColor.B / LabColor.AB_MAX_VALUE) * (ScalingFactor / 2.0)));
+                _ = DrawingCanvas.Children.Add(ellipse);
             }
         }
 
         private void DrawDistances(List<PaletteEditor> editors)
         {
             const double PADDING_WIDTH = 2;
-            SolidColorBrush BACKGROUND_BRUSH = new SolidColorBrush(Colors.White);
+            SolidColorBrush BACKGROUND_BRUSH = new(Colors.White);
             const double FONT_SIZE = 15;
             const double LABEL_OPACITY = 0.5;
             int maxLength = editors.Max(x => x.PaletteColorList.Count);
@@ -181,19 +195,19 @@ namespace KPal
                     };
                     Grid.SetColumn(rect, i + offset);
                     Grid.SetRow(rect, row);
-                    ColorGrid.Children.Add(rect);
+                    _ = ColorGrid.Children.Add(rect);
                 }
                 rd = new()
                 {
                     Height = new GridLength(1, GridUnitType.Star)
                 };
                 DistanceGrid.RowDefinitions.Add(rd);
-                
+
 
                 List<Color> colors = editors[row].PaletteColorList.Select(x => x.HSVColor.GetRGBColor()).ToList();
                 for (int i = 0; i < colors.Count - 1; i++)
                 {
-                    double distance = ColorNames.GetDeltaE(colors[i].R, colors[i].G, colors[i].B, colors[i+1].R, colors[i+1].G, colors[i+1].B);
+                    double distance = ColorNames.GetDeltaE(colors[i].R, colors[i].G, colors[i].B, colors[i + 1].R, colors[i + 1].G, colors[i + 1].B);
                     Label l = new()
                     {
                         Content = distance.ToString("N1"),
@@ -206,7 +220,7 @@ namespace KPal
                     };
                     Grid.SetRow(l, row);
                     Grid.SetColumn(l, i + offset + 1);
-                    DistanceGrid.Children.Add(l);
+                    _ = DistanceGrid.Children.Add(l);
                 }
             }
         }

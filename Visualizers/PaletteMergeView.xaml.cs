@@ -57,23 +57,22 @@ namespace KPal
         }
 
 
-        public override void Update(List<PaletteEditor> palettes, List<ColorLink> colorLinkList)
+        public override void Update()
         {
-            if (palettes.Count > 0)
+            if (Editors != null && Editors.Count > 0 && Links != null)
             {
-
                 int totalMaxOffsetMinus = 0;
                 int totalMinOffsetMinus = 0;
 
                 List<PalettePaletteLink> displayList = new();
-                if (CheckIntegrity(palettes, colorLinkList))
+                if (CheckIntegrity(Editors, Links))
                 {
 
-                    for (int i = 0; i < palettes.Count; i++)
+                    for (int i = 0; i < Editors.Count; i++)
                     {
-                        PaletteEditor palette = palettes[i];
-                        bool isSource = colorLinkList.Where(p => p.Source.Editor == palette).Any();
-                        bool isTarget = colorLinkList.Where(p => p.Target.Editor == palette).Any();
+                        PaletteEditor palette = Editors[i];
+                        bool isSource = Links.Where(p => p.Source.Editor == palette).Any();
+                        bool isTarget = Links.Where(p => p.Target.Editor == palette).Any();
 
                         if (!isSource && !isTarget)
                         {
@@ -88,7 +87,7 @@ namespace KPal
                                 ColorLink? ancestorFound = null;
                                 do
                                 {
-                                    ancestorFound = colorLinkList.Where(p => p.Target.Editor == rootSource).FirstOrDefault();
+                                    ancestorFound = Links.Where(p => p.Target.Editor == rootSource).FirstOrDefault();
                                     if (ancestorFound != null)
                                     {
                                         rootSource = ancestorFound.Source.Editor;
@@ -99,7 +98,7 @@ namespace KPal
                                 //add tree to list
                                 do
                                 {
-                                    ancestorFound = colorLinkList.Where(p => p.Source.Editor == rootSource).FirstOrDefault();
+                                    ancestorFound = Links.Where(p => p.Source.Editor == rootSource).FirstOrDefault();
                                     if (ancestorFound != null)
                                     {
                                         int sourceColorIndex = ancestorFound.Source.Editor.PaletteColorList.IndexOf(ancestorFound.Source.Color);
@@ -155,13 +154,13 @@ namespace KPal
                 }
                 else //create simple list
                 {
-                    foreach (PaletteEditor palette in palettes)
+                    foreach (PaletteEditor palette in Editors)
                     {
                         displayList.Add(new PalettePaletteLink(null, palette));
                     }
                 }
 
-                int max = palettes.Max(x => x.PaletteColorList.Count);
+                int max = Editors.Max(x => x.PaletteColorList.Count);
                 int totalMaxOffsetPlus = max + totalMinOffsetMinus - totalMaxOffsetMinus;
                 ColorGrid.RowDefinitions.Clear();
                 ColorGrid.ColumnDefinitions.Clear();
@@ -174,6 +173,11 @@ namespace KPal
                 ColorGrid.ColumnDefinitions.Clear();
                 ColorGrid.Children.Clear();
             }
+        }
+
+        protected override void UpdateSize(double width, double height)
+        {
+
         }
 
         private void DrawDisplayList(List<PalettePaletteLink> displayList, int offsetMinus, int offsetPlus)
