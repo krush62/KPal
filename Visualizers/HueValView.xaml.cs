@@ -65,6 +65,10 @@ namespace KPal
 
         public override void Update()
         {
+            Canvas1.Children.Clear();
+            Canvas2.Children.Clear();
+            Canvas3.Children.Clear();
+
             if (Editors != null && Editors.Count > 0)
             {
                 DrawCylinder(Editors, Canvas1);
@@ -133,9 +137,6 @@ namespace KPal
 
         private void DrawHueValDiagram(List<PaletteEditor> editors, Canvas canvas)
         {
-            canvas.Children.Clear();
-
-
             List<HSVColor> hSVColors = GetUniqueColorsFromPalettes(editors);
             hSVColors = hSVColors.OrderByDescending(c => c.Saturation).ToList();
             foreach (HSVColor color in hSVColors)
@@ -181,8 +182,6 @@ namespace KPal
 
         private void DrawCylinder(List<PaletteEditor> editors, Canvas canvas)
         {
-            canvas.Children.Clear();
-
             //drawing top part of the lower ellipse which is behind the points
             Path lowerTopArc = new()
             {
@@ -287,8 +286,6 @@ namespace KPal
 
         private void DrawCube(List<PaletteEditor> editors, Canvas canvas)
         {
-            canvas.Children.Clear();
-
             //drawing lines which are behind the color dots
             Line line1 = new()
             {

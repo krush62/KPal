@@ -56,10 +56,7 @@ namespace KPal
 
         private void Visualizer_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
         {
-            if (Editors != null && Links != null)
-            {
-                UpdateSize(ActualWidth, ActualHeight);
-            }
+            UpdateSize(ActualWidth, ActualHeight);
         }
 
         protected abstract void UpdateSize(double width, double height);
