@@ -30,7 +30,8 @@ namespace KPal
             HueVal = 2,
             SatVal = 3,
             LabView = 4,
-            Voronoi = 5
+            Voronoi = 5,
+            Temperature = 6
         }
 
         public VisualizerType Type { get; protected set; }
@@ -102,6 +103,7 @@ namespace KPal
                 Visualizer.VisualizerType.SatVal => new SatValView(),
                 Visualizer.VisualizerType.LabView => new LabView(),
                 Visualizer.VisualizerType.Voronoi => new VoronoiView(),
+                Visualizer.VisualizerType.Temperature => new TemperatureView(),
                 _ => new ShadingPreview(),
             };
             return vis;
