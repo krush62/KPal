@@ -78,7 +78,7 @@ namespace KPal
         }
 
 
-        private static bool IsDepenedentColor(PaletteEditor editor, PaletteColor color, List<ColorLink> links)
+        private static bool IsDependentColor(PaletteEditor editor, PaletteColor color, List<ColorLink> links)
         {
             return links.Where(x => x.Target.Color == color && x.Target.Editor == editor).Any();
         }
@@ -91,14 +91,15 @@ namespace KPal
                 for (int i = 0; i < editor.PaletteColorList.Count; i++)
                 {
                     PaletteColor currentColor = editor.PaletteColorList[i];
-                    if (!IsDepenedentColor(editor, currentColor, saveData.ColorLinks))
+                    if (!IsDependentColor(editor, currentColor, saveData.ColorLinks))
                     {
                         colorList.Add(currentColor.HSVColor);
                     }
                 }
             }
-
-            //TODO find and remove remaining duplicates 
+            colorList = colorList.Distinct().ToList();
+            //TODO find and remove remaining duplicates
+            
 
             return colorList;
         }
@@ -345,7 +346,6 @@ namespace KPal
                 }
 
                 //Old palette chunk (0x0004) ignored
-                //TODO handle palettes > 255 colors
                 if (colorList.Count < 256)
                 {
                     writer.Write(paletteOld_00_size);

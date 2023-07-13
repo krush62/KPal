@@ -15,10 +15,13 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Media;
 
 namespace KPal
 {
-    public class HSVColor
+    public class HSVColor : IEquatable<HSVColor>, IEqualityComparer<HSVColor>
     {
         public const int MIN_VALUE = 0;
         public const int MAX_VALUE_VAL_SAT = 100;
@@ -93,12 +96,12 @@ namespace KPal
             }
         }
 
-        public System.Windows.Media.Color GetRGBColor()
+        public Color GetRGBColor()
         {
             return HSVToRGB(hue, saturation, brightness);
         }
 
-        public static System.Windows.Media.Color HSVToRGB(int hue, int saturation, int brightness)
+        public static Color HSVToRGB(int hue, int saturation, int brightness)
         {
             double r, g, b;
             double h = Convert.ToDouble(hue);
@@ -170,12 +173,68 @@ namespace KPal
                         b = q;
                         break;
                 }
-
             }
-            return System.Windows.Media.Color.FromRgb(Convert.ToByte(r * byte.MaxValue), Convert.ToByte(g * byte.MaxValue), Convert.ToByte(b * byte.MaxValue));
+            return Color.FromRgb(Convert.ToByte(r * byte.MaxValue), Convert.ToByte(g * byte.MaxValue), Convert.ToByte(b * byte.MaxValue));
         }
 
+        public bool Equals(HSVColor? other)
+        {
+            if (other is null)
+            { 
+                return false;
+            }
+            else if (ReferenceEquals(this, other))
+            { 
+                return true; 
+            }
+            else
+            {
+                return this.Brightness == other.Brightness && this.Saturation == other.Saturation && this.Hue == other.Hue;
+            }
+        }
 
+        public bool Equals(HSVColor? x, HSVColor? y)
+        {
+            return x == y;
+        }
 
+        public int GetHashCode([DisallowNull] HSVColor obj)
+        {
+            return obj.Hue * 1000000 + obj.Saturation * 1000 + obj.Brightness;
+        }
+
+        public static bool operator ==(HSVColor? obj1, HSVColor? obj2)
+        {
+            if (ReferenceEquals(obj1, obj2))
+            { 
+                return true;
+            }
+            else if (obj1 is null || obj2 is null)
+            { 
+                return false;
+            }
+            else
+            {
+                return obj1.Equals(obj2);
+            }
+        }        
+        public static bool operator !=(HSVColor obj1, HSVColor obj2) => !(obj1 == obj2);
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(obj as HSVColor);
+            }            
+        }
+
+        public override int GetHashCode()
+        {
+           return GetHashCode(this);
+        }
     }
 }
