@@ -218,7 +218,7 @@ namespace KPal
                 return obj1.Equals(obj2);
             }
         }        
-        public static bool operator !=(HSVColor obj1, HSVColor obj2) => !(obj1 == obj2);
+        public static bool operator !=(HSVColor? obj1, HSVColor? obj2) => !(obj1 == obj2);
 
         public override bool Equals(object? obj)
         {
