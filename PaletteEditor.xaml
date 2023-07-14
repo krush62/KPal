@@ -55,7 +55,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <ToggleButton Style="{DynamicResource ToggleButtonStyleSaturation}" Grid.Column="0" Grid.Row="1" Margin="2" Name="SatStyleButton" Click="SatStyleButton_Click"/>
+                        <ToggleButton Style="{DynamicResource ToggleButtonStyleSaturation}" Grid.Column="0" Grid.Row="1" Margin="2" Name="SatStyleButton" Click="SatStyleButton_Click" ToolTip="Saturation shift for darker colors"/>
                     </Grid>
 
                     <Grid Grid.Row="3" Grid.Column="0">
@@ -66,8 +66,8 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Button Style="{DynamicResource ButtonStyleClose}" Grid.Column="0" Grid.Row="0" Margin="2" Name="CloseButton" Click="CloseButton_Click"></Button>
-                        <ToggleButton Style="{DynamicResource ToggleButtonStyleMinMax}" Grid.Column="1" Grid.Row="0" Margin="2" Name="MinimizeToggleButton" Click="MinimizeToggleButton_Click"/>
+                        <Button Style="{DynamicResource ButtonStyleClose}" Grid.Column="0" Grid.Row="0" Margin="2" Name="CloseButton" Click="CloseButton_Click" ToolTip="Remove"></Button>
+                        <ToggleButton Style="{DynamicResource ToggleButtonStyleMinMax}" Grid.Column="1" Grid.Row="0" Margin="2" Name="MinimizeToggleButton" Click="MinimizeToggleButton_Click" ToolTip="Minimize / Maximize"/>
                     </Grid>
 
                 </Grid>
