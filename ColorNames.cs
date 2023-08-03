@@ -56,6 +56,7 @@ namespace KPal
 
     public sealed class ColorNames
     {
+        public const string UNKNOWN_COLOR = "UNKNOWN";
         public const string COLOR_FILE_NAME = "colors.csv";
         private const int STRING_POS_R = 0;
         private const int STRING_POS_G = 2;
@@ -81,7 +82,7 @@ namespace KPal
 
         public string GetColorName(System.Windows.Media.Color color)
         {
-            string bestName = "Unknown";
+            string bestName = UNKNOWN_COLOR;
             float bestDelta = 100f;
             foreach (NamedColor c in colors)
             {
@@ -157,6 +158,7 @@ namespace KPal
                         {
                             if (splits[1].Length == 6)
                             {
+                                //This is to prevent IDE warning, code looks nicer that way
 #pragma warning disable IDE0057
                                 byte rValue = Convert.ToByte(splits[1].Substring(STRING_POS_R, STRING_LENGTH_PER_CHANNEL), HEX_BASE);
                                 byte gValue = Convert.ToByte(splits[1].Substring(STRING_POS_G, STRING_LENGTH_PER_CHANNEL), HEX_BASE);

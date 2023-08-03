@@ -38,10 +38,10 @@ namespace KPal
         private bool IsDataSaved;
         private (Visualizer, Visualizer) Visualizers;
 
-        private const string KPAL_FILE_FILTER = "KPal file (*.kpal)|*.kpal";
+        public const string KPAL_TITLE = "KPal";
+        private const string KPAL_FILE_FILTER = KPAL_TITLE + " file (*.kpal)|*.kpal";
         private readonly string EXPORT_FILTER;
-        private readonly List<FileExporter.ExportFilter> EXPORT_FILTER_LIST;
-        private const string KPAL_TITLE = "KPal";
+        private readonly List<FileExporter.ExportFilter> EXPORT_FILTER_LIST;        
         private const uint MAX_RAMPS = 255;
 
         public MainWindow()
@@ -179,7 +179,7 @@ namespace KPal
 
             if (paletteData == null)
             {
-                p.SetTitle("Ramp " + (++RampCounter).ToString());
+                p.SetTitle(string.Format("Ramp {0}", (++RampCounter).ToString()));
             }
 
         }

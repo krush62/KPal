@@ -28,6 +28,21 @@ namespace KPal
 {
     public partial class PaletteEditor : UserControl
     {
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMAXIMIZED = "PaletteEditor_DefaultValue_HeightMaximized";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMINIMIZED = "PaletteEditor_DefaultValue_HeightMinimized";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_COLORCOUNT = "PaletteEditor_DefaultValue_ColorCount";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_BASEHUE = "PaletteEditor_DefaultValue_BaseHue";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_BASESATURATION = "PaletteEditor_DefaultValue_BaseSaturation";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_HUESHIFT = "PaletteEditor_DefaultValue_HueShift";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_HUESHIFTEXPONENT = "PaletteEditor_DefaultValue_HueShiftExponent";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_SATURATIONSHIFT = "PaletteEditor_DefaultValue_SaturationShift";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_SATURATIONSHIFTEXPONENT = "PaletteEditor_DefaultValue_SaturationShiftExponent";
+        const string ID_PALETTEEDITOR_VALUEMIN = "PaletteEditor_ValueMin";
+        const string ID_PALETTEEDITOR_VALUEMAX = "PaletteEditor_ValueMax";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_VALUEMAX = "PaletteEditor_DefaultValue_ValueMax";
+        const string ID_PALETTEEDITOR_DEFAULTVALUE_VALUEMIN = "PaletteEditor_DefaultValue_ValueMin";
+
+
         public enum SaturationCurveMode : byte
         {
             ONLY_HIGHER_VALUES = 0,
@@ -84,8 +99,8 @@ namespace KPal
             IsControlled = false;
             IsControlling = false;
             isMinimized = true;
-            Double? max = TryFindResource("PaletteEditor_DefaultValue_HeightMaximized") as Double?;
-            Double? min = TryFindResource("PaletteEditor_DefaultValue_HeightMinimized") as Double?;
+            Double? max = TryFindResource(ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMAXIMIZED) as Double?;
+            Double? min = TryFindResource(ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMINIMIZED) as Double?;
             minSize = min != null ? min.Value : 150;
             maxSize = max != null ? max.Value : 250;
             ToggleCollapseState();
@@ -152,37 +167,37 @@ namespace KPal
 
         private void ColorCountValueLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SetSliderFromResource(ColorCountSlider, "PaletteEditor_DefaultValue_ColorCount");
+            SetSliderFromResource(ColorCountSlider, ID_PALETTEEDITOR_DEFAULTVALUE_COLORCOUNT);
         }
 
         private void BaseHueValueLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SetSliderFromResource(BaseHueSlider, "PaletteEditor_DefaultValue_BaseHue");
+            SetSliderFromResource(BaseHueSlider, ID_PALETTEEDITOR_DEFAULTVALUE_BASEHUE);
         }
 
         private void BaseSaturationValueLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SetSliderFromResource(BaseSaturationSlider, "PaletteEditor_DefaultValue_BaseSaturation");
+            SetSliderFromResource(BaseSaturationSlider, ID_PALETTEEDITOR_DEFAULTVALUE_BASESATURATION);
         }
 
         private void HueShiftValueLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SetSliderFromResource(HueShiftSlider, "PaletteEditor_DefaultValue_HueShift");
+            SetSliderFromResource(HueShiftSlider, ID_PALETTEEDITOR_DEFAULTVALUE_HUESHIFT);
         }
 
         private void HueShiftExponentValueLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SetSliderFromResource(HueShiftExponentSlider, "PaletteEditor_DefaultValue_HueShiftExponent");
+            SetSliderFromResource(HueShiftExponentSlider, ID_PALETTEEDITOR_DEFAULTVALUE_HUESHIFTEXPONENT);
         }
 
         private void SaturationShiftValueLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SetSliderFromResource(SaturationShiftSlider, "PaletteEditor_DefaultValue_SaturationShift");
+            SetSliderFromResource(SaturationShiftSlider, ID_PALETTEEDITOR_DEFAULTVALUE_SATURATIONSHIFT);
         }
 
         private void SaturationShiftExponentValueLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SetSliderFromResource(SaturationShiftExponentSlider, "PaletteEditor_DefaultValue_SaturationShiftExponent");
+            SetSliderFromResource(SaturationShiftExponentSlider, ID_PALETTEEDITOR_DEFAULTVALUE_SATURATIONSHIFTEXPONENT);
         }
 
         private void ColorCountSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -261,8 +276,8 @@ namespace KPal
                 DependentColorIndex = -1;
                 ControllerColor = null;
                 LinkDeleted?.Invoke(this, ldEventArgs);
-                ValueRangeSlider.Minimum = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMin") as double?);
-                ValueRangeSlider.Maximum = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMax") as double?);
+                ValueRangeSlider.Minimum = Convert.ToInt32(TryFindResource(ID_PALETTEEDITOR_VALUEMIN) as double?);
+                ValueRangeSlider.Maximum = Convert.ToInt32(TryFindResource(ID_PALETTEEDITOR_VALUEMAX) as double?);
                 CalculateColors();
                 UpdateColors();
             }
@@ -279,8 +294,8 @@ namespace KPal
                     {
                         if (!lcEventArgs.ColorLink.KeepBrightnessData)
                         {
-                            ValueRangeSlider.LowerValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMin") as double?);
-                            ValueRangeSlider.HigherValue = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMax") as double?);
+                            ValueRangeSlider.LowerValue = Convert.ToInt32(TryFindResource(ID_PALETTEEDITOR_VALUEMIN) as double?);
+                            ValueRangeSlider.HigherValue = Convert.ToInt32(TryFindResource(ID_PALETTEEDITOR_VALUEMAX) as double?);
                         }
                         DependentColorIndex = i;
                         ControllerColor = lcEventArgs.ColorLink.Source.Color.HSVColor;
@@ -383,8 +398,8 @@ namespace KPal
                 }
                 else if (ControllerColor != null && DependentColorIndex != -1)
                 {
-                    int MINIMUM_VALUE = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMin") as double?);
-                    int MAXIMUM_VALUE = Convert.ToInt32(TryFindResource("PaletteEditor_ValueMax") as double?);
+                    int MINIMUM_VALUE = Convert.ToInt32(TryFindResource(ID_PALETTEEDITOR_VALUEMIN) as double?);
+                    int MAXIMUM_VALUE = Convert.ToInt32(TryFindResource(ID_PALETTEEDITOR_VALUEMAX) as double?);
 
                     int min_min = MAXIMUM_VALUE;
                     int max_max = MINIMUM_VALUE;
@@ -541,13 +556,13 @@ namespace KPal
 
         private void ValueRangeSlider_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Double? higherValue = TryFindResource("PaletteEditor_DefaultValue_ValueMax") as Double?;
+            Double? higherValue = TryFindResource(ID_PALETTEEDITOR_DEFAULTVALUE_VALUEMAX) as Double?;
             if (higherValue != null)
             {
                 ValueRangeSlider.HigherValue = higherValue.Value;
             }
 
-            Double? lowerValue = TryFindResource("PaletteEditor_DefaultValue_ValueMin") as Double?;
+            Double? lowerValue = TryFindResource(ID_PALETTEEDITOR_DEFAULTVALUE_VALUEMIN) as Double?;
             if (lowerValue != null)
             {
                 ValueRangeSlider.LowerValue = lowerValue.Value;

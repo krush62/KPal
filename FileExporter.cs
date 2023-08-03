@@ -28,6 +28,8 @@ namespace KPal
 {
     internal class FileExporter
     {
+        private const string HEX_FORMAT = "X2";
+
         public enum ExportType
         {
             PNG_1 = 0,
@@ -161,8 +163,7 @@ namespace KPal
             {
                 using StreamWriter sw = new(fileName);
                 sw.WriteLine("GIMP Palette");
-                string dateString = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-                sw.WriteLine("Name: KPal_" + dateString);
+                sw.WriteLine("Name: {0}_{1}", MainWindow.KPAL_TITLE, DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss"));
                 sw.WriteLine("Columns: 16");
                 sw.WriteLine("#");
                 foreach (HSVColor color in colorList)
@@ -170,7 +171,7 @@ namespace KPal
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
                     string colorName;
                     colorName = ColorNames.Instance.GetColorName(rgbColor);
-                    sw.WriteLine(rgbColor.R.ToString() + " " + rgbColor.G.ToString() + " " + rgbColor.B.ToString() + " " + colorName);
+                    sw.WriteLine("{0} {1} {2} {3}", rgbColor.R.ToString(), rgbColor.G.ToString(), rgbColor.B.ToString(), colorName);
                 }
             }
             catch (Exception)
@@ -185,18 +186,15 @@ namespace KPal
             List<HSVColor> colorList = GetColors(saveData);
             try
             {
-                using StreamWriter sw = new(fileName);
-
-                string dateString = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-
-                sw.WriteLine("; KPal_" + dateString);
+                using StreamWriter sw = new(fileName);                
+                sw.WriteLine("; {0}_{1}", MainWindow.KPAL_TITLE, DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss"));
                 int index = 0;
                 foreach (HSVColor color in colorList)
                 {
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
                     string colorName;
                     colorName = ColorNames.Instance.GetColorName(rgbColor);
-                    sw.WriteLine(rgbColor.R.ToString("X2") + rgbColor.G.ToString("X2") + rgbColor.B.ToString("X2") + " ; " + (index++).ToString() + " - " + colorName);
+                    sw.WriteLine("{0}{1}{2} ; {3}-{4}", rgbColor.R.ToString(HEX_FORMAT), rgbColor.G.ToString(HEX_FORMAT), rgbColor.B.ToString(HEX_FORMAT), (index++).ToString(), colorName);
                 }
             }
             catch (Exception)
@@ -488,7 +486,7 @@ namespace KPal
                 foreach (HSVColor color in colorList)
                 {
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
-                    sw.WriteLine(rgbColor.R.ToString() + " " + rgbColor.G.ToString() + " " + rgbColor.B.ToString());
+                    sw.WriteLine("{0} {1} {2}", rgbColor.R.ToString(), rgbColor.G.ToString(), rgbColor.B.ToString());
                 }
             }
             catch (Exception)
@@ -505,14 +503,17 @@ namespace KPal
             {
                 using StreamWriter sw = new(fileName);
                 sw.WriteLine("<? version = \"1.0\" ?>");
-                string dateString = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
                 sw.WriteLine("<palette name=\"\" guid=\"\">");
                 sw.WriteLine("\t<colors>");
                 sw.WriteLine("\t\t<page>");
                 foreach (HSVColor color in colorList)
                 {
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
-                    sw.WriteLine("\t\t\t<color cs=\"RGB\" tints=\"" + rgbColor.ScR.ToString(CultureInfo.InvariantCulture) + "," + rgbColor.ScG.ToString(CultureInfo.InvariantCulture) + "," + rgbColor.ScB.ToString(CultureInfo.InvariantCulture) + "\" name=\"" + ColorNames.Instance.GetColorName(rgbColor) + "\" />");
+                    sw.WriteLine("\t\t\t<color cs=\"RGB\" tints=\"{0},{1},{2}\" name=\"{3}\" />",
+                        rgbColor.ScR.ToString(CultureInfo.InvariantCulture),
+                        rgbColor.ScG.ToString(CultureInfo.InvariantCulture),
+                        rgbColor.ScB.ToString(CultureInfo.InvariantCulture),
+                        ColorNames.Instance.GetColorName(rgbColor));
                 }
                 sw.WriteLine("\t\t</page>");
                 sw.WriteLine("\t</colors>");
@@ -536,9 +537,11 @@ namespace KPal
                 foreach (HSVColor color in colorList)
                 {
                     System.Windows.Media.Color rgbColor = color.GetRGBColor();
-                    string colorName = ColorNames.Instance.GetColorName(rgbColor);
-                    string colorHex = rgbColor.R.ToString("X2") + rgbColor.G.ToString("X2") + rgbColor.B.ToString("X2");
-                    sw.WriteLine("\t<draw:color draw:name=\"" + colorName + "\" draw:color=\"#" + colorHex.ToLower() + "\"/>");
+                    string colorHex = string.Format("{0}{1}{2}", 
+                        rgbColor.R.ToString(HEX_FORMAT).ToLower(),
+                        rgbColor.G.ToString(HEX_FORMAT).ToLower(),
+                        rgbColor.B.ToString(HEX_FORMAT).ToLower());                    
+                    sw.WriteLine("\t<draw:color draw:name=\"{0}\" draw:color=\"#{1}\"/>", ColorNames.Instance.GetColorName(rgbColor), colorHex);
                 }
                 sw.WriteLine("</office:color-table>");
             }

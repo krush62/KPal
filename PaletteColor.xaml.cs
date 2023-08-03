@@ -24,10 +24,17 @@ namespace KPal
 {
     public partial class PaletteColor : UserControl
     {
+        private const string ID_PALETTECOLOR_DEFAULTVALUE_HUESHIFT = "PaletteColor_DefaultValue_HueShift";
+        private const string ID_PALETTECOLOR_DEFAULTVALUE_SATSHIFT = "PaletteColor_DefaultValue_SatShift";
+        private const string ID_PALETTECOLOR_DEFAULTVALUE_VALSHIFT = "PaletteColor_DefaultValue_ValShift";
+
+        private const string HEX_FORMAT = "X2";
+
         public sbyte HueShift { get; private set; }
         public sbyte SatShift { get; private set; }
         public sbyte ValShift { get; private set; }
         private bool IsControlled;
+
         public class LinkCreatedEventArgs : EventArgs
         {
             public ColorLink ColorLink { get; private set; }
@@ -46,7 +53,6 @@ namespace KPal
             }
         }
 
-
         public HSVColor OriginalColor { get; private set; }
         public HSVColor HSVColor { get; private set; }
         public string ColorName { get; private set; }
@@ -62,7 +68,7 @@ namespace KPal
             InitializeComponent();
             OriginalColor = new HSVColor();
             HSVColor = new HSVColor();
-            ColorName = "UNKNOWN";
+            ColorName = ColorNames.UNKNOWN_COLOR;
             ParentPalette = parent;
             ControlGrid.Visibility = Visibility.Hidden;
             HueShift = ValShift = SatShift = 0;
@@ -93,8 +99,8 @@ namespace KPal
         {
             Color c = HSVColor.GetRGBColor();
             ColorRectangle.Fill = new SolidColorBrush(c);
-            HexValueLabel.Content = "HEX: #" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
-            HSVValueLabel.Content = HSVColor.Hue.ToString() + "° | " + HSVColor.Saturation.ToString() + "% | " + HSVColor.Brightness.ToString() + "%";
+            HexValueLabel.Content = string.Format("HEX: #{0}{1}{2}", c.R.ToString(HEX_FORMAT), c.G.ToString(HEX_FORMAT), c.B.ToString(HEX_FORMAT));
+            HSVValueLabel.Content = string.Format("{0}° | {1}% | {2}%", HSVColor.Hue.ToString(), HSVColor.Saturation.ToString(), HSVColor.Brightness.ToString());
             ColorName = ColorNames.Instance.GetColorName(c);
             ColorNameLabelText.Text = ColorName;
         }
@@ -250,9 +256,9 @@ namespace KPal
 
         private void AdjustmentSliderChanged()
         {
-            if (HueShift != TryFindResource("PaletteColor_DefaultValue_HueShift") as double? ||
-                SatShift != TryFindResource("PaletteColor_DefaultValue_SatShift") as double? ||
-                ValShift != TryFindResource("PaletteColor_DefaultValue_ValShift") as double?)
+            if (HueShift != TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_HUESHIFT) as double? ||
+                SatShift != TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_SATSHIFT) as double? ||
+                ValShift != TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_VALSHIFT) as double?)
             {
                 EditSymbol.Visibility = Visibility.Visible;
             }
@@ -268,24 +274,24 @@ namespace KPal
 
         private void EditSymbol_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            HueShiftSlider.Value = Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_HueShift") as double?);
-            SatShiftSlider.Value = Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_SatShift") as double?);
-            ValShiftSlider.Value = Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_ValShift") as double?);
+            HueShiftSlider.Value = Convert.ToDouble(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_HUESHIFT) as double?);
+            SatShiftSlider.Value = Convert.ToDouble(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_SATSHIFT) as double?);
+            ValShiftSlider.Value = Convert.ToDouble(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_VALSHIFT) as double?);
         }
 
         private void Label_Hue_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            HueShiftSlider.Value = Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_HueShift") as double?);
+            HueShiftSlider.Value = Convert.ToDouble(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_HUESHIFT) as double?);
         }
 
         private void Label_Sat_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SatShiftSlider.Value = Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_SatShift") as double?);
+            SatShiftSlider.Value = Convert.ToDouble(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_SATSHIFT) as double?);
         }
 
         private void Label_Val_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ValShiftSlider.Value = Convert.ToDouble(TryFindResource("PaletteColor_DefaultValue_ValShift") as double?);
+            ValShiftSlider.Value = Convert.ToDouble(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_VALSHIFT) as double?);
         }
     }
 }
