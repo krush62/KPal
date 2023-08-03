@@ -90,6 +90,11 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Properties\Resources.de.Designer.cs">
+      <DependentUpon>Resources.de.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -103,6 +108,11 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.de.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.de.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

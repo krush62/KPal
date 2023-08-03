@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Color_Unknown" xml:space="preserve">
+    <value>Unbekannt</value>
+  </data>
+  <data name="Editor_Label_ArrowExponent" xml:space="preserve">
+    <value>  ↳ Exponent</value>
+  </data>
+  <data name="Editor_Label_Base_Hue" xml:space="preserve">
+    <value>Basiston</value>
+  </data>
+  <data name="Editor_Label_Base_Sat" xml:space="preserve">
+    <value>Buntheit</value>
+  </data>
+  <data name="Editor_Label_Color_Count" xml:space="preserve">
+    <value>Farbanzahl</value>
+  </data>
+  <data name="Editor_Label_Hue_Shift" xml:space="preserve">
+    <value>Tonverschiebung</value>
+  </data>
+  <data name="Editor_Label_Hue_Shift_Exp" xml:space="preserve">
+    <value>TV Exponent</value>
+  </data>
+  <data name="Editor_Label_Sat_Shift" xml:space="preserve">
+    <value>Bunt Verschiebung</value>
+  </data>
+  <data name="Editor_Label_Sat_Shift_Exp" xml:space="preserve">
+    <value>BV Exponent</value>
+  </data>
+  <data name="Editor_Label_Value_Range" xml:space="preserve">
+    <value>Wertebereich</value>
+  </data>
+  <data name="Editor_MinMaxBtn_Tooltip" xml:space="preserve">
+    <value>Minimieren / Maximieren</value>
+  </data>
+  <data name="Editor_Ramp_Prefix" xml:space="preserve">
+    <value>Verlauf</value>
+  </data>
+  <data name="Editor_RemoveRampBtn_Tooltip" xml:space="preserve">
+    <value>Verlauf entfernen</value>
+  </data>
+  <data name="Editor_SaturationBtn_Tooltip" xml:space="preserve">
+    <value>Buntheitsverschiebung der dunklen Töne</value>
+  </data>
+  <data name="MainWendow_Msg_Cannot_Export_Empty_List" xml:space="preserve">
+    <value>Eine leere Liste kann nicht exportert werden</value>
+  </data>
+  <data name="MainWindow_Error_Exporting_Failed" xml:space="preserve">
+    <value>Exportieren der Datei fehlgeschlagen</value>
+  </data>
+  <data name="MainWindow_Error_General_Title" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="MainWindow_Error_Loading_Failed" xml:space="preserve">
+    <value>Laden der Datei fehlgeschlagen</value>
+  </data>
+  <data name="MainWindow_Error_Saving_Failed" xml:space="preserve">
+    <value>Speichern der Datei fehlgeschlagen</value>
+  </data>
+  <data name="MainWindow_ExportBtn_Tooltip" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="MainWindow_LoadBtn_Tooltip" xml:space="preserve">
+    <value>Palette laden</value>
+  </data>
+  <data name="MainWindow_Msg_Cannot_Save_Empty_List" xml:space="preserve">
+    <value>Eine leere Liste kann nicht gespeichert werden</value>
+  </data>
+  <data name="MainWindow_Msg_Discard_Message" xml:space="preserve">
+    <value>Ungespeicherte Änderungen verwerfen?</value>
+  </data>
+  <data name="MainWindow_Msg_Discard_Title" xml:space="preserve">
+    <value>Wirklich beenden?</value>
+  </data>
+  <data name="MainWindow_NewBtn_Tooltip" xml:space="preserve">
+    <value>Neue Palette</value>
+  </data>
+  <data name="MainWindow_NewRampBtn_Tooltip" xml:space="preserve">
+    <value>Neuer Farbverlauf</value>
+  </data>
+  <data name="MainWindow_SaveBtn_Tooltip" xml:space="preserve">
+    <value>Speichern (Speichern als... mit Rechtsklick)</value>
+  </data>
+  <data name="MainWindow_Warning_Cannot_Add_Ramp" xml:space="preserve">
+    <value>Kann keine weiteren Verläufe hinzufügen</value>
+  </data>
+  <data name="MainWindow_Warning_ColorList_Not_Found" xml:space="preserve">
+    <value>Datei mit Farbnamen ({0}) konnte nicht gefunden werden</value>
+  </data>
+  <data name="MainWindow_Warning_General_Title" xml:space="preserve">
+    <value>Warnung</value>
+  </data>
+  <data name="PaletteColor_Label_Hue" xml:space="preserve">
+    <value>Ton</value>
+  </data>
+  <data name="PaletteColor_Label_Sat" xml:space="preserve">
+    <value>Bunt</value>
+  </data>
+  <data name="PaletteColor_Label_Val" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+</root>
