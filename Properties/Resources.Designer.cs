@@ -61,6 +61,15 @@ namespace KPal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to KPal.
+        /// </summary>
+        public static string Application_Title {
+            get {
+                return ResourceManager.GetString("Application_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown.
         /// </summary>
         public static string Color_Unknown {

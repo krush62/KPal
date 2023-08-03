@@ -163,7 +163,7 @@ namespace KPal
             {
                 using StreamWriter sw = new(fileName);
                 sw.WriteLine("GIMP Palette");
-                sw.WriteLine("Name: {0}_{1}", MainWindow.KPAL_TITLE, DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss"));
+                sw.WriteLine("Name: {0}_{1}", Properties.Resources.Application_Title, DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss"));
                 sw.WriteLine("Columns: 16");
                 sw.WriteLine("#");
                 foreach (HSVColor color in colorList)
@@ -187,7 +187,7 @@ namespace KPal
             try
             {
                 using StreamWriter sw = new(fileName);                
-                sw.WriteLine("; {0}_{1}", MainWindow.KPAL_TITLE, DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss"));
+                sw.WriteLine("; {0}_{1}", Properties.Resources.Application_Title, DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss"));
                 int index = 0;
                 foreach (HSVColor color in colorList)
                 {

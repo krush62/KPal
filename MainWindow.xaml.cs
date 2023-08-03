@@ -38,8 +38,7 @@ namespace KPal
         private bool IsDataSaved;
         private (Visualizer, Visualizer) Visualizers;
 
-        public const string KPAL_TITLE = "KPal";
-        private const string KPAL_FILE_FILTER = KPAL_TITLE + " file (*.kpal)|*.kpal";
+        private readonly string KPAL_FILE_FILTER = Properties.Resources.Application_Title + " file (*.kpal)|*.kpal";
         private readonly string EXPORT_FILTER;
         private readonly List<FileExporter.ExportFilter> EXPORT_FILTER_LIST;        
         private const uint MAX_RAMPS = 255;
@@ -418,7 +417,7 @@ namespace KPal
         private void SetSaveFileName(string? saveFileName)
         {
             SaveFileName = saveFileName;
-            string titleString = KPAL_TITLE;
+            string titleString = Properties.Resources.Application_Title;
             if (saveFileName != null)
             {
                 titleString += " - " + Path.GetFileName(saveFileName);
