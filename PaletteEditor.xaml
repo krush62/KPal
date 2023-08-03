@@ -20,6 +20,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KPal"
+             xmlns:p = "clr-namespace:KPal.Properties"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="1000">
@@ -55,7 +56,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <ToggleButton Style="{DynamicResource ToggleButtonStyleSaturation}" Grid.Column="0" Grid.Row="1" Margin="2" Name="SatStyleButton" Click="SatStyleButton_Click" ToolTip="Saturation shift for darker colors"/>
+                        <ToggleButton Style="{DynamicResource ToggleButtonStyleSaturation}" Grid.Column="0" Grid.Row="1" Margin="2" Name="SatStyleButton" Click="SatStyleButton_Click" ToolTip="{x:Static p:Resources.Editor_SaturationBtn_Tooltip}"/>
                     </Grid>
 
                     <Grid Grid.Row="3" Grid.Column="0">
@@ -66,8 +67,8 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Button Style="{DynamicResource ButtonStyleClose}" Grid.Column="0" Grid.Row="0" Margin="2" Name="CloseButton" Click="CloseButton_Click" ToolTip="Remove"></Button>
-                        <ToggleButton Style="{DynamicResource ToggleButtonStyleMinMax}" Grid.Column="1" Grid.Row="0" Margin="2" Name="MinimizeToggleButton" Click="MinimizeToggleButton_Click" ToolTip="Minimize / Maximize"/>
+                        <Button Style="{DynamicResource ButtonStyleClose}" Grid.Column="0" Grid.Row="0" Margin="2" Name="CloseButton" Click="CloseButton_Click" ToolTip="{x:Static p:Resources.Editor_RemoveRampBtn_Tooltip}"></Button>
+                        <ToggleButton Style="{DynamicResource ToggleButtonStyleMinMax}" Grid.Column="1" Grid.Row="0" Margin="2" Name="MinimizeToggleButton" Click="MinimizeToggleButton_Click" ToolTip="{x:Static p:Resources.Editor_MinMaxBtn_Tooltip}"/>
                     </Grid>
 
                 </Grid>
@@ -107,7 +108,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 
                     <!-- COLOR COUNT -->
                     <Rectangle Grid.Row="0" Fill="#8c8c8c" Style="{StaticResource PaletteEditorBGRectangle}" Visibility="Hidden"/>
-                    <Label Content="Color Count" Grid.Row="0" Grid.Column="0" Style="{StaticResource PaletteEditorSettingLabel}" />
+                    <Label Content="{x:Static p:Resources.Editor_Label_Color_Count}" Grid.Row="0" Grid.Column="0" Style="{StaticResource PaletteEditorSettingLabel}" />
                     <Slider Grid.Row="0" Grid.Column="1" Name="ColorCountSlider" Maximum="{StaticResource PaletteEditor_ColorCountMax}" Minimum="{StaticResource PaletteEditor_ColorCountMin}" IsSnapToTickEnabled="True" Ticks="3, 5, 7, 9, 11, 13, 15" Value="{StaticResource PaletteEditor_DefaultValue_ColorCount}" ValueChanged="ColorCountSlider_ValueChanged"/>
                     <Label Content="{Binding ElementName=ColorCountSlider, Path=Value}" Grid.Row="0" Grid.Column="2" Style="{StaticResource PaletteEditorSettingLabel}" HorizontalAlignment="Center" Name="ColorCountValueLabel" MouseDoubleClick="ColorCountValueLabel_MouseDoubleClick"/>
 
@@ -115,7 +116,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 
                     <!-- BASE HUE -->
                     <Rectangle Grid.Row="2" Fill="#999999" Style="{StaticResource PaletteEditorBGRectangle}" Visibility="Hidden"/>
-                    <Label Content="Base Hue" Grid.Row="2" Grid.Column="0"  Style="{StaticResource PaletteEditorSettingLabel}" />
+                    <Label Content="{x:Static p:Resources.Editor_Label_Base_Hue}" Grid.Row="2" Grid.Column="0"  Style="{StaticResource PaletteEditorSettingLabel}" />
                     <Slider Grid.Row="2" Grid.Column="1" Name="BaseHueSlider" Maximum="{StaticResource PaletteEditor_HueMax}" Minimum="{StaticResource PaletteEditor_HueMin}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{StaticResource PaletteEditor_DefaultValue_BaseHue}" ValueChanged="PaletteSlider_ValueChanged"/>
                     <Label Content="{Binding ElementName=BaseHueSlider, Path=Value}" Grid.Row="2" Grid.Column="2" Style="{StaticResource PaletteEditorSettingLabel}" HorizontalAlignment="Center" Name="BaseHueValueLabel" MouseDoubleClick="BaseHueValueLabel_MouseDoubleClick"/>
 
@@ -123,7 +124,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 
                     <!-- BASE SATURATION -->
                     <Rectangle Grid.Row="4" Fill="#a6a6a6" Style="{StaticResource PaletteEditorBGRectangle}" Visibility="Hidden"/>
-                    <Label Content="Base Sat" Grid.Row="4" Grid.Column="0"  Style="{StaticResource PaletteEditorSettingLabel}" />
+                    <Label Content="{x:Static p:Resources.Editor_Label_Base_Sat}" Grid.Row="4" Grid.Column="0"  Style="{StaticResource PaletteEditorSettingLabel}" />
                     <Slider Grid.Row="4" Grid.Column="1" Name="BaseSaturationSlider" Maximum="{StaticResource PaletteEditor_SaturationMax}" Minimum="{StaticResource PaletteEditor_SaturationMin}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{StaticResource PaletteEditor_DefaultValue_BaseSaturation}" ValueChanged="PaletteSlider_ValueChanged"/>
                     <Label Content="{Binding ElementName=BaseSaturationSlider, Path=Value}" Grid.Row="4" Grid.Column="2" Style="{StaticResource PaletteEditorSettingLabel}" HorizontalAlignment="Center" Name="BaseSaturationValueLabel" MouseDoubleClick="BaseSaturationValueLabel_MouseDoubleClick"/>
 
@@ -131,7 +132,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 
                     <!-- HUE SHIFT -->
                     <Rectangle Grid.Row="6" Fill="#b3b3b3" Style="{StaticResource PaletteEditorBGRectangle}" Visibility="Hidden"/>
-                    <Label Content="Hue Shift" Grid.Row="6" Grid.Column="0" Style="{StaticResource PaletteEditorSettingLabel}" />
+                    <Label Content="{x:Static p:Resources.Editor_Label_Hue_Shift}" Grid.Row="6" Grid.Column="0" Style="{StaticResource PaletteEditorSettingLabel}" />
                     <Slider Grid.Row="6" Grid.Column="1" Name="HueShiftSlider" Maximum="{StaticResource PaletteEditor_HueShiftMax}" Minimum="{StaticResource PaletteEditor_HueShiftMin}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{StaticResource PaletteEditor_DefaultValue_HueShift}" ValueChanged="PaletteSlider_ValueChanged"/>
                     <Label Content="{Binding ElementName=HueShiftSlider, Path=Value}" Grid.Row="6" Grid.Column="2" Style="{StaticResource PaletteEditorSettingLabel}" HorizontalAlignment="Center" Name="HueShiftValueLabel" MouseDoubleClick="HueShiftValueLabel_MouseDoubleClick"/>
 
@@ -139,7 +140,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 
                     <!-- HUE SHIFT EXPONENT -->
                     <Rectangle Grid.Row="8" Fill="#bfbfbf" Style="{StaticResource PaletteEditorBGRectangle}" Visibility="Hidden"/>
-                    <Label Content="Hue Shift Exp" Grid.Row="8" Grid.Column="0" Style="{StaticResource PaletteEditorSettingLabel}" />
+                    <Label Content="{x:Static p:Resources.Editor_Label_Hue_Shift_Exp}" Grid.Row="8" Grid.Column="0" Style="{StaticResource PaletteEditorSettingLabel}" />
                     <Slider Grid.Row="8" Grid.Column="1" Name="HueShiftExponentSlider" Maximum="{StaticResource PaletteEditor_HueShiftExponentMax}" Minimum="{StaticResource PaletteEditor_HueShiftExponentMin}" Value="{StaticResource PaletteEditor_DefaultValue_HueShiftExponent}" ValueChanged="PaletteSlider_ValueChanged"/>
                     <Label Grid.Row="8" Grid.Column="2" Style="{StaticResource PaletteEditorSettingLabel}" HorizontalAlignment="Center" Name="HueShiftExponentValueLabel" MouseDoubleClick="HueShiftExponentValueLabel_MouseDoubleClick">
                         <Label.Content>
@@ -156,7 +157,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 
                     <!-- SATURATION SHIFT -->
                     <Rectangle Grid.Row="10" Fill="#cccccc" Style="{StaticResource PaletteEditorBGRectangle}" Visibility="Hidden"/>
-                    <Label Content="Sat Shift" Grid.Row="10" Grid.Column="0"  Style="{StaticResource PaletteEditorSettingLabel}" />
+                    <Label Content="{x:Static p:Resources.Editor_Label_Sat_Shift}" Grid.Row="10" Grid.Column="0"  Style="{StaticResource PaletteEditorSettingLabel}" />
                     <Slider Grid.Row="10" Grid.Column="1" Name="SaturationShiftSlider" Maximum="{StaticResource PaletteEditor_SaturationShiftMax}" Minimum="{StaticResource PaletteEditor_SaturationShiftMin}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{StaticResource PaletteEditor_DefaultValue_SaturationShift}" ValueChanged="PaletteSlider_ValueChanged"/>
                     <Label Content="{Binding ElementName=SaturationShiftSlider, Path=Value}" Grid.Row="10" Grid.Column="2" Style="{StaticResource PaletteEditorSettingLabel}" HorizontalAlignment="Center" Name="SaturationShiftValueLabel" MouseDoubleClick="SaturationShiftValueLabel_MouseDoubleClick"/>
 
@@ -164,7 +165,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 
                     <!-- SATURATION SHIFT EXPONENT -->
                     <Rectangle Grid.Row="12" Fill="#d9d9d9" Style="{StaticResource PaletteEditorBGRectangle}" Visibility="Hidden"/>
-                    <Label Content="Sat Shift Exp" Grid.Row="12" Grid.Column="0"  Style="{StaticResource PaletteEditorSettingLabel}" />
+                    <Label Content="{x:Static p:Resources.Editor_Label_Sat_Shift_Exp}" Grid.Row="12" Grid.Column="0"  Style="{StaticResource PaletteEditorSettingLabel}" />
                     <Slider Grid.Row="12" Grid.Column="1"  Name="SaturationShiftExponentSlider" Maximum="{StaticResource PaletteEditor_SaturationShiftExponentMax}" Minimum="{StaticResource PaletteEditor_SaturationShiftExponentMin}" Value="{StaticResource PaletteEditor_DefaultValue_SaturationShiftExponent}" ValueChanged="PaletteSlider_ValueChanged"/>
                     <Label Grid.Row="12" Grid.Column="2" Style="{StaticResource PaletteEditorSettingLabel}" HorizontalAlignment="Center" Name="SaturationShiftExponentValueLabel" MouseDoubleClick="SaturationShiftExponentValueLabel_MouseDoubleClick">
                         <Label.Content>
@@ -181,7 +182,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
 
                     <!-- VALUE RANGE -->
                     <Rectangle Grid.Row="14" Fill="#e6e6e6" Style="{StaticResource PaletteEditorBGRectangle}" Visibility="Hidden"/>
-                    <Label Content="Value Range" Grid.Row="14" Grid.Column="0" Style="{StaticResource PaletteEditorSettingLabel}" />
+                    <Label Content="{x:Static p:Resources.Editor_Label_Value_Range}" Grid.Row="14" Grid.Column="0" Style="{StaticResource PaletteEditorSettingLabel}" />
                     <xctk:RangeSlider Grid.Row="14" Grid.Column="1" Minimum="{StaticResource PaletteEditor_ValueMin}" Maximum="{StaticResource PaletteEditor_ValueMax}" LowerValue="{StaticResource PaletteEditor_DefaultValue_ValueMin}" HigherValue="{StaticResource PaletteEditor_DefaultValue_ValueMax}" TickFrequency="1" IsSnapToTickEnabled="True" Name="ValueRangeSlider" LowerValueChanged="ValueRangeSlider_LowerValueChanged" HigherValueChanged="ValueRangeSlider_HigherValueChanged" VerticalAlignment="Center"/>
                     <Label Grid.Row="14" Grid.Column="2" Style="{StaticResource PaletteEditorSettingLabel}" HorizontalAlignment="Center" Name="ValueRangeValueLabel" MouseDoubleClick="ValueRangeSlider_MouseDoubleClick">
                         <Label.Content>

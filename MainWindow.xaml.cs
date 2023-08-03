@@ -48,8 +48,8 @@ namespace KPal
         {
             InitializeComponent();
             if (!File.Exists(ColorNames.COLOR_FILE_NAME))
-            {
-                _ = MessageBox.Show("Color name list file (" + ColorNames.COLOR_FILE_NAME + ") was not found.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            {                
+                _ = MessageBox.Show(string.Format(Properties.Resources.MainWindow_Warning_ColorList_Not_Found, ColorNames.COLOR_FILE_NAME), Properties.Resources.MainWindow_Warning_General_Title, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             PaletteEditorList = new List<PaletteEditor>();
             ColorLinkList = new List<ColorLink>();
@@ -67,7 +67,7 @@ namespace KPal
             bool doClose = true;
             if (!IsDataSaved)
             {
-                MessageBoxResult mResult = MessageBox.Show("Discard unsaved changes?", "Do you really want to quit?", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                MessageBoxResult mResult = MessageBox.Show(Properties.Resources.MainWindow_Msg_Discard_Message, Properties.Resources.MainWindow_Msg_Discard_Title, MessageBoxButton.OKCancel, MessageBoxImage.Question);
                 doClose = (mResult == MessageBoxResult.OK);
             }
             e.Cancel = !doClose;
@@ -126,9 +126,8 @@ namespace KPal
             }
             else
             {
-                _ = MessageBox.Show("Cannot add more color ramps!", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                _ = MessageBox.Show(Properties.Resources.MainWindow_Warning_Cannot_Add_Ramp, Properties.Resources.MainWindow_Error_General_Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
-
         }
 
         private void AddNewPaletteEditor(SaveData.SavePalette? paletteData = null)
@@ -336,7 +335,7 @@ namespace KPal
         {
             if (PaletteEditorList.Count == 0)
             {
-                _ = MessageBox.Show("Cannot save empy list.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show(Properties.Resources.MainWindow_Msg_Cannot_Save_Empty_List, Properties.Resources.MainWindow_Error_General_Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -363,7 +362,7 @@ namespace KPal
             {
                 if (!sData.SaveToFile(SaveFileName))
                 {
-                    _ = MessageBox.Show("Saving file failed", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                    _ = MessageBox.Show(Properties.Resources.MainWindow_Error_Saving_Failed, Properties.Resources.MainWindow_Error_General_Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
@@ -377,7 +376,7 @@ namespace KPal
             bool doLoad = true;
             if (!IsDataSaved)
             {
-                MessageBoxResult mResult = MessageBox.Show("Discard unsaved changes?", "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                MessageBoxResult mResult = MessageBox.Show(Properties.Resources.MainWindow_Msg_Discard_Message, Properties.Resources.MainWindow_Warning_General_Title, MessageBoxButton.OKCancel, MessageBoxImage.Question);
                 doLoad = (mResult == MessageBoxResult.OK);
             }
 
@@ -394,7 +393,7 @@ namespace KPal
                     SaveData sData = new(openFileDialog.FileName, out bool success);
                     if (!success)
                     {
-                        _ = MessageBox.Show("Loading file failed", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                        _ = MessageBox.Show(Properties.Resources.MainWindow_Error_Loading_Failed, Properties.Resources.MainWindow_Error_General_Title, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     else
                     {
@@ -485,7 +484,7 @@ namespace KPal
             bool doNew = true;
             if (!IsDataSaved)
             {
-                MessageBoxResult mResult = MessageBox.Show("Discard unsaved changes?", "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                MessageBoxResult mResult = MessageBox.Show(Properties.Resources.MainWindow_Msg_Discard_Message, Properties.Resources.MainWindow_Warning_General_Title, MessageBoxButton.OKCancel, MessageBoxImage.Question);
                 doNew = (mResult == MessageBoxResult.OK);
             }
             if (doNew)
@@ -530,7 +529,7 @@ namespace KPal
         {
             if (PaletteEditorList.Count == 0)
             {
-                _ = MessageBox.Show("Cannot export empy list.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show(Properties.Resources.MainWendow_Msg_Cannot_Export_Empty_List, Properties.Resources.MainWindow_Error_General_Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -543,7 +542,7 @@ namespace KPal
                 EXPORT_FILTER_LIST[saveFileDialog.FilterIndex - 1].Efunction(saveFileDialog.FileName, new SaveData.SaveConversionData(PaletteEditorList, ColorLinkList, CreateSaveOptionList()), out bool success);
                 if (!success)
                 {
-                    _ = MessageBox.Show("Exporting file failed", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                    _ = MessageBox.Show(Properties.Resources.MainWindow_Error_Exporting_Failed, Properties.Resources.MainWindow_Error_General_Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
