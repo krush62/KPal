@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Color_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Editor_Label_ArrowExponent" xml:space="preserve">
+    <value>  ↳ Exponent</value>
+  </data>
   <data name="Editor_Label_Base_Hue" xml:space="preserve">
     <value>Base Hue</value>
   </data>
@@ -143,6 +149,9 @@
   </data>
   <data name="Editor_MinMaxBtn_Tooltip" xml:space="preserve">
     <value>Minimize / Maximize</value>
+  </data>
+  <data name="Editor_Ramp_Prefix" xml:space="preserve">
+    <value>Ramp</value>
   </data>
   <data name="Editor_RemoveRampBtn_Tooltip" xml:space="preserve">
     <value>Remove Ramp</value>
@@ -197,5 +206,14 @@
   </data>
   <data name="MainWindow_Warning_General_Title" xml:space="preserve">
     <value>Warning</value>
+  </data>
+  <data name="PaletteColor_Label_Hue" xml:space="preserve">
+    <value>Hue</value>
+  </data>
+  <data name="PaletteColor_Label_Sat" xml:space="preserve">
+    <value>Sat</value>
+  </data>
+  <data name="PaletteColor_Label_Val" xml:space="preserve">
+    <value>Val</value>
   </data>
 </root>

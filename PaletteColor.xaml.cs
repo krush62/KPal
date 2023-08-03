@@ -68,7 +68,7 @@ namespace KPal
             InitializeComponent();
             OriginalColor = new HSVColor();
             HSVColor = new HSVColor();
-            ColorName = ColorNames.UNKNOWN_COLOR;
+            ColorName = Properties.Resources.Color_Unknown;
             ParentPalette = parent;
             ControlGrid.Visibility = Visibility.Hidden;
             HueShift = ValShift = SatShift = 0;

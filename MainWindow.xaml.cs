@@ -178,7 +178,7 @@ namespace KPal
 
             if (paletteData == null)
             {
-                p.SetTitle(string.Format("Ramp {0}", (++RampCounter).ToString()));
+                p.SetTitle(string.Format("{0} {1}", Properties.Resources.Editor_Ramp_Prefix, (++RampCounter).ToString()));
             }
 
         }

@@ -19,6 +19,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:p = "clr-namespace:KPal.Properties"
              xmlns:local="clr-namespace:KPal"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="100" Background="Transparent">
@@ -32,7 +33,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Label FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center" Name="ColorNameLabel" Padding="0">
-            <TextBlock TextTrimming="WordEllipsis" Name="ColorNameLabelText" Padding="5">Unknown</TextBlock>
+            <TextBlock TextTrimming="WordEllipsis" Name="ColorNameLabelText" Padding="5" Text="{x:Static p:Resources.Color_Unknown}"></TextBlock>
         </Label>
         <Grid Grid.Column="0" Grid.Row="1" MouseEnter="ColorRectangle_MouseEnter" MouseLeave="ColorRectangle_MouseLeave">
             <Rectangle Fill="DeepPink" Name="ColorRectangle" MouseMove="ColorRectangle_MouseMove" AllowDrop="True" Drop="ColorRectangle_Drop" DragOver="ColorRectangle_DragOver" Grid.Row="0" Grid.Column="0"/>
@@ -49,9 +50,15 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="20"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" FontSize="16" Margin="0,-4,0,0">Hue</Label>
-                <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" FontSize="16" Margin="0,-4,0,0">Sat</Label>
-                <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" FontSize="16" Margin="0,-4,0,0">Val</Label>
+                <Viewbox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
+                    <Label Margin="0,-8,0,-8" Content="{x:Static p:Resources.PaletteColor_Label_Hue}"/>
+                </Viewbox>
+                <Viewbox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
+                    <Label Margin="0,-8,0,-8" Content="{x:Static p:Resources.PaletteColor_Label_Sat}"/>
+                </Viewbox>
+                <Viewbox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">
+                    <Label Margin="0,-8,0,-8" Content="{x:Static p:Resources.PaletteColor_Label_Val}"/>
+                </Viewbox>
                 <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
                     <Grid.LayoutTransform>
                         <RotateTransform Angle="-90"/>

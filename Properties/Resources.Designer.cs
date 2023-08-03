@@ -61,6 +61,24 @@ namespace KPal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Color_Unknown {
+            get {
+                return ResourceManager.GetString("Color_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to   ↳ Exponent.
+        /// </summary>
+        public static string Editor_Label_ArrowExponent {
+            get {
+                return ResourceManager.GetString("Editor_Label_ArrowExponent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Base Hue.
         /// </summary>
         public static string Editor_Label_Base_Hue {
@@ -138,6 +156,15 @@ namespace KPal.Properties {
         public static string Editor_MinMaxBtn_Tooltip {
             get {
                 return ResourceManager.GetString("Editor_MinMaxBtn_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ramp.
+        /// </summary>
+        public static string Editor_Ramp_Prefix {
+            get {
+                return ResourceManager.GetString("Editor_Ramp_Prefix", resourceCulture);
             }
         }
         
@@ -300,6 +327,33 @@ namespace KPal.Properties {
         public static string MainWindow_Warning_General_Title {
             get {
                 return ResourceManager.GetString("MainWindow_Warning_General_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hue.
+        /// </summary>
+        public static string PaletteColor_Label_Hue {
+            get {
+                return ResourceManager.GetString("PaletteColor_Label_Hue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sat.
+        /// </summary>
+        public static string PaletteColor_Label_Sat {
+            get {
+                return ResourceManager.GetString("PaletteColor_Label_Sat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Val.
+        /// </summary>
+        public static string PaletteColor_Label_Val {
+            get {
+                return ResourceManager.GetString("PaletteColor_Label_Val", resourceCulture);
             }
         }
     }

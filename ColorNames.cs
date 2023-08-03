@@ -56,7 +56,6 @@ namespace KPal
 
     public sealed class ColorNames
     {
-        public const string UNKNOWN_COLOR = "UNKNOWN";
         public const string COLOR_FILE_NAME = "colors.csv";
         private const int STRING_POS_R = 0;
         private const int STRING_POS_G = 2;
@@ -82,7 +81,7 @@ namespace KPal
 
         public string GetColorName(System.Windows.Media.Color color)
         {
-            string bestName = UNKNOWN_COLOR;
+            string bestName = Properties.Resources.Color_Unknown;
             float bestDelta = 100f;
             foreach (NamedColor c in colors)
             {
