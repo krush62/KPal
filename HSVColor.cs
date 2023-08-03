@@ -180,16 +180,16 @@ namespace KPal
         public bool Equals(HSVColor? other)
         {
             if (other is null)
-            { 
+            {
                 return false;
             }
             else if (ReferenceEquals(this, other))
-            { 
-                return true; 
+            {
+                return true;
             }
             else
             {
-                return this.Brightness == other.Brightness && this.Saturation == other.Saturation && this.Hue == other.Hue;
+                return Brightness == other.Brightness && Saturation == other.Saturation && Hue == other.Hue;
             }
         }
 
@@ -206,18 +206,18 @@ namespace KPal
         public static bool operator ==(HSVColor? obj1, HSVColor? obj2)
         {
             if (ReferenceEquals(obj1, obj2))
-            { 
+            {
                 return true;
             }
             else if (obj1 is null || obj2 is null)
-            { 
+            {
                 return false;
             }
             else
             {
                 return obj1.Equals(obj2);
             }
-        }        
+        }
         public static bool operator !=(HSVColor? obj1, HSVColor? obj2) => !(obj1 == obj2);
 
         public override bool Equals(object? obj)
@@ -229,12 +229,12 @@ namespace KPal
             else
             {
                 return Equals(obj as HSVColor);
-            }            
+            }
         }
 
         public override int GetHashCode()
         {
-           return GetHashCode(this);
+            return GetHashCode(this);
         }
     }
 }

@@ -28,19 +28,19 @@ namespace KPal
 {
     public partial class PaletteEditor : UserControl
     {
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMAXIMIZED = "PaletteEditor_DefaultValue_HeightMaximized";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMINIMIZED = "PaletteEditor_DefaultValue_HeightMinimized";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_COLORCOUNT = "PaletteEditor_DefaultValue_ColorCount";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_BASEHUE = "PaletteEditor_DefaultValue_BaseHue";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_BASESATURATION = "PaletteEditor_DefaultValue_BaseSaturation";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_HUESHIFT = "PaletteEditor_DefaultValue_HueShift";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_HUESHIFTEXPONENT = "PaletteEditor_DefaultValue_HueShiftExponent";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_SATURATIONSHIFT = "PaletteEditor_DefaultValue_SaturationShift";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_SATURATIONSHIFTEXPONENT = "PaletteEditor_DefaultValue_SaturationShiftExponent";
-        const string ID_PALETTEEDITOR_VALUEMIN = "PaletteEditor_ValueMin";
-        const string ID_PALETTEEDITOR_VALUEMAX = "PaletteEditor_ValueMax";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_VALUEMAX = "PaletteEditor_DefaultValue_ValueMax";
-        const string ID_PALETTEEDITOR_DEFAULTVALUE_VALUEMIN = "PaletteEditor_DefaultValue_ValueMin";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMAXIMIZED = "PaletteEditor_DefaultValue_HeightMaximized";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMINIMIZED = "PaletteEditor_DefaultValue_HeightMinimized";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_COLORCOUNT = "PaletteEditor_DefaultValue_ColorCount";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_BASEHUE = "PaletteEditor_DefaultValue_BaseHue";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_BASESATURATION = "PaletteEditor_DefaultValue_BaseSaturation";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_HUESHIFT = "PaletteEditor_DefaultValue_HueShift";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_HUESHIFTEXPONENT = "PaletteEditor_DefaultValue_HueShiftExponent";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_SATURATIONSHIFT = "PaletteEditor_DefaultValue_SaturationShift";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_SATURATIONSHIFTEXPONENT = "PaletteEditor_DefaultValue_SaturationShiftExponent";
+        private const string ID_PALETTEEDITOR_VALUEMIN = "PaletteEditor_ValueMin";
+        private const string ID_PALETTEEDITOR_VALUEMAX = "PaletteEditor_ValueMax";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_VALUEMAX = "PaletteEditor_DefaultValue_ValueMax";
+        private const string ID_PALETTEEDITOR_DEFAULTVALUE_VALUEMIN = "PaletteEditor_DefaultValue_ValueMin";
 
 
         public enum SaturationCurveMode : byte
