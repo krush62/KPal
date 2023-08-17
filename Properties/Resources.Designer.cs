@@ -196,6 +196,60 @@ namespace KPal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created by Andreas Kruschinski.
+        /// </summary>
+        public static string InfoWindow_Created_By_krush62 {
+            get {
+                return ResourceManager.GetString("InfoWindow_Created_By_krush62", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www.gnu.org/licenses/gpl-3.0.html#license-text.
+        /// </summary>
+        public static string InfoWindow_GPL_Link {
+            get {
+                return ResourceManager.GetString("InfoWindow_GPL_Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Licensed under GPLv3.
+        /// </summary>
+        public static string InfoWindow_Licensed_under_GPLv3 {
+            get {
+                return ResourceManager.GetString("InfoWindow_Licensed_under_GPLv3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/krush62/KPal.
+        /// </summary>
+        public static string InfoWindow_Project_Link {
+            get {
+                return ResourceManager.GetString("InfoWindow_Project_Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project Sources:.
+        /// </summary>
+        public static string InfoWindow_Project_Sources {
+            get {
+                return ResourceManager.GetString("InfoWindow_Project_Sources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2023.
+        /// </summary>
+        public static string InfoWindow_Year {
+            get {
+                return ResourceManager.GetString("InfoWindow_Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot export empy list..
         /// </summary>
         public static string MainWendow_Msg_Cannot_Export_Empty_List {
@@ -246,6 +300,15 @@ namespace KPal.Properties {
         public static string MainWindow_ExportBtn_Tooltip {
             get {
                 return ResourceManager.GetString("MainWindow_ExportBtn_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        public static string MainWindow_InfoBtn_Tooltip {
+            get {
+                return ResourceManager.GetString("MainWindow_InfoBtn_Tooltip", resourceCulture);
             }
         }
         

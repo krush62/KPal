@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -532,10 +533,13 @@ namespace KPal
                 return;
             }
 
+
             SaveFileDialog saveFileDialog = new()
             {
-                Filter = EXPORT_FILTER
+                Filter = EXPORT_FILTER,
+                FileName = SaveFileName is not null ? Path.GetFileNameWithoutExtension(SaveFileName) : "palette_export"
             };
+            
             if (saveFileDialog.ShowDialog() == true)
             {
                 EXPORT_FILTER_LIST[saveFileDialog.FilterIndex - 1].Efunction(saveFileDialog.FileName, new SaveData.SaveConversionData(PaletteEditorList, ColorLinkList, CreateSaveOptionList()), out bool success);
@@ -555,6 +559,15 @@ namespace KPal
                 { OPTION_TYPE_GENERAL.RAMP_COUNTER, RampCounter }
             };
             return options;
+        }
+
+        private void InfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            InfoWindow i = new()
+            {
+                Owner = this
+            };
+            i.ShowDialog();
         }
     }
 }

@@ -180,6 +180,9 @@
   <data name="MainWindow_ExportBtn_Tooltip" xml:space="preserve">
     <value>Exportieren</value>
   </data>
+  <data name="MainWindow_InfoBtn_Tooltip" xml:space="preserve">
+    <value>Info</value>
+  </data>
   <data name="MainWindow_LoadBtn_Tooltip" xml:space="preserve">
     <value>Palette laden</value>
   </data>

@@ -162,6 +162,24 @@
   <data name="Editor_SaturationBtn_Tooltip" xml:space="preserve">
     <value>Saturation shift for darker colors</value>
   </data>
+  <data name="InfoWindow_Created_By_krush62" xml:space="preserve">
+    <value>Created by Andreas Kruschinski</value>
+  </data>
+  <data name="InfoWindow_GPL_Link" xml:space="preserve">
+    <value>https://www.gnu.org/licenses/gpl-3.0.html#license-text</value>
+  </data>
+  <data name="InfoWindow_Licensed_under_GPLv3" xml:space="preserve">
+    <value>Licensed under GPLv3</value>
+  </data>
+  <data name="InfoWindow_Project_Link" xml:space="preserve">
+    <value>https://github.com/krush62/KPal</value>
+  </data>
+  <data name="InfoWindow_Project_Sources" xml:space="preserve">
+    <value>Project Sources:</value>
+  </data>
+  <data name="InfoWindow_Year" xml:space="preserve">
+    <value>2023</value>
+  </data>
   <data name="MainWendow_Msg_Cannot_Export_Empty_List" xml:space="preserve">
     <value>Cannot export empy list.</value>
   </data>
@@ -179,6 +197,9 @@
   </data>
   <data name="MainWindow_ExportBtn_Tooltip" xml:space="preserve">
     <value>Export</value>
+  </data>
+  <data name="MainWindow_InfoBtn_Tooltip" xml:space="preserve">
+    <value>Info</value>
   </data>
   <data name="MainWindow_LoadBtn_Tooltip" xml:space="preserve">
     <value>Load Palette</value>
