@@ -19,6 +19,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace KPal
 {
@@ -29,11 +30,16 @@ namespace KPal
         private const string ID_PALETTECOLOR_DEFAULTVALUE_VALSHIFT = "PaletteColor_DefaultValue_ValShift";
 
         private const string HEX_FORMAT = "X2";
+        private const int HEX_COLOR_LENGTH = 6;
+
+        private const int COPY_FLASH_LENGTH_MS = 200;
 
         public sbyte HueShift { get; private set; }
         public sbyte SatShift { get; private set; }
         public sbyte ValShift { get; private set; }
         private bool IsControlled;
+
+        private readonly DispatcherTimer CopyBackgroundTimer;
 
         public class LinkCreatedEventArgs : EventArgs
         {
@@ -72,6 +78,9 @@ namespace KPal
             ParentPalette = parent;
             ControlGrid.Visibility = Visibility.Hidden;
             HueShift = ValShift = SatShift = 0;
+            CopyBackgroundTimer = new DispatcherTimer();
+            CopyBackgroundTimer.Tick += CopyBackgroundTimer_Tick;
+            CopyBackgroundTimer.Interval = new TimeSpan(0, 0, 0, 0, COPY_FLASH_LENGTH_MS);
         }
 
         public void SetColor(HSVColor hsvColor)
@@ -292,6 +301,26 @@ namespace KPal
         private void Label_Val_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ValShiftSlider.Value = Convert.ToDouble(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_VALSHIFT) as double?);
+        }
+
+        private void HexValueLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender == HexValueLabel)
+            {
+                string? hexString = HexValueLabel.Content.ToString();
+                if (hexString != null && hexString.Length >= HEX_COLOR_LENGTH) 
+                {
+                    Clipboard.SetText(hexString.Substring(hexString.Length - HEX_COLOR_LENGTH, HEX_COLOR_LENGTH));
+                    HexValueLabel.Background = new SolidColorBrush(Colors.White);
+                    CopyBackgroundTimer.Start();
+                }
+            }
+        }
+
+        private void CopyBackgroundTimer_Tick(object? sender, EventArgs e)
+        {
+            HexValueLabel.Background = HSVValueLabel.Background;
+            CopyBackgroundTimer.Stop();
         }
     }
 }

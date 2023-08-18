@@ -28,6 +28,7 @@ This application needs .NET (Microsoft Windows Deskop Runtime) to work.
 * Save as a different file: a "Save as" functionality is available when using the right mouse button for the save button
 * Reset slider values: double clicking the numeric value representation will reset the corresponding slider
 * To change the visualizer type on the bottom, hover the visualizer area and select a different visualizer from the drop-down list.
+* You can copy the hex value of a color by clicking the label showing the hex value
 
 ## Screenshots
 ![SCREENSHOT](screenshots/screenshot.jpg?raw=true)

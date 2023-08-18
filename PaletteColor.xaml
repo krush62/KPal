@@ -93,7 +93,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                 <RowDefinition Height="18" />
                 <RowDefinition Height="18" />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" FontSize="17" HorizontalAlignment="Center" Padding="0" VerticalAlignment="Center" Name="HexValueLabel" />
+            <Label Grid.Row="0" Grid.Column="0" FontSize="17" HorizontalAlignment="Center" Padding="0" VerticalAlignment="Center" Name="HexValueLabel" MouseDown="HexValueLabel_MouseDown" />
             <Label Grid.Row="1" Grid.Column="0" FontSize="17" HorizontalAlignment="Center" Padding="0" VerticalAlignment="Center" Name="HSVValueLabel" />
         </Grid>
     </Grid>
