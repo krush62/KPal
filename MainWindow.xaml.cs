@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,14 +40,14 @@ namespace KPal
 
         private readonly string KPAL_FILE_FILTER = Properties.Resources.Application_Title + " file (*.kpal)|*.kpal";
         private readonly string EXPORT_FILTER;
-        private readonly List<FileExporter.ExportFilter> EXPORT_FILTER_LIST;        
+        private readonly List<FileExporter.ExportFilter> EXPORT_FILTER_LIST;
         private const uint MAX_RAMPS = 255;
 
         public MainWindow()
         {
             InitializeComponent();
             if (!File.Exists(ColorNames.COLOR_FILE_NAME))
-            {                
+            {
                 _ = MessageBox.Show(string.Format(Properties.Resources.MainWindow_Warning_ColorList_Not_Found, ColorNames.COLOR_FILE_NAME), Properties.Resources.MainWindow_Warning_General_Title, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             PaletteEditorList = new List<PaletteEditor>();
@@ -180,7 +179,6 @@ namespace KPal
             {
                 p.SetTitle(string.Format("{0} {1}", Properties.Resources.Editor_Ramp_Prefix, (++RampCounter).ToString()));
             }
-
         }
 
 
@@ -539,7 +537,7 @@ namespace KPal
                 Filter = EXPORT_FILTER,
                 FileName = SaveFileName is not null ? Path.GetFileNameWithoutExtension(SaveFileName) : "palette_export"
             };
-            
+
             if (saveFileDialog.ShowDialog() == true)
             {
                 EXPORT_FILTER_LIST[saveFileDialog.FilterIndex - 1].Efunction(saveFileDialog.FileName, new SaveData.SaveConversionData(PaletteEditorList, ColorLinkList, CreateSaveOptionList()), out bool success);
@@ -567,7 +565,7 @@ namespace KPal
             {
                 Owner = this
             };
-            i.ShowDialog();
+            _ = i.ShowDialog();
         }
     }
 }
