@@ -331,7 +331,6 @@ namespace KPal
                         break;
                     }
                 }
-
             }
         }
 
@@ -430,7 +429,6 @@ namespace KPal
                         {
                             col.Saturation = centerColor.Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value));
                         }
-
 
                         col.Hue = centerColor.Hue - Convert.ToInt32(HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value));
                         col.Brightness = centerColor.Brightness - Convert.ToInt32(valueStepSize * distanceToCenter);
@@ -558,8 +556,6 @@ namespace KPal
                         {
                             centerColor.Saturation = ControllerColor.Saturation - Convert.ToInt32(satShift);
                         }
-
-
                     }
                     PaletteColorList[centerIndex].SetColor(centerColor);
 
@@ -575,8 +571,6 @@ namespace KPal
                             if (i < centerIndex)
                             {
                                 col.Hue = centerColor.Hue - Convert.ToInt32(hueShift);
-
-
                                 if (SatCurveMode == SaturationCurveMode.ONLY_HIGHER_VALUES)
                                 {
                                     col.Saturation = centerColor.Saturation;
@@ -704,7 +698,6 @@ namespace KPal
                     SatCurveMode = PaletteEditor.SaturationCurveMode.HIGHER_AND_LOWER_VALUES;
                 }
             }
-
 
             CalculateColors();
             UpdateColors();
