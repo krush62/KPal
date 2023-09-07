@@ -187,7 +187,7 @@ namespace KPal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saturation shift for darker colors.
+        ///   Looks up a localized string similar to Saturation Shift.
         /// </summary>
         public static string Editor_SaturationBtn_Tooltip {
             get {

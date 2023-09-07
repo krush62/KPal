@@ -160,7 +160,7 @@
     <value>Remove Ramp</value>
   </data>
   <data name="Editor_SaturationBtn_Tooltip" xml:space="preserve">
-    <value>Saturation shift for darker colors</value>
+    <value>Saturation Shift</value>
   </data>
   <data name="InfoWindow_Created_By_krush62" xml:space="preserve">
     <value>Created by Andreas Kruschinski</value>

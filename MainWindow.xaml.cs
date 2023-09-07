@@ -40,16 +40,16 @@ namespace KPal
 
         private readonly string KPAL_FILE_FILTER = Properties.Resources.Application_Title + " file (*.kpal)|*.kpal";
         private readonly string EXPORT_FILTER;
-        private readonly List<FileExporter.ExportFilter> EXPORT_FILTER_LIST;        
+        private readonly List<FileExporter.ExportFilter> EXPORT_FILTER_LIST;
 
         public MainWindow()
         {
             InitializeComponent();
             if (!File.Exists(ColorNames.COLOR_FILE_NAME))
             {
-                _ = MessageBox.Show(string.Format(Properties.Resources.MainWindow_Warning_ColorList_Not_Found, ColorNames.COLOR_FILE_NAME), 
-                    Properties.Resources.MainWindow_Warning_General_Title, 
-                    MessageBoxButton.OK, 
+                _ = MessageBox.Show(string.Format(Properties.Resources.MainWindow_Warning_ColorList_Not_Found, ColorNames.COLOR_FILE_NAME),
+                    Properties.Resources.MainWindow_Warning_General_Title,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
             PaletteEditorList = new List<PaletteEditor>();
@@ -68,9 +68,9 @@ namespace KPal
             bool doClose = true;
             if (!IsDataSaved)
             {
-                MessageBoxResult mResult = MessageBox.Show(Properties.Resources.MainWindow_Msg_Discard_Message, 
-                    Properties.Resources.MainWindow_Msg_Discard_Title, 
-                    MessageBoxButton.OKCancel, 
+                MessageBoxResult mResult = MessageBox.Show(Properties.Resources.MainWindow_Msg_Discard_Message,
+                    Properties.Resources.MainWindow_Msg_Discard_Title,
+                    MessageBoxButton.OKCancel,
                     MessageBoxImage.Question);
                 doClose = (mResult == MessageBoxResult.OK);
             }
@@ -130,9 +130,9 @@ namespace KPal
             }
             else
             {
-                _ = MessageBox.Show(Properties.Resources.MainWindow_Warning_Cannot_Add_Ramp, 
-                    Properties.Resources.MainWindow_Error_General_Title, 
-                    MessageBoxButton.OK, 
+                _ = MessageBox.Show(Properties.Resources.MainWindow_Warning_Cannot_Add_Ramp,
+                    Properties.Resources.MainWindow_Error_General_Title,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Exclamation);
             }
         }
@@ -341,9 +341,9 @@ namespace KPal
         {
             if (PaletteEditorList.Count == 0)
             {
-                _ = MessageBox.Show(Properties.Resources.MainWindow_Msg_Cannot_Save_Empty_List, 
-                    Properties.Resources.MainWindow_Error_General_Title, 
-                    MessageBoxButton.OK, 
+                _ = MessageBox.Show(Properties.Resources.MainWindow_Msg_Cannot_Save_Empty_List,
+                    Properties.Resources.MainWindow_Error_General_Title,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return;
             }
@@ -371,9 +371,9 @@ namespace KPal
             {
                 if (!sData.SaveToFile(SaveFileName))
                 {
-                    _ = MessageBox.Show(Properties.Resources.MainWindow_Error_Saving_Failed, 
-                        Properties.Resources.MainWindow_Error_General_Title, 
-                        MessageBoxButton.OK, 
+                    _ = MessageBox.Show(Properties.Resources.MainWindow_Error_Saving_Failed,
+                        Properties.Resources.MainWindow_Error_General_Title,
+                        MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 }
                 else
@@ -388,9 +388,9 @@ namespace KPal
             bool doLoad = true;
             if (!IsDataSaved)
             {
-                MessageBoxResult mResult = MessageBox.Show(Properties.Resources.MainWindow_Msg_Discard_Message, 
-                    Properties.Resources.MainWindow_Warning_General_Title, 
-                    MessageBoxButton.OKCancel, 
+                MessageBoxResult mResult = MessageBox.Show(Properties.Resources.MainWindow_Msg_Discard_Message,
+                    Properties.Resources.MainWindow_Warning_General_Title,
+                    MessageBoxButton.OKCancel,
                     MessageBoxImage.Question);
                 doLoad = (mResult == MessageBoxResult.OK);
             }
@@ -408,9 +408,9 @@ namespace KPal
                     SaveData sData = new(openFileDialog.FileName, out bool success);
                     if (!success)
                     {
-                        _ = MessageBox.Show(Properties.Resources.MainWindow_Error_Loading_Failed, 
-                            Properties.Resources.MainWindow_Error_General_Title, 
-                            MessageBoxButton.OK, 
+                        _ = MessageBox.Show(Properties.Resources.MainWindow_Error_Loading_Failed,
+                            Properties.Resources.MainWindow_Error_General_Title,
+                            MessageBoxButton.OK,
                             MessageBoxImage.Error);
                     }
                     else
@@ -502,9 +502,9 @@ namespace KPal
             bool doNew = true;
             if (!IsDataSaved)
             {
-                MessageBoxResult mResult = MessageBox.Show(Properties.Resources.MainWindow_Msg_Discard_Message, 
-                    Properties.Resources.MainWindow_Warning_General_Title, 
-                    MessageBoxButton.OKCancel, 
+                MessageBoxResult mResult = MessageBox.Show(Properties.Resources.MainWindow_Msg_Discard_Message,
+                    Properties.Resources.MainWindow_Warning_General_Title,
+                    MessageBoxButton.OKCancel,
                     MessageBoxImage.Question);
                 doNew = (mResult == MessageBoxResult.OK);
             }
@@ -550,9 +550,9 @@ namespace KPal
         {
             if (PaletteEditorList.Count == 0)
             {
-                _ = MessageBox.Show(Properties.Resources.MainWendow_Msg_Cannot_Export_Empty_List, 
-                    Properties.Resources.MainWindow_Error_General_Title, 
-                    MessageBoxButton.OK, 
+                _ = MessageBox.Show(Properties.Resources.MainWendow_Msg_Cannot_Export_Empty_List,
+                    Properties.Resources.MainWindow_Error_General_Title,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return;
             }
@@ -566,13 +566,13 @@ namespace KPal
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                EXPORT_FILTER_LIST[saveFileDialog.FilterIndex - 1].Efunction(saveFileDialog.FileName, 
+                EXPORT_FILTER_LIST[saveFileDialog.FilterIndex - 1].Efunction(saveFileDialog.FileName,
                     new SaveData.SaveConversionData(PaletteEditorList, ColorLinkList, CreateSaveOptionList()), out bool success);
                 if (!success)
                 {
-                    _ = MessageBox.Show(Properties.Resources.MainWindow_Error_Exporting_Failed, 
-                        Properties.Resources.MainWindow_Error_General_Title, 
-                        MessageBoxButton.OK, 
+                    _ = MessageBox.Show(Properties.Resources.MainWindow_Error_Exporting_Failed,
+                        Properties.Resources.MainWindow_Error_General_Title,
+                        MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 }
             }

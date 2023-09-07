@@ -46,6 +46,12 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
     <BitmapImage x:Key="ButtonSatHighNormal" UriSource="pack://application:,,,/buttons/sat_high_normal.png" RenderOptions.BitmapScalingMode="Linear"/>
     <BitmapImage x:Key="ButtonSatHighHover" UriSource="pack://application:,,,/buttons/sat_high_hover.png" RenderOptions.BitmapScalingMode="Linear"/>
     <BitmapImage x:Key="ButtonSatHighPressed" UriSource="pack://application:,,,/buttons/sat_high_pressed.png" RenderOptions.BitmapScalingMode="Linear"/>
+    <BitmapImage x:Key="ButtonSatLowNormal" UriSource="pack://application:,,,/buttons/sat_low_normal.png" RenderOptions.BitmapScalingMode="Linear"/>
+    <BitmapImage x:Key="ButtonSatLowHover" UriSource="pack://application:,,,/buttons/sat_low_hover.png" RenderOptions.BitmapScalingMode="Linear"/>
+    <BitmapImage x:Key="ButtonSatLowPressed" UriSource="pack://application:,,,/buttons/sat_low_pressed.png" RenderOptions.BitmapScalingMode="Linear"/>
+    <BitmapImage x:Key="ButtonSatLinearNormal" UriSource="pack://application:,,,/buttons/sat_linear_normal.png" RenderOptions.BitmapScalingMode="Linear"/>
+    <BitmapImage x:Key="ButtonSatLinearHover" UriSource="pack://application:,,,/buttons/sat_linear_hover.png" RenderOptions.BitmapScalingMode="Linear"/>
+    <BitmapImage x:Key="ButtonSatLinearPressed" UriSource="pack://application:,,,/buttons/sat_linear_pressed.png" RenderOptions.BitmapScalingMode="Linear"/>
     <BitmapImage x:Key="ButtonSatBothNormal" UriSource="pack://application:,,,/buttons/sat_both_normal.png" RenderOptions.BitmapScalingMode="Linear"/>
     <BitmapImage x:Key="ButtonSatBothHover" UriSource="pack://application:,,,/buttons/sat_both_hover.png" RenderOptions.BitmapScalingMode="Linear"/>
     <BitmapImage x:Key="ButtonSatBothPressed" UriSource="pack://application:,,,/buttons/sat_both_pressed.png" RenderOptions.BitmapScalingMode="Linear"/>
@@ -1192,7 +1198,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
         </Setter>
     </Style>
 
-    <Style x:Key="ToggleButtonStyleSaturation" TargetType="{x:Type ToggleButton}">
+    <Style x:Key="ToggleButtonStyleSaturation1" TargetType="{x:Type ToggleButton}">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
@@ -1205,6 +1211,111 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                         <Image Name="MinNormalBtn" Source="{StaticResource ButtonSatBothNormal}" />
                         <Image Name="MinHoverBtn" Source="{StaticResource ButtonSatBothHover}" Visibility="Hidden"/>
                         <Image Name="MinPressedBtn" Source="{StaticResource ButtonSatBothPressed}" Visibility="Hidden"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="false"/>
+                                <Condition Property="Button.IsDefaulted" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="MinNormalBtn" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="MinHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinPressedBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxNormalBtn" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="MaxHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxPressedBtn" Property="Visibility" Value="Hidden"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="false"/>
+                                <Condition Property="IsMouseOver" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="MinNormalBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinHoverBtn" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="MinPressedBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxNormalBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxPressedBtn" Property="Visibility" Value="Hidden"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="false"/>
+                                <Condition Property="IsPressed" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="MinNormalBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinPressedBtn" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="MaxNormalBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxPressedBtn" Property="Visibility" Value="Hidden"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="MinNormalBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinPressedBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxNormalBtn" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="MaxHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxPressedBtn" Property="Visibility" Value="Hidden"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="true"/>
+                                <Condition Property="IsMouseOver" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="MinNormalBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinPressedBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxNormalBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxHoverBtn" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="MaxPressedBtn" Property="Visibility" Value="Hidden"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="true"/>
+                                <Condition Property="IsPressed" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="MinNormalBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MinPressedBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxNormalBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxHoverBtn" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxPressedBtn" Property="Visibility" Value="Visible"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="ToggleButtonStyleSaturation2" TargetType="{x:Type ToggleButton}">
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Image Name="MaxNormalBtn" Source="{StaticResource ButtonSatLowNormal}" Visibility="Hidden"/>
+                        <Image Name="MaxHoverBtn" Source="{StaticResource ButtonSatLowHover}" Visibility="Hidden"/>
+                        <Image Name="MaxPressedBtn" Source="{StaticResource ButtonSatLowPressed}" Visibility="Hidden"/>
+                        <Image Name="MinNormalBtn" Source="{StaticResource ButtonSatLinearNormal}" />
+                        <Image Name="MinHoverBtn" Source="{StaticResource ButtonSatLinearHover}" Visibility="Hidden"/>
+                        <Image Name="MinPressedBtn" Source="{StaticResource ButtonSatLinearPressed}" Visibility="Hidden"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <MultiTrigger>

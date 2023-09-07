@@ -160,7 +160,7 @@
     <value>Verlauf entfernen</value>
   </data>
   <data name="Editor_SaturationBtn_Tooltip" xml:space="preserve">
-    <value>Buntheitsverschiebung der dunklen Töne</value>
+    <value>Buntheitsverschiebung</value>
   </data>
   <data name="MainWendow_Msg_Cannot_Export_Empty_List" xml:space="preserve">
     <value>Eine leere Liste kann nicht exportert werden</value>

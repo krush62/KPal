@@ -58,7 +58,8 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <ToggleButton Style="{DynamicResource ToggleButtonStyleSaturation}" Grid.Column="0" Grid.Row="1" Margin="2" Name="SatStyleButton" Click="SatStyleButton_Click" ToolTip="{x:Static p:Resources.Editor_SaturationBtn_Tooltip}"/>
+                        <ToggleButton Style="{DynamicResource ToggleButtonStyleSaturation1}" Grid.Column="0" Grid.Row="1" Margin="2" Name="SatStyleButton1" Click="SatStyleButton_Click" ToolTip="{x:Static p:Resources.Editor_SaturationBtn_Tooltip}" Visibility="Visible"/>
+                        <ToggleButton Style="{DynamicResource ToggleButtonStyleSaturation2}" Grid.Column="0" Grid.Row="1" Margin="2" Name="SatStyleButton2" Click="SatStyleButton_Click" ToolTip="{x:Static p:Resources.Editor_SaturationBtn_Tooltip}" Visibility="Hidden"/>
                     </Grid>
 
                     <Grid Grid.Row="3" Grid.Column="0">
