@@ -23,6 +23,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Security;
 
 namespace KPal
 {
@@ -513,7 +514,7 @@ namespace KPal
                         rgbColor.ScR.ToString(CultureInfo.InvariantCulture),
                         rgbColor.ScG.ToString(CultureInfo.InvariantCulture),
                         rgbColor.ScB.ToString(CultureInfo.InvariantCulture),
-                        ColorNames.Instance.GetColorName(rgbColor));
+                         SecurityElement.Escape(ColorNames.Instance.GetColorName(rgbColor)));
                 }
                 sw.WriteLine("\t\t</page>");
                 sw.WriteLine("\t</colors>");
@@ -541,7 +542,7 @@ namespace KPal
                         rgbColor.R.ToString(HEX_FORMAT).ToLower(),
                         rgbColor.G.ToString(HEX_FORMAT).ToLower(),
                         rgbColor.B.ToString(HEX_FORMAT).ToLower());                    
-                    sw.WriteLine("\t<draw:color draw:name=\"{0}\" draw:color=\"#{1}\"/>", ColorNames.Instance.GetColorName(rgbColor), colorHex);
+                    sw.WriteLine("\t<draw:color draw:name=\"{0}\" draw:color=\"#{1}\"/>", SecurityElement.Escape(ColorNames.Instance.GetColorName(rgbColor)), colorHex);
                 }
                 sw.WriteLine("</office:color-table>");
             }
