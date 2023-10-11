@@ -110,7 +110,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                     <!-- COLOR COUNT -->
                     <Rectangle Grid.Row="0" Fill="#8c8c8c" Style="{StaticResource PaletteEditorBGRectangle}" Visibility="Hidden"/>
                     <Label Content="{x:Static p:Resources.Editor_Label_Color_Count}" Grid.Row="0" Grid.Column="0" Style="{StaticResource PaletteEditorSettingLabel}" />
-                    <Slider Grid.Row="0" Grid.Column="1" Name="ColorCountSlider" Maximum="{StaticResource PaletteEditor_ColorCountMax}" Minimum="{StaticResource PaletteEditor_ColorCountMin}" IsSnapToTickEnabled="True" Ticks="3, 5, 7, 9, 11, 13, 15" Value="{StaticResource PaletteEditor_DefaultValue_ColorCount}" ValueChanged="ColorCountSlider_ValueChanged"/>
+                    <Slider Grid.Row="0" Grid.Column="1" Name="ColorCountSlider" Maximum="{StaticResource PaletteEditor_ColorCountMax}" Minimum="{StaticResource PaletteEditor_ColorCountMin}" IsSnapToTickEnabled="True" Ticks="3, 4, 5, 6, 7, 8, 9, 10, 11, 12" Value="{StaticResource PaletteEditor_DefaultValue_ColorCount}" ValueChanged="ColorCountSlider_ValueChanged"/>
                     <Label Content="{Binding ElementName=ColorCountSlider, Path=Value}" Grid.Row="0" Grid.Column="2" Style="{StaticResource PaletteEditorSettingLabel}" HorizontalAlignment="Center" Name="ColorCountValueLabel" MouseDoubleClick="ColorCountValueLabel_MouseDoubleClick"/>
 
                     <Rectangle Grid.Row="1" Style="{StaticResource PaletteEditorBGRectangle}"/>

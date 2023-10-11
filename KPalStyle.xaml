@@ -64,8 +64,8 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
     <sys:Double x:Key="PaletteEditor_DefaultValue_HeightMinimized">100</sys:Double>
 
     <sys:Double x:Key="PaletteEditor_ColorCountMin">3</sys:Double>
-    <sys:Double x:Key="PaletteEditor_ColorCountMax">15</sys:Double>
-    <sys:Double x:Key="PaletteEditor_DefaultValue_ColorCount">7</sys:Double>
+    <sys:Double x:Key="PaletteEditor_ColorCountMax">12</sys:Double>
+    <sys:Double x:Key="PaletteEditor_DefaultValue_ColorCount">5</sys:Double>
     
     <sys:Double x:Key="PaletteEditor_HueMin">0</sys:Double>
     <sys:Double x:Key="PaletteEditor_HueMax">360</sys:Double>

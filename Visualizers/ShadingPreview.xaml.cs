@@ -83,6 +83,36 @@ namespace KPal
                         drawingColors.Add(fiveColors);
                         drawingColors.Add(fiveColors);
                     }
+                    else if (colorCount == 4)
+                    {
+                        List<Color> fiveColors = new()
+                        {
+                            Editors[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[1].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[2].HSVColor.GetRGBColor()
+                        };
+                        List<Color> fiveColors2 = new()
+                        {
+                            Editors[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[1].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[3].HSVColor.GetRGBColor()
+                        };
+                        List<Color> fiveColors3 = new()
+                        {
+                            Editors[i].PaletteColorList[0].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[1].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[2].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[3].HSVColor.GetRGBColor(),
+                            Editors[i].PaletteColorList[3].HSVColor.GetRGBColor()
+                        };
+                        drawingColors.Add(fiveColors);
+                        drawingColors.Add(fiveColors2);
+                        drawingColors.Add(fiveColors3);
+                    }
                     else if (colorCount >= 5)
                     {
                         List<Color> fiveColors = new()

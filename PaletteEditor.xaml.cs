@@ -379,8 +379,9 @@ namespace KPal
                 if (!IsControlled)
                 {
                     int centerIndex = PaletteColorList.Count / 2;
+                    bool isEven = PaletteColorList.Count % 2 == 0;
                     int valueStepSize = Convert.ToInt32((ValueRangeSlider.HigherValue - ValueRangeSlider.LowerValue) / (PaletteColorList.Count - 1));
-
+                    
                     //setting central (center) color
                     HSVColor centerColor = new()
                     {
@@ -388,12 +389,19 @@ namespace KPal
                         Saturation = Convert.ToInt32(BaseSaturationSlider.Value),
                         Brightness = Convert.ToInt32((ValueRangeSlider.LowerValue + ((ValueRangeSlider.HigherValue - ValueRangeSlider.LowerValue) / 2)))
                     };
-                    PaletteColorList[centerIndex].SetColor(centerColor);
+                    if (!isEven)
+                    { 
+                        PaletteColorList[centerIndex].SetColor(centerColor);
+                    }
 
                     //setting brighter colors
-                    for (int i = (PaletteColorList.Count / 2 + 1); i < PaletteColorList.Count; i++)
+                    for (int i = isEven ? (PaletteColorList.Count / 2) : (PaletteColorList.Count / 2 + 1); i < PaletteColorList.Count; i++)
                     {
                         double distanceToCenter = Math.Abs(i - centerIndex);
+                        if (isEven)
+                        { 
+                            distanceToCenter += 0.5;
+                        }
                         HSVColor col = new();
 
 
@@ -410,8 +418,8 @@ namespace KPal
                             col.Saturation = centerColor.Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value));
                         }
 
-                        col.Hue = centerColor.Hue + Convert.ToInt32(HueShiftExponentSlider.Value * HueShiftSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value));
-                        col.Brightness = centerColor.Brightness + Convert.ToInt32(valueStepSize * distanceToCenter);
+                        col.Hue = centerColor.Hue + Convert.ToInt32(HueShiftExponentSlider.Value * HueShiftSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value));                        
+                        col.Brightness = Convert.ToInt32(centerColor.Brightness + (valueStepSize * distanceToCenter));
                         PaletteColorList[i].SetColor(col);
                     }
 
@@ -419,6 +427,10 @@ namespace KPal
                     for (int i = (PaletteColorList.Count / 2 - 1); i >= 0; i--)
                     {
                         double distanceToCenter = Math.Abs(i - centerIndex);
+                        if (isEven)
+                        {
+                            distanceToCenter -= 0.5;
+                        }
                         HSVColor col = new();
 
                         if (SatCurveMode == SaturationCurveMode.ONLY_HIGHER_VALUES)
@@ -430,7 +442,7 @@ namespace KPal
                             col.Saturation = centerColor.Saturation + Convert.ToInt32(SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value));
                         }
 
-                        col.Hue = centerColor.Hue - Convert.ToInt32(HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value));
+                        col.Hue = centerColor.Hue - Convert.ToInt32(HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value));                        
                         col.Brightness = centerColor.Brightness - Convert.ToInt32(valueStepSize * distanceToCenter);
                         PaletteColorList[i].SetColor(col);
                     }
@@ -509,6 +521,7 @@ namespace KPal
                     }
 
                     int centerIndex = PaletteColorList.Count / 2;
+                    bool isEven = PaletteColorList.Count % 2 == 0;
                     int valueStepSize = Convert.ToInt32((ValueRangeSlider.HigherValue - ValueRangeSlider.LowerValue) / (PaletteColorList.Count - 1));
 
                     //setting dependent color
@@ -520,13 +533,17 @@ namespace KPal
                     };
                     PaletteColorList[DependentColorIndex].SetColor(depColor);
 
-                    //setting center color 
-                    double distanceToCenter = Math.Abs(DependentColorIndex - centerIndex);
-                    double hueShift = HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value);
-                    double satShift = SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value);
+                    //setting center color                     
+                    double distanceToCenter = Math.Abs(DependentColorIndex - centerIndex);                    
                     HSVColor centerColor = new();
                     if (centerIndex < DependentColorIndex)
                     {
+                        if (isEven)
+                        {
+                            distanceToCenter += 0.5;
+                        }
+                        double hueShift = HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value);
+                        double satShift = SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value);
                         centerColor.Hue = ControllerColor.Hue - Convert.ToInt32(hueShift);
                         centerColor.Brightness = ControllerColor.Brightness - Convert.ToInt32(distanceToCenter * valueStepSize);
 
@@ -545,6 +562,12 @@ namespace KPal
                     }
                     else
                     {
+                        if (isEven)
+                        {
+                            distanceToCenter -= 0.5;
+                        }
+                        double hueShift = HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value);
+                        double satShift = SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value);
                         centerColor.Hue = Convert.ToInt32(ControllerColor.Hue + hueShift);
                         centerColor.Brightness = ControllerColor.Brightness + Convert.ToInt32(distanceToCenter * valueStepSize);
 
@@ -557,16 +580,31 @@ namespace KPal
                             centerColor.Saturation = ControllerColor.Saturation - Convert.ToInt32(satShift);
                         }
                     }
-                    PaletteColorList[centerIndex].SetColor(centerColor);
+                    if (!isEven)
+                    {
+                        PaletteColorList[centerIndex].SetColor(centerColor);
+                    }
+                    
 
                     //setting colors
                     for (int i = 0; i < PaletteColorList.Count; i++)
                     {
-                        if (i != centerIndex && i != DependentColorIndex)
+                        if ((i != centerIndex || isEven) && i != DependentColorIndex)
                         {
-                            distanceToCenter = Math.Abs(i - centerIndex);
-                            hueShift = HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value);
-                            satShift = SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value);
+                            distanceToCenter = Math.Abs(i - centerIndex); 
+                            if (isEven)
+                            {
+                                if (i < centerIndex)
+                                {
+                                    distanceToCenter -= 0.5;
+                                }
+                                else
+                                {
+                                    distanceToCenter += 0.5;
+                                }
+                            }
+                            double hueShift = HueShiftSlider.Value * HueShiftExponentSlider.Value * Math.Pow(distanceToCenter, HueShiftExponentSlider.Value);
+                            double satShift = SaturationShiftSlider.Value * SaturationShiftExponentSlider.Value * Math.Pow(distanceToCenter, SaturationShiftExponentSlider.Value);
                             HSVColor col = new();
                             if (i < centerIndex)
                             {
@@ -579,10 +617,11 @@ namespace KPal
                                 {
                                     col.Saturation = centerColor.Saturation + Convert.ToInt32(satShift);
                                 }
-                                col.Brightness = centerColor.Brightness - Convert.ToInt32(valueStepSize * distanceToCenter);
+                                col.Brightness = Convert.ToInt32(centerColor.Brightness - valueStepSize * distanceToCenter);
                             }
                             else
                             {
+                             
                                 col.Hue = centerColor.Hue + Convert.ToInt32(hueShift);
 
                                 if (SatCurveMode == SaturationCurveMode.ONLY_LOWER_VALUES)
@@ -598,7 +637,7 @@ namespace KPal
                                     col.Saturation = centerColor.Saturation + Convert.ToInt32(satShift);
                                 }
 
-                                col.Brightness = centerColor.Brightness + Convert.ToInt32(valueStepSize * distanceToCenter);
+                                col.Brightness = Convert.ToInt32(centerColor.Brightness + valueStepSize * distanceToCenter);
                             }
                             PaletteColorList[i].SetColor(col);
                         }
