@@ -51,17 +51,31 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="6px" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Button Style="{DynamicResource ButtonStyleNew}" Grid.Column="0" Grid.Row="0" Margin="2" Name="NewButton" Click="NewButton_Click" ToolTip="{x:Static p:Resources.MainWindow_NewBtn_Tooltip}"></Button>
-                <Button Style="{DynamicResource ButtonStyleLoad}" Grid.Column="1" Grid.Row="0" Margin="2" Name="LoadButton" Click="LoadButton_Click" ToolTip="{x:Static p:Resources.MainWindow_LoadBtn_Tooltip}"></Button>
-                <Button Style="{DynamicResource ButtonStyleSave}" Grid.Column="2" Grid.Row="0" Margin="2" Name="SaveButton" Click="SaveButton_Click" MouseRightButtonDown="SaveButton_MouseRightButtonDown" ToolTip="{x:Static p:Resources.MainWindow_SaveBtn_Tooltip}"></Button>
-                <Button Style="{DynamicResource ButtonStyleExport}" Grid.Column="3" Grid.Row="0" Margin="2" Name="ExportButton" Click="ExportButton_Click" ToolTip="{x:Static p:Resources.MainWindow_ExportBtn_Tooltip}"></Button>
-                <Button Style="{DynamicResource ButtonStyleInfo}" Grid.Column="4" Grid.Row="0" Margin="2" Name="InfoButton" Click="InfoButton_Click" ToolTip="{x:Static p:Resources.MainWindow_InfoBtn_Tooltip}"></Button>
+                <Grid Grid.Column="0" Grid.Row="0" Margin="2" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Color Naming:" Grid.Row="0" Grid.Column="0" FontSize="20" HorizontalAlignment="Center" Margin="0,-8,0,0"/>
+                    <ComboBox Grid.Column="0" Grid.Row="1" Style="{DynamicResource ComboBoxStyle1}" Height="Auto" Name="ColorGroupComboBox" SelectionChanged="ColorGroupComboBox_SelectionChanged"/>
+                </Grid>
+                <Rectangle Grid.Column="1" Grid.Row="0" Margin="2" Fill="Black"/>
+                <Button Style="{DynamicResource ButtonStyleNew}" Grid.Column="2" Grid.Row="0" Margin="2" Name="NewButton" Click="NewButton_Click" ToolTip="{x:Static p:Resources.MainWindow_NewBtn_Tooltip}"></Button>
+                <Button Style="{DynamicResource ButtonStyleLoad}" Grid.Column="3" Grid.Row="0" Margin="2" Name="LoadButton" Click="LoadButton_Click" ToolTip="{x:Static p:Resources.MainWindow_LoadBtn_Tooltip}"></Button>
+                <Button Style="{DynamicResource ButtonStyleSave}" Grid.Column="4" Grid.Row="0" Margin="2" Name="SaveButton" Click="SaveButton_Click" MouseRightButtonDown="SaveButton_MouseRightButtonDown" ToolTip="{x:Static p:Resources.MainWindow_SaveBtn_Tooltip}"></Button>
+                <Button Style="{DynamicResource ButtonStyleExport}" Grid.Column="5" Grid.Row="0" Margin="2" Name="ExportButton" Click="ExportButton_Click" ToolTip="{x:Static p:Resources.MainWindow_ExportBtn_Tooltip}"></Button>
+                <Button Style="{DynamicResource ButtonStyleInfo}" Grid.Column="6" Grid.Row="0" Margin="2" Name="InfoButton" Click="InfoButton_Click" ToolTip="{x:Static p:Resources.MainWindow_InfoBtn_Tooltip}"></Button>
             </Grid>
         </Grid>
         <!-- ENTRIES -->

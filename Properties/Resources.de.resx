@@ -207,7 +207,7 @@
   <data name="MainWindow_Warning_Cannot_Add_Ramp" xml:space="preserve">
     <value>Kann keine weiteren Verläufe hinzufügen</value>
   </data>
-  <data name="MainWindow_Warning_ColorList_Not_Found" xml:space="preserve">
+  <data name="MainWindow_Warning_ColorPath_Not_Found" xml:space="preserve">
     <value>Datei mit Farbnamen ({0}) konnte nicht gefunden werden</value>
   </data>
   <data name="MainWindow_Warning_General_Title" xml:space="preserve">

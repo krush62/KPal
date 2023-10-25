@@ -21,6 +21,17 @@ using System.Text;
 
 namespace KPal
 {
+    public struct ColorNameCollection
+    {
+        public string name;
+        public List<NamedColor> colors;
+        public ColorNameCollection(string n, List<NamedColor> l) 
+        {
+            name = n;
+            colors = l;
+        }
+    }
+
     public struct NamedColor
     {
         public NamedColor(string name, byte r, byte g, byte b)
@@ -56,7 +67,7 @@ namespace KPal
 
     public sealed class ColorNames
     {
-        public const string COLOR_FILE_NAME = "colors.csv";
+        public const string COLOR_FILE_PATH = "ColorNames";
         private const int STRING_POS_R = 0;
         private const int STRING_POS_G = 2;
         private const int STRING_POS_B = 4;
@@ -64,9 +75,10 @@ namespace KPal
         private const int HEX_BASE = 16;
         private const char CSV_SEPARATOR = ';';
         private const int BUFFER_SIZE = 128;
+        private int SelectionIndex = 0;
 
 
-        private readonly List<NamedColor> colors;
+        private readonly List<ColorNameCollection> colors;
 
         private static readonly Lazy<ColorNames> lazy =
             new(() => new ColorNames());
@@ -75,7 +87,48 @@ namespace KPal
 
         private ColorNames()
         {
-            colors = ReadColorFile(COLOR_FILE_NAME);
+            string[] csvFiles = Directory.GetFiles(COLOR_FILE_PATH, "*.csv", SearchOption.AllDirectories);
+
+            colors = new List<ColorNameCollection>();
+            foreach (string csvFile in csvFiles)
+            {
+                List<NamedColor> cNames = ReadColorFile(csvFile);
+                if (cNames != null && cNames.Count  > 0)
+                { 
+                    colors.Add(new ColorNameCollection(Path.GetFileNameWithoutExtension(csvFile), cNames));
+                }
+            }
+        }
+
+        public void SetSelectionIndex(int newSelIndex)
+        {
+            if (newSelIndex < 0)
+            {
+                SelectionIndex = 0;
+            }
+            else if (newSelIndex >= colors.Count)
+            {
+                SelectionIndex = colors.Count - 1;
+            }
+            else
+            {
+                SelectionIndex = newSelIndex;
+            }
+        }
+
+        public int GetSelectionIndex() 
+        {
+            return SelectionIndex;
+        }
+
+        public List<string> GetGroupNames()
+        {
+            List<string> names = new();
+            foreach (ColorNameCollection collection in colors)
+            {
+                names.Add(collection.name);
+            }
+            return names;
         }
 
 
@@ -83,7 +136,7 @@ namespace KPal
         {
             string bestName = Properties.Resources.Color_Unknown;
             float bestDelta = 100f;
-            foreach (NamedColor c in colors)
+            foreach (NamedColor c in colors[SelectionIndex].colors)
             {
                 if (color.R == c.R && color.G == c.G && color.B == c.B)
                 {
@@ -102,6 +155,12 @@ namespace KPal
                 }
             }
             return bestName;
+        }
+
+
+        public bool HasData()
+        {
+            return colors != null && colors.Count > 0;
         }
 
 

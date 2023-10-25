@@ -45,12 +45,29 @@ namespace KPal
         public MainWindow()
         {
             InitializeComponent();
-            if (!File.Exists(ColorNames.COLOR_FILE_NAME))
+            if (!Directory.Exists(ColorNames.COLOR_FILE_PATH))
             {
-                _ = MessageBox.Show(string.Format(Properties.Resources.MainWindow_Warning_ColorList_Not_Found, ColorNames.COLOR_FILE_NAME),
+                _ = MessageBox.Show(string.Format(Properties.Resources.MainWindow_Warning_ColorPath_Not_Found, ColorNames.COLOR_FILE_PATH),
                     Properties.Resources.MainWindow_Warning_General_Title,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
+            }
+            else if (!ColorNames.Instance.HasData())
+            {
+                _ = MessageBox.Show(string.Format(Properties.Resources.MainWindow_Warning_ColorList_Not_Found),
+                    Properties.Resources.MainWindow_Warning_General_Title,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            else
+            {
+                ColorGroupComboBox.Items.Clear();
+                List<string> groupNames = ColorNames.Instance.GetGroupNames();
+                foreach (string groupName in groupNames)
+                {
+                    ColorGroupComboBox.Items.Add(groupName);
+                }
+                ColorGroupComboBox.SelectedIndex = 0;
             }
             PaletteEditorList = new List<PaletteEditor>();
             ColorLinkList = new List<ColorLink>();
@@ -596,6 +613,21 @@ namespace KPal
                 Owner = this
             };
             _ = i.ShowDialog();
+        }
+
+        private void ColorGroupComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender == ColorGroupComboBox)
+            {
+                ColorNames.Instance.SetSelectionIndex(ColorGroupComboBox.SelectedIndex);
+                if (PaletteEditorList != null && PaletteEditorList.Count > 0)
+                {
+                    foreach (PaletteEditor paletteEditor in PaletteEditorList)
+                    {
+                        paletteEditor.ColorNameChange();
+                    }
+                }
+            }
         }
     }
 }

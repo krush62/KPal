@@ -143,27 +143,27 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Update="colors.csv">
+    <None Update="ColorNames\general.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Update="pms.csv">
+    <None Update="ColorNames\pms.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Update="ral_classic.csv">
+    <None Update="ColorNames\ral_classic.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="ral_complete.csv">
+    <None Update="ColorNames\ral_complete.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="ral_dsp.csv">
+    <None Update="ColorNames\ral_dsp.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="README.md">

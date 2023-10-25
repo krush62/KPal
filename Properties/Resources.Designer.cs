@@ -385,11 +385,20 @@ namespace KPal.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Color name list file ({0}) was not found..
+        ///   Looks up a localized string similar to No color list was found!.
         /// </summary>
         public static string MainWindow_Warning_ColorList_Not_Found {
             get {
                 return ResourceManager.GetString("MainWindow_Warning_ColorList_Not_Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color list path ({0}) was not found..
+        /// </summary>
+        public static string MainWindow_Warning_ColorPath_Not_Found {
+            get {
+                return ResourceManager.GetString("MainWindow_Warning_ColorPath_Not_Found", resourceCulture);
             }
         }
         

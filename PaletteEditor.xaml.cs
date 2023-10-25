@@ -649,6 +649,8 @@ namespace KPal
                 }
             }
         }
+
+
         private void UpdateColors()
         {
             if (IsControlling)
@@ -740,6 +742,14 @@ namespace KPal
 
             CalculateColors();
             UpdateColors();
+        }
+
+        public void ColorNameChange()
+        {
+            foreach (PaletteColor palette in PaletteColorList)
+            {
+                palette.UpdateColorInfo();
+            }
         }
     }
 }

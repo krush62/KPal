@@ -104,7 +104,7 @@ namespace KPal
             HSVColor.Brightness = OriginalColor.Brightness + Convert.ToInt32(ValShift);
         }
 
-        private void UpdateColorInfo()
+        public void UpdateColorInfo()
         {
             Color c = HSVColor.GetRGBColor();
             ColorRectangle.Fill = new SolidColorBrush(c);
