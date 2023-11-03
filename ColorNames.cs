@@ -200,7 +200,8 @@ namespace KPal
             return i < 0f ? 0f : Convert.ToSingle(Math.Sqrt(i));
         }
 
-        private static List<NamedColor> ReadColorFile(string path)
+        
+    private static List<NamedColor> ReadColorFile(string path)
         {
             List<NamedColor> l = new();
             try

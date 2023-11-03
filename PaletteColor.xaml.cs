@@ -97,6 +97,14 @@ namespace KPal
             ValShiftSlider.Value = vShift;
         }
 
+        public void ResetShift()
+        {
+            sbyte hShift = Convert.ToSByte(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_HUESHIFT) as double?);
+            sbyte sShift = Convert.ToSByte(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_SATSHIFT) as double?);
+            sbyte vShift = Convert.ToSByte(TryFindResource(ID_PALETTECOLOR_DEFAULTVALUE_VALSHIFT) as double?);
+            SetShift(hShift, sShift, vShift);
+        }
+
         private void AddShift()
         {
             HSVColor.Hue = OriginalColor.Hue + Convert.ToInt32(HueShift);
@@ -212,6 +220,7 @@ namespace KPal
             {
                 ControlGrid.Visibility = Visibility.Visible;
             }
+            //TODO MAGIC NUMBER!!
             if (HSVColor.Brightness < 15)
             {
                 OverlayRectangle.Visibility = Visibility.Visible;

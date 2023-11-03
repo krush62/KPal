@@ -14,6 +14,7 @@ You should have received a copy of the GNU General Public License
 long with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+using Cureos.Numerics.Optimizers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -305,6 +306,7 @@ namespace KPal
                 LinkDeleted?.Invoke(this, ldEventArgs);
                 ValueRangeSlider.Minimum = Convert.ToInt32(TryFindResource(ID_PALETTEEDITOR_VALUEMIN) as double?);
                 ValueRangeSlider.Maximum = Convert.ToInt32(TryFindResource(ID_PALETTEEDITOR_VALUEMAX) as double?);
+                OptimizationButton.IsEnabled = true;
                 CalculateColors();
                 UpdateColors();
             }
@@ -326,6 +328,11 @@ namespace KPal
                         }
                         DependentColorIndex = i;
                         ControllerColor = lcEventArgs.ColorLink.Source.Color.HSVColor;
+                        foreach (PaletteColor paletteColor in PaletteColorList) 
+                        {
+                            paletteColor.ResetShift();
+                        }
+                        OptimizationButton.IsEnabled = false;
                         CalculateColors();
                         UpdateColors();
                         break;
@@ -742,6 +749,129 @@ namespace KPal
 
             CalculateColors();
             UpdateColors();
+        }
+
+        private void OptimizationButton_Click(object sender, RoutedEventArgs e)
+        {
+            int n = PaletteColorList.Count * 3;
+            double[] startPars = new double[n];
+            double[] xl = new double[n];
+            double[] xu = new double[n];
+            double hueShiftMin, hueShiftMax, satShiftMin, satShiftMax, valShiftMin, valShiftMax;
+            double? hueShiftMinNullable = TryFindResource("PaletteColor_HueShiftMin") as double?;
+            double? hueShiftMaxNullable = TryFindResource("PaletteColor_HueShiftMax") as double?;
+            double? satShiftMinNullable = TryFindResource("PaletteColor_SatShiftMin") as double?;
+            double? satShiftMaxNullable = TryFindResource("PaletteColor_SatShiftMax") as double?;
+            double? valShiftMinNullable = TryFindResource("PaletteColor_ValShiftMin") as double?;
+            double? valShiftMaxNullable = TryFindResource("PaletteColor_ValShiftMax") as double?;
+
+            if (hueShiftMinNullable.HasValue)
+            {
+                hueShiftMin = hueShiftMinNullable.Value;
+            }
+            else
+            {
+                hueShiftMin = -Double.MaxValue;
+            }
+            if (hueShiftMaxNullable.HasValue)
+            {
+                hueShiftMax = hueShiftMaxNullable.Value;
+            }
+            else
+            {
+                hueShiftMax = Double.MaxValue;
+            }
+            if (satShiftMinNullable.HasValue)
+            {
+                satShiftMin = satShiftMinNullable.Value;
+            }
+            else
+            {
+                satShiftMin = -Double.MaxValue;
+            }
+            if (satShiftMaxNullable.HasValue)
+            {
+                satShiftMax = satShiftMaxNullable.Value;
+            }
+            else
+            {
+                satShiftMax = Double.MaxValue;
+            }
+            if (valShiftMinNullable.HasValue)
+            {
+                valShiftMin = valShiftMinNullable.Value;
+            }
+            else
+            {
+                valShiftMin= -Double.MaxValue;
+            }
+            if (valShiftMaxNullable.HasValue)
+            {
+                valShiftMax = valShiftMaxNullable.Value;
+            }
+            else
+            {
+                valShiftMax = Double.MaxValue;
+            }
+
+
+
+            for (int i = 0; i < n; i++) 
+            {
+                startPars[i] = 0;
+                
+                if (i % 3 == 0) //hue constraint
+                {
+                    xl[i] = hueShiftMin;
+                    xu[i] = hueShiftMax;
+                }
+                else if (i % 3 == 1) //sat constraint
+                {
+                    xl[i] = satShiftMin;
+                    xu[i] = satShiftMax;
+                }
+                else //val constraint
+                {
+                    xl[i] = valShiftMin;
+                    xu[i] = valShiftMax;
+                }
+            }
+
+            Bobyqa bobyqa = new(n, OptimizationFunct, xl, xu)
+            {
+                InterpolationConditions = 8 * n + 1,
+                TrustRegionRadiusStart = 15,
+                TrustRegionRadiusEnd = 0.05
+            };
+            OptimizationSummary summary = bobyqa.FindMinimum(startPars);
+            for (int i = 0; i < PaletteColorList.Count; i++)
+            {
+                PaletteColorList[i].SetShift(Convert.ToSByte(summary.X[i * 3 + 0]), Convert.ToSByte(summary.X[i * 3 + 1]), Convert.ToSByte(summary.X[i * 3 + 2]));
+            }
+            UpdateColors();
+        }
+
+        double OptimizationFunct(int n, double[] x)
+        {
+            List<HSVColor> hSVColors = new();
+
+            for (int i = 0; i < PaletteColorList.Count; i++) 
+            { 
+                PaletteColor pc = PaletteColorList[i];
+                HSVColor hSVColor = new(pc.OriginalColor.Hue + Convert.ToInt32(x[i * 3 + 0]), pc.OriginalColor.Saturation + Convert.ToInt32(x[i * 3 + 1]), pc.OriginalColor.Brightness + Convert.ToInt32(x[i * 3 + 2]));                
+                hSVColors.Add(hSVColor);
+            }
+
+
+            List<double> distances = new();
+            for (int i = 0; i < hSVColors.Count - 1; i++)
+            {
+                HSVColor h1 = hSVColors[i];
+                HSVColor h2 = hSVColors[i + 1];
+                distances.Add(ColorNames.GetDeltaE(h1.GetRGBColor().R, h1.GetRGBColor().G, h1.GetRGBColor().B, h2.GetRGBColor().R, h2.GetRGBColor().G, h2.GetRGBColor().B));
+            }
+
+            return Math.Abs(distances.Max() - distances.Min());
         }
 
         public void ColorNameChange()
