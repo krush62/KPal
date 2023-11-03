@@ -95,3 +95,9 @@ Each color is displayed on a Kelvin-based temperature scale.
 
 ## License
 This project is licensed under GPLv3, for details see the [license file](LICENSE).
+
+This project uses the following libraries:
+
+* [Extended WPF Toolkit™](https://github.com/xceedsoftware/wpftoolkit) by [Xceed](https://xceed.com) provided under the [Xceed Community License agreement](https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md)
+
+* [csnumerics](https://github.com/cureos/csnumerics) by [Cureus AB](https://github.com/cureos) provided under the [LGPL-3.0 license](https://github.com/cureos/csnumerics/blob/main/COPYING.txt)

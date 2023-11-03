@@ -22,7 +22,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
     xmlns:local="clr-namespace:KPal"
     xmlns:p="clr-namespace:KPal.Properties"
     mc:Ignorable="d"
-    Title="InfoWindow" Height="220" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    Title="InfoWindow" Height="280" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -33,6 +33,9 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="18px"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="18px"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
@@ -75,5 +78,8 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                 </TextBlock>
             </Label.Content>
         </Label>
+        <Rectangle Grid.Column="0" Grid.Row="6" Fill="#666666" Margin="0,8,0,8"/>
+        <Label Grid.Row="7" FontSize="11">Uses Extended WPF Toolkit licensed under the Xceed Community License agreement (https://github.com/xceedsoftware/wpftoolkit)</Label>
+        <Label Grid.Row="8" FontSize="11">Uses csnumerics licensed under the GNU Lesser General Public License version 3 (https://github.com/cureos/csnumerics)</Label>
     </Grid>
 </Window>
