@@ -328,10 +328,13 @@ namespace KPal
                         }
                         DependentColorIndex = i;
                         ControllerColor = lcEventArgs.ColorLink.Source.Color.HSVColor;
-                        foreach (PaletteColor paletteColor in PaletteColorList) 
+                        if (sender != null) // only perform shift reset for manually added links
                         {
-                            paletteColor.ResetShift();
-                        }
+                            foreach (PaletteColor paletteColor in PaletteColorList)
+                            {
+                                paletteColor.ResetShift();
+                            }
+                        }                        
                         OptimizationButton.IsEnabled = false;
                         CalculateColors();
                         UpdateColors();
