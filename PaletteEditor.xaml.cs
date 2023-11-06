@@ -753,7 +753,7 @@ namespace KPal
 
         private void OptimizationButton_Click(object sender, RoutedEventArgs e)
         {
-int n = PaletteColorList.Count * 3;
+            int n = PaletteColorList.Count * 3;
             double[] startPars = new double[n];
             double[] xl = new double[n];
             double[] xu = new double[n];
@@ -768,55 +768,12 @@ int n = PaletteColorList.Count * 3;
             const double satLimitDivisor = 1.25;
             const double valLimitDivisor = 1.25;
 
-            if (hueShiftMinNullable.HasValue)
-            {
-                hueShiftMin = hueShiftMinNullable.Value / hueLimitDivisor;
-            }
-            else
-            {
-                hueShiftMin = -Double.MaxValue;
-            }
-            if (hueShiftMaxNullable.HasValue)
-            {
-                hueShiftMax = hueShiftMaxNullable.Value / hueLimitDivisor;
-            }
-            else
-            {
-                hueShiftMax = Double.MaxValue;
-            }
-            if (satShiftMinNullable.HasValue)
-            {
-                satShiftMin = satShiftMinNullable.Value / satLimitDivisor;
-            }
-            else
-            {
-                satShiftMin = -Double.MaxValue;
-            }
-            if (satShiftMaxNullable.HasValue)
-            {
-                satShiftMax = satShiftMaxNullable.Value / satLimitDivisor;
-            }
-            else
-            {
-                satShiftMax = Double.MaxValue;
-            }
-            if (valShiftMinNullable.HasValue)
-            {
-                valShiftMin = valShiftMinNullable.Value / valLimitDivisor;
-            }
-            else
-            {
-                valShiftMin= -Double.MaxValue;
-            }
-            if (valShiftMaxNullable.HasValue)
-            {
-                valShiftMax = valShiftMaxNullable.Value / valLimitDivisor;
-            }
-            else
-            {
-                valShiftMax = Double.MaxValue;
-            }
-
+            hueShiftMin = hueShiftMinNullable.HasValue ? hueShiftMinNullable.Value / hueLimitDivisor : -Double.MaxValue;
+            hueShiftMax = hueShiftMaxNullable.HasValue ? hueShiftMaxNullable.Value / hueLimitDivisor : +Double.MaxValue;
+            satShiftMin = satShiftMinNullable.HasValue ? satShiftMinNullable.Value / satLimitDivisor : -Double.MaxValue;
+            satShiftMax = satShiftMaxNullable.HasValue ? satShiftMaxNullable.Value / satLimitDivisor : +Double.MaxValue;
+            valShiftMin = valShiftMinNullable.HasValue ? valShiftMinNullable.Value / valLimitDivisor : -Double.MaxValue;
+            valShiftMax = valShiftMaxNullable.HasValue ? valShiftMaxNullable.Value / valLimitDivisor : +Double.MaxValue;
 
 
             for (int i = 0; i < n; i++) 
