@@ -753,7 +753,7 @@ namespace KPal
 
         private void OptimizationButton_Click(object sender, RoutedEventArgs e)
         {
-            int n = PaletteColorList.Count * 3;
+int n = PaletteColorList.Count * 3;
             double[] startPars = new double[n];
             double[] xl = new double[n];
             double[] xu = new double[n];
@@ -764,10 +764,13 @@ namespace KPal
             double? satShiftMaxNullable = TryFindResource("PaletteColor_SatShiftMax") as double?;
             double? valShiftMinNullable = TryFindResource("PaletteColor_ValShiftMin") as double?;
             double? valShiftMaxNullable = TryFindResource("PaletteColor_ValShiftMax") as double?;
+            const double hueLimitDivisor = 1.5;
+            const double satLimitDivisor = 1.25;
+            const double valLimitDivisor = 1.25;
 
             if (hueShiftMinNullable.HasValue)
             {
-                hueShiftMin = hueShiftMinNullable.Value;
+                hueShiftMin = hueShiftMinNullable.Value / hueLimitDivisor;
             }
             else
             {
@@ -775,7 +778,7 @@ namespace KPal
             }
             if (hueShiftMaxNullable.HasValue)
             {
-                hueShiftMax = hueShiftMaxNullable.Value;
+                hueShiftMax = hueShiftMaxNullable.Value / hueLimitDivisor;
             }
             else
             {
@@ -783,7 +786,7 @@ namespace KPal
             }
             if (satShiftMinNullable.HasValue)
             {
-                satShiftMin = satShiftMinNullable.Value;
+                satShiftMin = satShiftMinNullable.Value / satLimitDivisor;
             }
             else
             {
@@ -791,7 +794,7 @@ namespace KPal
             }
             if (satShiftMaxNullable.HasValue)
             {
-                satShiftMax = satShiftMaxNullable.Value;
+                satShiftMax = satShiftMaxNullable.Value / satLimitDivisor;
             }
             else
             {
@@ -799,7 +802,7 @@ namespace KPal
             }
             if (valShiftMinNullable.HasValue)
             {
-                valShiftMin = valShiftMinNullable.Value;
+                valShiftMin = valShiftMinNullable.Value / valLimitDivisor;
             }
             else
             {
@@ -807,7 +810,7 @@ namespace KPal
             }
             if (valShiftMaxNullable.HasValue)
             {
-                valShiftMax = valShiftMaxNullable.Value;
+                valShiftMax = valShiftMaxNullable.Value / valLimitDivisor;
             }
             else
             {
