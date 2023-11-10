@@ -703,6 +703,7 @@ namespace KPal
                 BorderRight.Visibility = Visibility.Visible;
                 ColorCenterGrid.SetValue(Grid.ColumnSpanProperty, 1);
                 SettingsGrid.Visibility = Visibility.Visible;
+                OptimizationButton.Visibility = Visibility.Visible;
             }
             else
             {
@@ -710,6 +711,7 @@ namespace KPal
                 BorderRight.Visibility = Visibility.Collapsed;
                 ColorCenterGrid.SetValue(Grid.ColumnSpanProperty, 2);
                 SettingsGrid.Visibility = Visibility.Collapsed;
+                OptimizationButton.Visibility = Visibility.Collapsed;
             }
 
             isMinimized = !IsMinimized;
