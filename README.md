@@ -16,19 +16,22 @@ KPal is a tool to create color palettes usually for pixel art creation. The gene
   * JASC/PSP pal
   * (Open/Libre/Star)Office soc
 * Fine adjustments for each color
-* Selectable saturation shift behavior for darker values
+* Selectable saturation shift behavior
+* Color distance optimization per ramp (CIE94)
+* Different color naming presets
 ## Build
 KPal is a Visual Studio/C#/WPF project. Open, build and run the solution in Visual Studio.
 ## Installation / Releases
 You can download a release for Windows from the [releases section](https://github.com/krush62/KPal/releases).
-No installation is needed. KPal.exe is the application itself, colors.csv contains the list of color names (This file is not mandatory but highly recommended).
+No installation is needed. KPal.exe is the application itself, the ColorNames subdirectory contains files with the different color names (These files are not mandatory but highly recommended).
 This application needs .NET (Microsoft Windows Deskop Runtime) to work.
 ## Usage Tips
-* To link colors: drag a color from one palette to a color of another palette
-* Save as a different file: a "Save as" functionality is available when using the right mouse button for the save button
-* Reset slider values: double clicking the numeric value representation will reset the corresponding slider
-* To change the visualizer type on the bottom, hover the visualizer area and select a different visualizer from the drop-down list.
-* You can copy the hex value of a color by clicking the label showing the hex value
+* **Link colors:** Drag a color from one palette to a color of another palette
+* **Save as a different file:** A "Save as" functionality is available when using the right mouse button for the save button
+* **Reset slider values:** Double clicking the numeric value representation will reset the corresponding slider
+* **Change the visualizer type on the bottom:** Hover the visualizer area and select a different visualizer from the drop-down list
+* **Copy the hex value of a color:** Click the label showing the hex value
+* **Color distance optimization:** Click the *OPTIMIZE* button on the left side of a color ramp to even out the CIELAB distance between colors
 
 ## Screenshots
 ![SCREENSHOT](screenshots/screenshot.jpg?raw=true)
