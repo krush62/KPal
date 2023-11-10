@@ -23,7 +23,7 @@ KPal is a tool to create color palettes usually for pixel art creation. The gene
 KPal is a Visual Studio/C#/WPF project. Open, build and run the solution in Visual Studio.
 ## Installation / Releases
 You can download a release for Windows from the [releases section](https://github.com/krush62/KPal/releases).
-No installation is needed. KPal.exe is the application itself, the ColorNames subdirectory contains files with the different color names (These files are not mandatory but highly recommended).
+No installation is needed, just unzip the contents to a directory of your choice. KPal.exe is the application itself, the ColorNames subdirectory contains files with the different color names (These files are not mandatory but highly recommended).
 This application needs .NET (Microsoft Windows Deskop Runtime) to work.
 ## Usage Tips
 * **Link colors:** Drag a color from one palette to a color of another palette
