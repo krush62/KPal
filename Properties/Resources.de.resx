@@ -153,6 +153,9 @@
   <data name="Editor_MinMaxBtn_Tooltip" xml:space="preserve">
     <value>Minimieren / Maximieren</value>
   </data>
+  <data name="Editor_OptimizeBtn_Tooltip" xml:space="preserve">
+    <value>Angleichung der LAB-Distanz zwischen den einzelnen Farben.</value>
+  </data>
   <data name="Editor_Ramp_Prefix" xml:space="preserve">
     <value>Verlauf</value>
   </data>

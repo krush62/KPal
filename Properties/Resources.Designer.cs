@@ -169,6 +169,15 @@ namespace KPal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Equalize the Lab distance between the colors of this ramp..
+        /// </summary>
+        public static string Editor_OptimizeBtn_Tooltip {
+            get {
+                return ResourceManager.GetString("Editor_OptimizeBtn_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ramp.
         /// </summary>
         public static string Editor_Ramp_Prefix {

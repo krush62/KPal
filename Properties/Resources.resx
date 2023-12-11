@@ -153,6 +153,9 @@
   <data name="Editor_MinMaxBtn_Tooltip" xml:space="preserve">
     <value>Minimize / Maximize</value>
   </data>
+  <data name="Editor_OptimizeBtn_Tooltip" xml:space="preserve">
+    <value>Equalize the Lab distance between the colors of this ramp.</value>
+  </data>
   <data name="Editor_Ramp_Prefix" xml:space="preserve">
     <value>Ramp</value>
   </data>

@@ -62,7 +62,7 @@ long with this program. If not, see <http://www.gnu.org/licenses/>.
                         <ToggleButton Style="{DynamicResource ToggleButtonStyleSaturation1}" Grid.Column="0" Grid.Row="1" Margin="2" Name="SatStyleButton1" Click="SatStyleButton_Click" ToolTip="{x:Static p:Resources.Editor_SaturationBtn_Tooltip}" Visibility="Visible" Height="30"/>
                         <ToggleButton Style="{DynamicResource ToggleButtonStyleSaturation2}" Grid.Column="0" Grid.Row="1" Margin="2" Name="SatStyleButton2" Click="SatStyleButton_Click" ToolTip="{x:Static p:Resources.Editor_SaturationBtn_Tooltip}" Visibility="Hidden" Height="30"/>
                     </Grid>
-                    <Button Grid.Row="2" Grid.Column="0" Content="OPTIMIZE" Name="OptimizationButton" Click="OptimizationButton_Click" Style="{DynamicResource ButtonStyleGeneral}" Margin="4" FontSize="16" Height="30"></Button>
+                    <Button Grid.Row="2" Grid.Column="0" Content="OPTIMIZE" Name="OptimizationButton" Click="OptimizationButton_Click" Style="{DynamicResource ButtonStyleGeneral}" Margin="4" FontSize="16" Height="30" ToolTip="{x:Static p:Resources.Editor_OptimizeBtn_Tooltip}"></Button>
                     <Grid Grid.Row="4" Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
