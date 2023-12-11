@@ -107,9 +107,9 @@ namespace KPal
 
         private void AddShift()
         {
-            HSVColor.Hue = OriginalColor.Hue + Convert.ToInt32(HueShift);
-            HSVColor.Saturation = OriginalColor.Saturation + Convert.ToInt32(SatShift);
-            HSVColor.Brightness = OriginalColor.Brightness + Convert.ToInt32(ValShift);
+            HSVColor.Hue = OriginalColor.Hue + HueShift;
+            HSVColor.Saturation = OriginalColor.Saturation + SatShift;
+            HSVColor.Brightness = OriginalColor.Brightness + ValShift;
         }
 
         public void UpdateColorInfo()
@@ -117,7 +117,7 @@ namespace KPal
             Color c = HSVColor.GetRGBColor();
             ColorRectangle.Fill = new SolidColorBrush(c);
             HexValueLabel.Content = string.Format("HEX: #{0}{1}{2}", c.R.ToString(HEX_FORMAT), c.G.ToString(HEX_FORMAT), c.B.ToString(HEX_FORMAT));
-            HSVValueLabel.Content = string.Format("{0}° | {1}% | {2}%", HSVColor.Hue.ToString(), HSVColor.Saturation.ToString(), HSVColor.Brightness.ToString());
+            HSVValueLabel.Content = string.Format("{0}° | {1}% | {2}%", Math.Round(HSVColor.Hue, 0), Math.Round(HSVColor.Saturation, 0), Math.Round(HSVColor.Brightness, 0));
             ColorName = ColorNames.Instance.GetColorName(c);
             ColorNameLabelText.Text = ColorName;
         }

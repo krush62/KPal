@@ -52,12 +52,12 @@ namespace KPal
 
     public struct LabColor
     {
-        public const float AB_MAX_VALUE = 128.0f;
-        public const float L_MAX_VALUE = 100.0f;
+        public const double AB_MAX_VALUE = 128.0;
+        public const double L_MAX_VALUE = 100.0;
 
-        public float L, A, B;
+        public double L, A, B;
 
-        public LabColor(float l, float a, float b)
+        public LabColor(double l, double a, double b)
         {
             L = l;
             A = a;
@@ -135,18 +135,18 @@ namespace KPal
         public string GetColorName(System.Windows.Media.Color color)
         {
             string bestName = Properties.Resources.Color_Unknown;
-            float bestDelta = 100f;
+            double bestDelta = 100;
             foreach (NamedColor c in colors[SelectionIndex].colors)
             {
                 if (color.R == c.R && color.G == c.G && color.B == c.B)
                 {
                     bestName = c.Name;
-                    bestDelta = 0.0f;
+                    bestDelta = 0.0;
                     break;
                 }
                 else
                 {
-                    float delta = GetDeltaE(color.R, color.G, color.B, c.R, c.G, c.B);
+                    double delta = GetDeltaE(color.R, color.G, color.B, c.R, c.G, c.B);
                     if (delta < bestDelta)
                     {
                         bestDelta = delta;
@@ -166,38 +166,38 @@ namespace KPal
 
         public static LabColor RGB2LAB(byte red, byte green, byte blue)
         {
-            float r = Convert.ToSingle(red) / 255.0f, g = Convert.ToSingle(green) / 255.0f, b = Convert.ToSingle(blue) / 255.0f, x, y, z;
-            r = (r > 0.04045f) ? Convert.ToSingle(Math.Pow((r + 0.055f) / 1.055f, 2.4f)) : r / 12.92f;
-            g = (g > 0.04045f) ? Convert.ToSingle(Math.Pow((g + 0.055f) / 1.055f, 2.4f)) : g / 12.92f;
-            b = (b > 0.04045f) ? Convert.ToSingle(Math.Pow((b + 0.055f) / 1.055f, 2.4f)) : b / 12.92f;
-            x = (r * 0.4124f + g * 0.3576f + b * 0.1805f) / 0.95047f;
-            y = (r * 0.2126f + g * 0.7152f + b * 0.0722f) / 1.00000f;
-            z = (r * 0.0193f + g * 0.1192f + b * 0.9505f) / 1.08883f;
-            x = (x > 0.008856f) ? Convert.ToSingle(Math.Pow(x, 1.0 / 3.0)) : (7.787f * x) + 16f / 116f;
-            y = (y > 0.008856f) ? Convert.ToSingle(Math.Pow(y, 1.0 / 3.0)) : (7.787f * y) + 16f / 116f;
-            z = (z > 0.008856f) ? Convert.ToSingle(Math.Pow(z, 1.0 / 3.0)) : (7.787f * z) + 16f / 116f;
-            return new LabColor((116f * y) - 16f, 500f * (x - y), 200f * (y - z));
+            double r = Convert.ToDouble(red) / 255.0, g = Convert.ToDouble(green) / 255.0, b = Convert.ToDouble(blue) / 255.0, x, y, z;
+            r = (r > 0.04045) ? Convert.ToDouble(Math.Pow((r + 0.055) / 1.055, 2.4)) : r / 12.92;
+            g = (g > 0.04045) ? Convert.ToDouble(Math.Pow((g + 0.055) / 1.055, 2.4)) : g / 12.92;
+            b = (b > 0.04045) ? Convert.ToDouble(Math.Pow((b + 0.055) / 1.055, 2.4)) : b / 12.92;
+            x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047;
+            y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.00000;
+            z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
+            x = (x > 0.008856) ? Convert.ToDouble(Math.Pow(x, 1.0 / 3.0)) : (7.787 * x) + 16.0 / 116.0;
+            y = (y > 0.008856) ? Convert.ToDouble(Math.Pow(y, 1.0 / 3.0)) : (7.787 * y) + 16.0 / 116.0;
+            z = (z > 0.008856) ? Convert.ToDouble(Math.Pow(z, 1.0 / 3.0)) : (7.787 * z) + 16.0 / 116.0;
+            return new LabColor((116.0 * y) - 16.0, 500.0 * (x - y), 200.0 * (y - z));
         }
 
-        public static float GetDeltaE(byte redA, byte greenA, byte blueA, byte redB, byte greenB, byte blueB)
+        public static double GetDeltaE(byte redA, byte greenA, byte blueA, byte redB, byte greenB, byte blueB)
         {
             LabColor labA = RGB2LAB(redA, greenA, blueA);
             LabColor labB = RGB2LAB(redB, greenB, blueB);
-            float deltaL = labA.L - labB.L;
-            float deltaA = labA.A - labB.A;
-            float deltaB = labA.B - labB.B;
-            float c1 = Convert.ToSingle(Math.Sqrt(labA.A * labA.A + labA.B * labA.B));
-            float c2 = Convert.ToSingle(Math.Sqrt(labB.A * labB.A + labB.B * labB.B));
-            float deltaC = c1 - c2;
-            float deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
-            deltaH = deltaH < 0 ? 0 : Convert.ToSingle(Math.Sqrt(deltaH));
-            float sc = 1.0f + 0.045f * c1;
-            float sh = 1.0f + 0.015f * c1;
-            float deltaLKlsl = deltaL / (1.0f);
-            float deltaCkcsc = deltaC / (sc);
-            float deltaHkhsh = deltaH / (sh);
-            float i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
-            return i < 0f ? 0f : Convert.ToSingle(Math.Sqrt(i));
+            double deltaL = labA.L - labB.L;
+            double deltaA = labA.A - labB.A;
+            double deltaB = labA.B - labB.B;
+            double c1 = Math.Sqrt(labA.A * labA.A + labA.B * labA.B);
+            double c2 = Math.Sqrt(labB.A * labB.A + labB.B * labB.B);
+            double deltaC = c1 - c2;
+            double deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
+            deltaH = deltaH < 0 ? 0 : Math.Sqrt(deltaH);
+            double sc = 1.0 + 0.045 * c1;
+            double sh = 1.0 + 0.015 * c1;
+            double deltaLKlsl = deltaL / 1.0;
+            double deltaCkcsc = deltaC / sc;
+            double deltaHkhsh = deltaH / sh;
+            double i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
+            return i < 0.0 ? 0.0 : Math.Sqrt(i);
         }
 
         

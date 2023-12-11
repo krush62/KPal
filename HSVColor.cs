@@ -23,11 +23,11 @@ namespace KPal
 {
     public class HSVColor : IEquatable<HSVColor>, IEqualityComparer<HSVColor>
     {
-        public const int MIN_VALUE = 0;
-        public const int MAX_VALUE_VAL_SAT = 100;
-        public const int MAX_VALUE_DEGREES = 360;
+        public const double MIN_VALUE = 0;
+        public const double MAX_VALUE_VAL_SAT = 100;
+        public const double MAX_VALUE_DEGREES = 360;
 
-        public HSVColor(int hue, int sat, int val)
+        public HSVColor(double hue, double sat, double val)
         {
             Hue = hue;
             Saturation = sat;
@@ -41,9 +41,9 @@ namespace KPal
             brightness = MIN_VALUE;
         }
 
-        private int hue;
+        private double hue;
 
-        public int Hue
+        public double Hue
         {
             get { return hue; }
             set
@@ -52,9 +52,9 @@ namespace KPal
             }
         }
 
-        private int saturation;
+        private double saturation;
 
-        public int Saturation
+        public double Saturation
         {
             get { return saturation; }
             set
@@ -74,9 +74,9 @@ namespace KPal
             }
         }
 
-        private int brightness;
+        private double brightness;
 
-        public int Brightness
+        public double Brightness
         {
             get { return brightness; }
             set
@@ -101,12 +101,12 @@ namespace KPal
             return HSVToRGB(hue, saturation, brightness);
         }
 
-        public static Color HSVToRGB(int hue, int saturation, int brightness)
+        public static Color HSVToRGB(double hue, double saturation, double brightness)
         {
             double r, g, b;
-            double h = Convert.ToDouble(hue);
-            double s = Convert.ToDouble(saturation) / Convert.ToDouble(MAX_VALUE_VAL_SAT);
-            double v = Convert.ToDouble(brightness) / Convert.ToDouble(MAX_VALUE_VAL_SAT);
+            double h = hue;
+            double s = saturation / MAX_VALUE_VAL_SAT;
+            double v = brightness / MAX_VALUE_VAL_SAT;
 
             if (s == MIN_VALUE)
             {
@@ -119,13 +119,13 @@ namespace KPal
                 int i;
                 double f, p, q, t;
 
-                if (h == Convert.ToDouble(MAX_VALUE_DEGREES))
+                if (h == MAX_VALUE_DEGREES)
                 {
                     h = 0;
                 }
                 else
                 {
-                    h /= (Convert.ToDouble(MAX_VALUE_DEGREES) / 6.0);
+                    h /= MAX_VALUE_DEGREES / 6.0;
                 }
 
                 i = Convert.ToInt32(Math.Truncate(h));
@@ -200,7 +200,7 @@ namespace KPal
 
         public int GetHashCode([DisallowNull] HSVColor obj)
         {
-            return obj.Hue * 1000000 + obj.Saturation * 1000 + obj.Brightness;
+            return Convert.ToInt32(obj.Hue * 1000000 + obj.Saturation * 1000 + obj.Brightness);
         }
 
         public static bool operator ==(HSVColor? obj1, HSVColor? obj2)
