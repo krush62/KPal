@@ -129,7 +129,7 @@ namespace KPal
             isMinimized = true;
             Double? max = TryFindResource(ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMAXIMIZED) as Double?;
             Double? min = TryFindResource(ID_PALETTEEDITOR_DEFAULTVALUE_HEIGHTMINIMIZED) as Double?;
-            minSize = min != null ? min.Value : 150;
+            minSize = min != null ? min.Value : 75;
             maxSize = max != null ? max.Value : 250;
             ToggleCollapseState();
             CreateColorList();
